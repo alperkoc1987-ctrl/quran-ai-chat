@@ -12,7 +12,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, RotateCcw, BookOpen } from "lucide-react";
+import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown } from "lucide-react";
 import { Surah, Language } from "@/lib/types";
 
 export default function Chat() {
@@ -20,6 +20,7 @@ export default function Chat() {
   const [inputValue, setInputValue] = useState("");
   const [language, setLanguage] = useState<Language>(Language.German);
   const [selectedSurah, setSelectedSurah] = useState<Surah | null>(null);
+  const [showSurahBrowser, setShowSurahBrowser] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -54,7 +55,7 @@ export default function Chat() {
       <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-lg flex items-center justify-center">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -127,7 +128,7 @@ export default function Chat() {
                 <Button
                   onClick={handleSendMessage}
                   disabled={isLoading || !inputValue.trim()}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="gap-2 bg-teal-600 hover:bg-teal-700"
                 >
                   <Send className="w-4 h-4" />
                   <span className="hidden sm:inline">Senden</span>
@@ -143,19 +144,41 @@ export default function Chat() {
           </div>
         </div>
 
-        {/* Surah Browser Section */}
-        <div className="flex-shrink-0 bg-white border-t border-slate-200 p-4">
-          <div className="container max-w-6xl mx-auto">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Suren durchsuchen</h3>
-            <SurahList onSelectSurah={setSelectedSurah} selectedSurahNumber={selectedSurah?.number} />
-          </div>
+        {/* Surah Browser Toggle Button */}
+        <div className="bg-white border-t border-slate-200 px-4 py-2">
+          <button
+            onClick={() => setShowSurahBrowser(!showSurahBrowser)}
+            className="w-full flex items-center justify-center gap-2 text-teal-600 hover:text-teal-700 font-semibold text-sm py-2"
+          >
+            {showSurahBrowser ? (
+              <>
+                <ChevronDown className="w-4 h-4" />
+                Suren ausblenden
+              </>
+            ) : (
+              <>
+                <ChevronUp className="w-4 h-4" />
+                Suren anzeigen
+              </>
+            )}
+          </button>
         </div>
+
+        {/* Surah Browser Section */}
+        {showSurahBrowser && (
+          <div className="flex-1 flex flex-col bg-white border-t border-slate-200 overflow-hidden">
+            <SurahList
+              onSelectSurah={setSelectedSurah}
+              selectedSurahNumber={selectedSurah?.number}
+            />
+          </div>
+        )}
       </div>
 
       {/* Surah Viewer Modal */}
       {selectedSurah && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-96 overflow-hidden">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden">
             <SurahViewer
               surah={selectedSurah}
               language={language}
