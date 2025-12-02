@@ -67,3 +67,39 @@ export interface ChatMessage {
   sources?: SourceReference[];
   timestamp: Date;
 }
+
+export enum Language {
+  German = "de",
+  English = "en",
+}
+
+export interface Surah {
+  number: number;
+  name: string; // Arabic name
+  englishName: string;
+  englishNameTranslation: string;
+  numberOfAyahs: number;
+  revelationType: string;
+}
+
+export interface AyahDetail {
+  number: number;
+  text: string; // Arabic text
+  numberInSurah: number;
+  juz: number;
+  manzil: number;
+  page: number;
+  ruku: number;
+  hizbQuarter: number;
+  sajda: boolean;
+}
+
+export interface SurahWithAyahs {
+  number: number;
+  name: string;
+  englishName: string;
+  englishNameTranslation: string;
+  numberOfAyahs: number;
+  revelationType: string;
+  ayahs: AyahDetail[];
+}
