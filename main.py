@@ -1,0 +1,135 @@
+import os
+import json
+import requests
+from fastapi import FastAPI, HTTPException
+from typing import List
+from openai import OpenAI
+from models import ChatRequest, ChatResponse, SourceReference, SourceType
+
+# --- Setup ---
+app = FastAPI(title="Quran & Hadith RAG Backend")
+client = OpenAI() # Uses OPENAI_API_KEY environment variable
+
+# Placeholder for Hadith API Key (User must replace this)
+HADITH_API_KEY = os.environ.get("HADITH_API_KEY", "YOUR_HADITH_API_KEY_HERE")
+
+# --- RAG Helper Functions ---
+
+def retrieve_quran_data(query: str) -> List[SourceReference]:
+    """
+    Simulates retrieval from the alquran.cloud API.
+    In a real application, this would call the /v1/search/{query}/{edition} endpoint.
+    """
+    print(f"Retrieving Quran data for query: {query}")
+    
+    # Placeholder for real API call
+    # QURAN_API_URL = f"http://api.alquran.cloud/v1/search/{query}/all"
+    # response = requests.get(QURAN_API_URL)
+    # data = response.json()
+    
+    # Simulation of relevant data based on keywords
+    if "gebet" in query.lower() or "salah" in query.lower():
+        return [
+            SourceReference(
+                type=SourceType.quran,
+                reference="Sure 2: Vers 43",
+                text="Und verrichtet das Gebet und entrichtet die Zakah und verneigt euch mit den sich Verneigenden."
+            ),
+            SourceReference(
+                type=SourceType.quran,
+                reference="Sure 29: Vers 45",
+                text="Verlies, was dir vom Buch offenbart worden ist, und verrichte das Gebet. Gewiß, das Gebet hält davon ab, das Schändliche und Verwerfliche (zu tun)."
+            )
+        ]
+    return []
+
+def retrieve_hadith_data(query: str) -> List[SourceReference]:
+    """
+    Simulates retrieval from the hadithapi.com API.
+    In a real application, this would call the /api/hadiths endpoint with search parameters.
+    """
+    print(f"Retrieving Hadith data for query: {query}")
+    
+    if HADITH_API_KEY == "YOUR_HADITH_API_KEY_HERE":
+        print("WARNING: Hadith API Key is a placeholder. Skipping real API call.")
+        
+    # Simulation of relevant data based on keywords
+    if "gebet" in query.lower() or "salah" in query.lower():
+        return [
+            SourceReference(
+                type=SourceType.hadith,
+                reference="Sahih Bukhari, Hadith 8",
+                text="Der Gesandte Allahs (Friede sei mit ihm) sagte: 'Der Islam ist auf fünf Säulen aufgebaut: dem Zeugnis, dass es keinen Gott außer Allah gibt und Muhammad der Gesandte Allahs ist, dem Verrichten des Gebets, dem Entrichten der Zakah, der Pilgerfahrt (Hajj) und dem Fasten im Ramadan.'"
+            )
+        ]
+    return []
+
+def generate_ai_response(query: str, context: List[SourceReference]) -> str:
+    """
+    Generates the final AI response using the LLM based on the retrieved context.
+    """
+    context_text = "\n\n".join([f"[{src.type.value} - {src.reference}]: {src.text}" for src in context])
+    
+    system_prompt = (
+        "Sie sind ein islamischer Gelehrter und KI-Assistent. Ihre Aufgabe ist es, die Benutzerfrage "
+        "präzise und respektvoll zu beantworten, indem Sie ausschließlich die bereitgestellten "
+        "Koran- und Hadith-Zitate als Grundlage verwenden. Fassen Sie die Zitate zusammen und "
+        "geben Sie eine klare Antwort. Zitieren Sie die Quellen explizit in Ihrer Antwort, "
+        "bevor Sie die vollständigen Zitate am Ende auflisten."
+    )
+    
+    user_prompt = (
+        f"Benutzerfrage: {query}\n\n"
+        f"Verfügbarer Kontext:\n{context_text}\n\n"
+        "Antworten Sie auf Deutsch und verwenden Sie nur den bereitgestellten Kontext."
+    )
+    
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini", # Using a capable model for RAG
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.2
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"OpenAI API Error: {e}")
+        return "Entschuldigung, die KI konnte die Antwort aufgrund eines internen Fehlers nicht generieren."
+
+# --- FastAPI Endpoint ---
+
+@app.post("/chat", response_model=ChatResponse)
+async def chat_endpoint(request: ChatRequest):
+    """
+    Der Haupt-Endpunkt für die KI-Chat-Funktionalität.
+    Führt die RAG-Schritte (Retrieval, Augmentation, Generation) aus.
+    """
+    
+    # 1. Retrieval (Abruf)
+    quran_sources = retrieve_quran_data(request.userQuery)
+    hadith_sources = retrieve_hadith_data(request.userQuery)
+    
+    all_sources = quran_sources + hadith_sources
+    
+    if not all_sources:
+        # Fallback, wenn keine Quellen gefunden wurden
+        return ChatResponse(
+            generatedAnswer="Ich konnte keine direkten Koran- oder Hadith-Quellen zu Ihrer Frage finden. Bitte versuchen Sie eine andere Formulierung.",
+            sources=[]
+        )
+    
+    # 2. Augmentation & Generation (Erweiterung & Generierung)
+    generated_answer = generate_ai_response(request.userQuery, all_sources)
+    
+    # 3. Response
+    return ChatResponse(
+        generatedAnswer=generated_answer,
+        sources=all_sources
+    )
+
+# --- Server Start (for local testing) ---
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
