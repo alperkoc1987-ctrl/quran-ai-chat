@@ -166,7 +166,7 @@ export default function Chat() {
 
         {/* Surah Browser Section */}
         {showSurahBrowser && (
-          <div className="flex-1 flex flex-col bg-white border-t border-slate-200 overflow-hidden">
+          <div className="flex-1 flex flex-col bg-white border-t border-slate-200 min-h-0">
             <SurahList
               onSelectSurah={setSelectedSurah}
               selectedSurahNumber={selectedSurah?.number}
