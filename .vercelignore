@@ -1,0 +1,14 @@
+node_modules
+.git
+.env
+.env.local
+*.md
+server
+shared
+main.py
+models.py
+requirements.txt
+Dockerfile
+docker-compose.yml
+.gitignore
+vercel-config.txt
