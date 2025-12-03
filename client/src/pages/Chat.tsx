@@ -144,35 +144,36 @@ export default function Chat() {
           </div>
         </div>
 
-        {/* Surah Browser Toggle Button */}
-        <div className="bg-white border-t border-slate-200 px-4 py-2">
-          <button
-            onClick={() => setShowSurahBrowser(!showSurahBrowser)}
-            className="w-full flex items-center justify-center gap-2 text-teal-600 hover:text-teal-700 font-semibold text-sm py-2"
-          >
-            {showSurahBrowser ? (
-              <>
-                <ChevronDown className="w-4 h-4" />
-                Suren ausblenden
-              </>
-            ) : (
-              <>
-                <ChevronUp className="w-4 h-4" />
-                Suren anzeigen
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Surah Browser Section */}
-        {showSurahBrowser && (
-          <div className="flex-1 flex flex-col bg-white border-t border-slate-200 min-h-0">
-            <SurahList
-              onSelectSurah={setSelectedSurah}
-              selectedSurahNumber={selectedSurah?.number}
-            />
+        {/* Surah Browser Section - Responsive height */}
+        <div className="flex-1 flex flex-col bg-white border-t border-slate-200 min-h-0 max-h-[40vh] md:max-h-[50vh]">
+          <div className="bg-white border-b border-slate-200 px-4 py-2 flex-shrink-0">
+            <button
+              onClick={() => setShowSurahBrowser(!showSurahBrowser)}
+              className="w-full flex items-center justify-center gap-2 text-teal-600 hover:text-teal-700 font-semibold text-sm py-2"
+            >
+              {showSurahBrowser ? (
+                <>
+                  <ChevronDown className="w-4 h-4" />
+                  Suren ausblenden
+                </>
+              ) : (
+                <>
+                  <ChevronUp className="w-4 h-4" />
+                  Suren anzeigen
+                </>
+              )}
+            </button>
           </div>
-        )}
+          
+          {showSurahBrowser && (
+            <div className="flex-1 overflow-hidden min-h-0">
+              <SurahList
+                onSelectSurah={setSelectedSurah}
+                selectedSurahNumber={selectedSurah?.number}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Surah Viewer Modal */}

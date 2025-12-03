@@ -530,9 +530,10 @@ def retrieve_hadith_data(query: str) -> List[SourceReference]:
         ]
     return []
 
-def generate_ai_response(query: str, context: List[SourceReference], is_greeting_query: bool = False, dua_text: str = "") -> str:
+def generate_ai_response(query: str, context: List[SourceReference], is_greeting_query: bool = False, dua_text: str = "", is_free_form: bool = False) -> str:
     """
     Generates the final AI response using the LLM based on the retrieved context.
+    Supports both Islamic-specific responses and free-form ChatGPT-like conversations.
     """
     if is_greeting_query:
         # Special handling for greetings
@@ -541,6 +542,15 @@ def generate_ai_response(query: str, context: List[SourceReference], is_greeting
             "mit einer warmen islamischen Begruessungsantwort und fragen Sie, wie Sie mit islamischen Fragen helfen koennen."
         )
         user_prompt = f"Der Benutzer sagt: {query}\n\nAntworten Sie auf Deutsch mit einer freundlichen islamischen Begruessungsantwort."
+    elif is_free_form:
+        # Free-form ChatGPT-like conversation with Islamic compliance
+        system_prompt = (
+            "Sie sind ein hilfreicher, freundlicher und intelligenter KI-Assistent. Sie koennen ueber verschiedenste Themen sprechen. "
+            "Allerdings sind Sie auch ein islamischer Assistent, daher sollten Ihre Antworten immer halal und islam-konform sein. "
+            "Vermeiden Sie Inhalte, die dem Islam widersprechen (z.B. Alkohol, Gluecksspiel, Unmoralisches). "
+            "Antworten Sie auf Deutsch mit Freundlichkeit und Verstaendnis. Sie koennen auch islamische Perspektiven einbringen, wenn relevant."
+        )
+        user_prompt = f"{query}"
     elif dua_text:
         # Special handling for Dua requests
         system_prompt = (
@@ -577,7 +587,7 @@ def generate_ai_response(query: str, context: List[SourceReference], is_greeting
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.2 if not is_greeting_query else 0.7
+            temperature=0.2 if (not is_greeting_query and not is_free_form) else 0.7
         )
         return response.choices[0].message.content
     except Exception as e:
@@ -636,9 +646,11 @@ async def chat_endpoint(request: ChatRequest):
     all_sources = quran_sources + hadith_sources
     
     if not all_sources:
-        # Fallback, wenn keine Quellen gefunden wurden
+        # If no specific Islamic sources found, allow free-form conversation
+        # This enables ChatGPT-like interaction while maintaining Islamic compliance
+        generated_answer = generate_ai_response(request.userQuery, [], is_free_form=True)
         return ChatResponse(
-            generatedAnswer="Ich konnte keine direkten Koran- oder Hadith-Quellen zu Ihrer Frage finden. Bitte versuchen Sie eine andere Formulierung.",
+            generatedAnswer=generated_answer,
             sources=[]
         )
     
