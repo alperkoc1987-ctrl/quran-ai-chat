@@ -9,6 +9,7 @@ import { MessageBubble } from "@/components/MessageBubble";
 import { SurahList } from "@/components/SurahList";
 import { SurahViewer } from "@/components/SurahViewer";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { APIKeySettings } from "@/components/APIKeySettings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -90,6 +91,8 @@ export default function Chat() {
           {/* Messages Area */}
           <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
             <div className="container max-w-6xl mx-auto px-4 py-6 space-y-4">
+              {/* API Key Settings - Show at top if not set */}
+              <APIKeySettings />
               {messages.map((message) => (
                 <MessageBubble key={message.id} message={message} />
               ))}
