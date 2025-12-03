@@ -1,6 +1,7 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function(event, context) {
+  // Dynamic import for node-fetch (v3 is ESM only)
+  const { default: fetch } = await import('node-fetch');
+
   // CORS headers
   const headers = {
     "Access-Control-Allow-Origin": "*",
