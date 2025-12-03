@@ -1,28 +1,49 @@
 /**
  * api.ts
- * Service for communicating with the FastAPI backend and Quran APIs.
+ * Service for communicating with the backend and Quran APIs.
  */
 
 import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
 
-const API_BASE_URL = process.env.VITE_API_URL || "https://8000-i11bzu5271pqw52l913tv-fe7158c6.manusvm.computer";
+// Use relative path for API calls to leverage Netlify redirects
+const API_BASE_URL = "/api";
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
   try {
+    // Get API key from localStorage if available (for client-side usage)
+    const apiKey = localStorage.getItem("openai_api_key");
+    
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify({
+        ...request,
+        apiKey, // Pass API key if needed by the function
+        messages: [
+          { role: "system", content: "You are a helpful Islamic assistant." },
+          { role: "user", content: request.userQuery }
+        ]
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `API Error: ${response.status} ${response.statusText}`);
     }
 
-    const data: ChatResponse = await response.json();
+    const data = await response.json();
+    
+    // Transform OpenAI response format to our app's expected format if needed
+    if (data.choices && data.choices[0]) {
+      return {
+        generatedAnswer: data.choices[0].message.content,
+        sources: [] // Sources would need to be parsed or handled differently with direct OpenAI calls
+      };
+    }
+    
     return data;
   } catch (error) {
     console.error("Failed to send chat request:", error);
