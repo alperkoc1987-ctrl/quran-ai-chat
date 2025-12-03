@@ -31,14 +31,14 @@ Answer questions in English.
 Be respectful and informative.
 Cite relevant verses or Hadith when possible.`;
 
-    // Call OpenAI API directly from the frontend
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    // Call Netlify Function proxy
+    const response = await fetch("/.netlify/functions/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
+        apiKey, // Pass API key to the function
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: systemPrompt },
