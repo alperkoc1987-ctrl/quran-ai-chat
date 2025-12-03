@@ -1,0 +1,12 @@
+[build]
+  command = "pnpm install && pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NPM_FLAGS = "--legacy-peer-deps"
+  PNPM_VERSION = "10.4.1"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
