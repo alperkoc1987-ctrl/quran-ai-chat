@@ -12,20 +12,20 @@ export default defineConfig({
   plugins,
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@": path.resolve(import.meta.dirname, "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
   },
   envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
+  root: path.resolve(import.meta.dirname),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
   },
   server: {
     port: 3000,
-    strictPort: false, // Will find next available port if 3000 is busy
+    strictPort: false,
     host: true,
     allowedHosts: [
       ".manuspre.computer",
