@@ -31,6 +31,158 @@ def is_greeting(query: str) -> bool:
     greetings = ["hey", "hallo", "hi", "assalamu", "assalam", "moin", "yo", "heyy"]
     return any(greeting in query.lower() for greeting in greetings)
 
+def is_dua_request(query: str) -> bool:
+    """Check if the query is asking for a Dua."""
+    dua_keywords = ["dua", "bittgebet", "gebet", "beten", "anrufung", "invocation"]
+    return any(keyword in query.lower() for keyword in dua_keywords)
+
+def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
+    """
+    Retrieves relevant Duas based on query keywords.
+    Returns both the Dua text and related Quranic verses.
+    """
+    print(f"Retrieving Dua data for query: {query}")
+    query_lower = query.lower()
+    
+    # Comprehensive Dua database with related Quranic verses
+    dua_database = {
+        "geld": {
+            "dua": "Allahumma inni as'aluka rizqan tayyiba wa 'ilman nafi'a wa 'amalan mutaqabbala.\n\nÜbersetzung: O Allah, ich bitte Dich um guten Rizq (Versorgung), nützliches Wissen und akzeptierte Taten.",
+            "source": "Überliefert von Ibn Majah",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 65: Vers 3",
+                    text="Und wer auf Allah vertraut, für den ist Er ausreichend. Gewiß, Allah wird Seine Angelegenheit vollbringen."
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 11: Vers 6",
+                    text="Und es gibt kein Getier auf Erden, dessen Versorgung nicht Allah obliegt. Und Er kennt seinen Aufenthaltsort und seinen Aufbewahrungsort."
+                )
+            ]
+        },
+        "gesundheit": {
+            "dua": "Allahumma inni as'aluka 'afiyata fi dunyai wa 'akhirati.\n\nÜbersetzung: O Allah, ich bitte Dich um Wohlbefinden in dieser Welt und im Jenseits.",
+            "source": "Überliefert von Muslim",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 26: Vers 80",
+                    text="Und wenn ich erkranke, so heilt Er mich."
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 9: Vers 28",
+                    text="O ihr, die ihr glaubt, gewiß, die Götzendiener sind unrein."
+                )
+            ]
+        },
+        "vergebung": {
+            "dua": "Allahumma ighfir li dhunubi kullahu, dhiruhu wa 'alaniytahu, awwalu wa akhirahu, wa 'alaniytahu wa sirrahu.\n\nÜbersetzung: O Allah, vergib mir all meine Sünden - die frühen und die späten, die offenen und die verborgenen.",
+            "source": "Überliefert von Muslim",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 39: Vers 53",
+                    text="Sprich: 'O Meine Diener, die ihr gegen euch selbst frevelnd gewesen seid, verzweifelt nicht an Allahs Barmherzigkeit. Gewiß, Allah vergibt alle Sünden.'"
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 4: Vers 110",
+                    text="Und wer eine böse Tat begeht oder sich selbst Unrecht zufügt, dann Allah um Vergebung bittet, wird Allah vergebend und barmherzig finden."
+                )
+            ]
+        },
+        "geduld": {
+            "dua": "Allahumma inni as'aluka sabran jamilan wa 'afiyatan 'inda al-bala.\n\nÜbersetzung: O Allah, ich bitte Dich um schöne Geduld und Wohlbefinden in der Prüfung.",
+            "source": "Überliefert von Ahmad",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 2: Vers 153",
+                    text="O ihr, die ihr glaubt, sucht Hilfe in Geduld und Gebet. Gewiß, Allah ist mit den Geduldigen."
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 103: Vers 1-3",
+                    text="Bei der Zeit! Der Mensch befindet sich wahrlich in einem Zustand des Verlusts, außer denjenigen, die glauben und gute Werke tun und sich gegenseitig zur Wahrheit ermahnen und sich gegenseitig zur Geduld ermahnen."
+                )
+            ]
+        },
+        "hoffnung": {
+            "dua": "Allahumma inni as'aluka husna al-khatimah wa tawbatan nasuha.\n\nÜbersetzung: O Allah, ich bitte Dich um ein gutes Ende und eine aufrichtige Reue.",
+            "source": "Überliefert von Tirmidhi",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 12: Vers 87",
+                    text="O meine Söhne, geht hin und forscht nach Yusuf und seinem Bruder und verzweifelt nicht an Allahs Barmherzigkeit."
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 7: Vers 156",
+                    text="Meine Barmherzigkeit umfaßt alle Dinge."
+                )
+            ]
+        },
+        "schutz": {
+            "dua": "A'udhu billahi min ash-shaytani ar-rajim.\n\nÜbersetzung: Ich suche Zuflucht bei Allah vor dem verfluchten Teufel.",
+            "source": "Quran - Sure 16: Vers 98",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 7: Vers 200-201",
+                    text="Und wenn dich eine Versuchung vom Teufel versucht, so suche Zuflucht bei Allah. Gewiß, Er ist der Allhörende, der Allwissende."
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 113-114: Al-Falaq und An-Nas",
+                    text="Sagen Sie: 'Ich suche Zuflucht bei dem Herrn der Morgenröte' und 'Ich suche Zuflucht bei dem Herrn der Menschen'"
+                )
+            ]
+        },
+        "wissen": {
+            "dua": "Allahumma inni as'aluka 'ilman nafi'a wa rizqan tayyiba wa 'amalan mutaqabbala.\n\nÜbersetzung: O Allah, ich bitte Dich um nützliches Wissen, gute Versorgung und akzeptierte Taten.",
+            "source": "Überliefert von Ibn Majah",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 20: Vers 114",
+                    text="Und sprich: 'Mein Herr, mehre mir an Wissen.'"
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 2: Vers 269",
+                    text="Allah gewährt die Weisheit, wem Er will. Und wem die Weisheit gewährt wird, dem ist wahrlich viel Gutes gewährt worden."
+                )
+            ]
+        },
+        "familie": {
+            "dua": "Allahumma ahsin ahlaqi wa ahsin akhlaq ahli wa waladi.\n\nÜbersetzung: O Allah, verbessere meinen Charakter und den Charakter meiner Familie und meiner Kinder.",
+            "source": "Überliefert von Ahmad",
+            "related_verses": [
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 4: Vers 36",
+                    text="Und zu den Eltern sei gütig; und zu den Verwandten, den Waisen, den Bedürftigen, dem nahen Nachbarn, dem fernen Nachbarn, dem Gefährten zur Seite, dem Wanderer und denen, die eure rechte Hand besitzt."
+                ),
+                SourceReference(
+                    type=SourceType.quran,
+                    reference="Sure 25: Vers 74",
+                    text="Und die sagen: 'Unser Herr, schenke uns an unseren Gattinnen und Nachkommen Freude und mache uns zu Führern der Gottesfürchtigen.'"
+                )
+            ]
+        }
+    }
+    
+    # Search for matching keywords
+    for keyword, dua_data in dua_database.items():
+        if keyword in query_lower:
+            return dua_data["related_verses"], dua_data["dua"]
+    
+    return [], ""
+
 def retrieve_quran_data(query: str) -> List[SourceReference]:
     """
     Retrieves relevant Quran verses based on query keywords.
@@ -280,7 +432,6 @@ def retrieve_quran_data(query: str) -> List[SourceReference]:
         "einsam": "loneliness",
         "verlassen": "loneliness",
         "versuchung": "temptation",
-        "sünde": "temptation",
         "arbeit": "provision",
         "job": "provision",
         "geld": "provision",
@@ -330,7 +481,7 @@ def retrieve_hadith_data(query: str) -> List[SourceReference]:
         ]
     return []
 
-def generate_ai_response(query: str, context: List[SourceReference], is_greeting_query: bool = False) -> str:
+def generate_ai_response(query: str, context: List[SourceReference], is_greeting_query: bool = False, dua_text: str = "") -> str:
     """
     Generates the final AI response using the LLM based on the retrieved context.
     """
@@ -341,6 +492,19 @@ def generate_ai_response(query: str, context: List[SourceReference], is_greeting
             "mit einer warmen islamischen Begruessungsantwort und fragen Sie, wie Sie mit islamischen Fragen helfen koennen."
         )
         user_prompt = f"Der Benutzer sagt: {query}\n\nAntworten Sie auf Deutsch mit einer freundlichen islamischen Begruessungsantwort."
+    elif dua_text:
+        # Special handling for Dua requests
+        system_prompt = (
+            "Sie sind ein islamischer Gelehrter und KI-Assistent. Der Benutzer fragt nach einer Dua (Bittgebet). "
+            "Praesentieren Sie die Dua auf eine respektvolle und hilfreiche Weise. Erklaeren Sie die Bedeutung und wie man sie verwenden kann."
+        )
+        context_text = "\n\n".join([f"[{src.type.value} - {src.reference}]: {src.text}" for src in context])
+        user_prompt = (
+            f"Benutzerfrage: {query}\n\n"
+            f"Dua:\n{dua_text}\n\n"
+            f"Verwandte Koran-Verse und Hadithe:\n{context_text}\n\n"
+            "Erklaeren Sie die Dua und ihre Bedeutung auf Deutsch."
+        )
     else:
         context_text = "\n\n".join([f"[{src.type.value} - {src.reference}]: {src.text}" for src in context])
         
@@ -369,7 +533,8 @@ def generate_ai_response(query: str, context: List[SourceReference], is_greeting
         return response.choices[0].message.content
     except Exception as e:
         print(f"OpenAI API Error: {e}")
-        return "Entschuldigung, die KI konnte die Antwort aufgrund eines internen Fehlers nicht generieren."
+        # Return a graceful error message instead of generic error
+        return f"Ich entschuldige mich, aber ich konnte Ihre Frage gerade nicht verarbeiten. Bitte versuchen Sie es erneut oder stellen Sie eine andere Frage."
 
 # --- FastAPI Endpoint ---
 
@@ -391,7 +556,22 @@ async def chat_endpoint(request: ChatRequest):
             sources=[]
         )
     
-    # 1. Retrieval (Abruf)
+    # Check if it's a Dua request
+    dua_query = is_dua_request(request.userQuery)
+    
+    if dua_query:
+        # 1. Retrieval for Dua
+        dua_verses, dua_text = retrieve_dua_data(request.userQuery)
+        
+        if dua_text:
+            # Generate response with Dua
+            generated_answer = generate_ai_response(request.userQuery, dua_verses, dua_text=dua_text)
+            return ChatResponse(
+                generatedAnswer=generated_answer,
+                sources=dua_verses
+            )
+    
+    # 1. Retrieval (Abruf) for regular questions
     quran_sources = retrieve_quran_data(request.userQuery)
     hadith_sources = retrieve_hadith_data(request.userQuery)
     
