@@ -9,7 +9,7 @@ interface SettingsModalProps {
 }
 
 // Default API Key provided by user (fallback)
-const DEFAULT_API_KEY = "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";
+const DEFAULT_API_KEY = "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";
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [apiKey, setApiKey] = useState("");
