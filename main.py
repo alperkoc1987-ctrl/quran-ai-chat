@@ -2,12 +2,23 @@ import os
 import json
 import requests
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from openai import OpenAI
 from models import ChatRequest, ChatResponse, SourceReference, SourceType
 
 # --- Setup ---
 app = FastAPI(title="Quran & Hadith RAG Backend")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins (for development)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 client = OpenAI() # Uses OPENAI_API_KEY environment variable
 
 # Placeholder for Hadith API Key (User must replace this)
