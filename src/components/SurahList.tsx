@@ -72,9 +72,9 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
+    <div className="flex flex-col h-full w-full bg-slate-50 overflow-hidden">
       {/* Search Bar */}
-      <div className="p-4 bg-white border-b border-slate-200">
+      <div className="p-4 bg-white border-b border-slate-200 flex-shrink-0">
         <div className="relative">
           <input
             type="text"
@@ -100,7 +100,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
       </div>
 
       {/* Surahs List */}
-      <ScrollArea className="flex-1 w-full">
+      <ScrollArea className="flex-1 w-full min-h-0">
         <div className="space-y-2 p-4">
           {filteredSurahs.map((surah) => (
             <button
