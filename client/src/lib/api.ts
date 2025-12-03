@@ -6,15 +6,19 @@
 import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
 
 // Determine API URL based on environment
-// In production (Netlify), we call the function directly to avoid redirect issues
-const isProduction = import.meta.env.PROD;
-const API_BASE_URL = isProduction ? "/.netlify/functions" : "/api";
+// On Vercel, we use /api/chat directly
+const API_BASE_URL = "/api";
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
   try {
     // Get API key from localStorage if available (for client-side usage)
-    const apiKey = localStorage.getItem("openai_api_key");
+    let apiKey = localStorage.getItem("openai_api_key");
+    
+    // Sanitize API key: remove whitespace and quotes if user accidentally pasted them
+    if (apiKey) {
+      apiKey = apiKey.trim().replace(/['"]/g, "");
+    }
     
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: "POST",
@@ -23,7 +27,7 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
       },
       body: JSON.stringify({
         ...request,
-        apiKey, // Pass API key if needed by the function
+        apiKey, // Pass sanitized API key
         messages: [
           { 
             role: "system", 
