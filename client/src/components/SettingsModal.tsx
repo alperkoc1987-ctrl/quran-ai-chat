@@ -8,6 +8,9 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
+// Default API Key provided by user (fallback)
+const DEFAULT_API_KEY = "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";
+
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [apiKey, setApiKey] = useState("");
   const [isSaved, setIsSaved] = useState(false);
@@ -16,6 +19,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const storedKey = localStorage.getItem("openai_api_key");
     if (storedKey) {
       setApiKey(storedKey);
+    } else {
+      // Auto-fill with default key if no key is stored
+      setApiKey(DEFAULT_API_KEY);
+      // Also save it to localStorage immediately so it works right away
+      localStorage.setItem("openai_api_key", DEFAULT_API_KEY);
     }
   }, [isOpen]);
 
