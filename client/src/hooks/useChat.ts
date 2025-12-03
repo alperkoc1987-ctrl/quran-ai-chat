@@ -8,6 +8,15 @@ import { ChatMessage } from "@/lib/types";
 import { sendChatRequest } from "@/lib/api";
 import { nanoid } from "nanoid";
 
+// Simple local responses for greetings to ensure the bot always answers "Hi"
+const GREETING_KEYWORDS = ["hallo", "hi", "hey", "salam", "selam", "guten morgen", "guten tag", "guten abend"];
+const GREETING_RESPONSES = [
+  "Wa alaikum assalam! Wie kann ich Ihnen heute helfen?",
+  "Hallo! Ich bin hier, um Ihre Fragen zum Islam, Koran und den Hadithen zu beantworten.",
+  "Salam! Schön, dass Sie da sind. Was möchten Sie wissen?",
+  "Herzlich willkommen! Stellen Sie mir gerne eine Frage."
+];
+
 export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -36,8 +45,28 @@ export function useChat() {
       setIsLoading(true);
       setError(null);
 
+      // Check for local greeting handling FIRST (works even without API key)
+      const lowerInput = userInput.toLowerCase().trim();
+      const isGreeting = GREETING_KEYWORDS.some(keyword => lowerInput === keyword || lowerInput.startsWith(keyword + " "));
+      
+      if (isGreeting && lowerInput.length < 20) {
+        // Simulate a short delay for natural feel
+        setTimeout(() => {
+          const randomResponse = GREETING_RESPONSES[Math.floor(Math.random() * GREETING_RESPONSES.length)];
+          const aiMessage: ChatMessage = {
+            id: nanoid(),
+            text: randomResponse,
+            isUser: false,
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, aiMessage]);
+          setIsLoading(false);
+        }, 600);
+        return; // Exit early, no API call needed
+      }
+
       try {
-        // Check for API key first
+        // Check for API key
         const apiKey = localStorage.getItem("openai_api_key");
         if (!apiKey) {
           throw new Error("MISSING_API_KEY");
@@ -67,7 +96,7 @@ export function useChat() {
         if (err instanceof Error) {
           if (err.message === "MISSING_API_KEY") {
             errorMessage = "Bitte geben Sie Ihren OpenAI API Key in den Einstellungen ein.";
-            displayMessage = "Um den Chat zu nutzen, müssen Sie zuerst Ihren OpenAI API Key eingeben. Bitte klicken Sie oben rechts auf das Zahnrad-Symbol (Einstellungen).";
+            displayMessage = "Um komplexe Fragen zu beantworten, benötige ich Ihren OpenAI API Key. Bitte klicken Sie oben rechts auf das Zahnrad-Symbol (Einstellungen).";
           } else if (err.message.includes("401")) {
             errorMessage = "Der API Key ist ungültig.";
             displayMessage = "Der eingegebene API Key scheint ungültig zu sein. Bitte prüfen Sie ihn in den Einstellungen.";

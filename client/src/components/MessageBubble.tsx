@@ -6,8 +6,9 @@
 import { ChatMessage, SourceType, SourceReference } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Quote, X } from "lucide-react";
-import { useState } from "react";
+import { BookOpen, Quote, X, Volume2, StopCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -16,19 +17,94 @@ interface MessageBubbleProps {
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // Handle speech synthesis
+  const handleSpeak = () => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    } else {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(message.text);
+      utterance.lang = "de-DE"; // Set language to German
+      utterance.rate = 1.0; // Normal speed
+      
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+
+      utterance.onerror = () => {
+        setIsSpeaking(false);
+      };
+
+      window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true);
+    }
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (isSpeaking) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [isSpeaking]);
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       <div className={`max-w-xs md:max-w-md lg:max-w-lg`}>
         {/* Main message bubble */}
         <div
-          className={`rounded-lg px-4 py-3 ${
+          className={`rounded-lg px-4 py-3 relative group ${
             isUser
               ? "bg-blue-600 text-white rounded-br-none"
               : "bg-gray-100 text-gray-900 rounded-bl-none"
           }`}
         >
           <p className="text-sm md:text-base leading-relaxed">{message.text}</p>
+          
+          {/* TTS Button (only for AI messages) */}
+          {!isUser && (
+            <div className="absolute -right-10 top-0 opacity-0 group-hover:opacity-100 transition-opacity md:block hidden">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSpeak}
+                className="h-8 w-8 text-gray-500 hover:text-teal-600"
+                title={isSpeaking ? "Vorlesen stoppen" : "Vorlesen"}
+              >
+                {isSpeaking ? (
+                  <StopCircle className="w-5 h-5" />
+                ) : (
+                  <Volume2 className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
+          )}
+          
+          {/* Mobile TTS Button (always visible on mobile inside bubble) */}
+          {!isUser && (
+            <div className="md:hidden mt-2 flex justify-end border-t border-gray-200 pt-2">
+               <button
+                onClick={handleSpeak}
+                className="flex items-center gap-1 text-xs text-gray-500 hover:text-teal-600"
+              >
+                {isSpeaking ? (
+                  <>
+                    <StopCircle className="w-3 h-3" /> Stopp
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="w-3 h-3" /> Vorlesen
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Sources display (only for AI responses) */}
