@@ -5,7 +5,7 @@
 
 import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
 
-const API_BASE_URL = process.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE_URL = process.env.VITE_API_URL || "https://8000-i11bzu5271pqw52l913tv-fe7158c6.manusvm.computer";
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
