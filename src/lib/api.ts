@@ -1,29 +1,72 @@
 /**
  * api.ts
- * Service for communicating with the FastAPI backend and Quran APIs.
+ * Service for communicating with OpenAI API and Quran APIs.
  */
 
 import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
 
-const API_BASE_URL = process.env.VITE_API_URL || "https://8000-i11bzu5271pqw52l913tv-fe7158c6.manusvm.computer";
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+
+// Get API key from localStorage
+function getAPIKey(): string {
+  return localStorage.getItem("openai_api_key") || "";
+}
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
   try {
-    const response = await fetch(`${API_BASE_URL}/chat`, {
+    const apiKey = getAPIKey();
+    
+    if (!apiKey) {
+      throw new Error("OpenAI API Key nicht gespeichert. Bitte geben Sie Ihren API-Schlüssel ein.");
+    }
+
+    // Create a prompt for OpenAI
+    const systemPrompt = `Sie sind ein hilfreicher KI-Assistent, der Fragen zum Koran und den Hadithen beantwortet. 
+Beantworten Sie Fragen auf ${request.language === "de" ? "Deutsch" : "Englisch"}.
+Seien Sie respektvoll und informativ.`;
+
+    const response = await fetch(OPENAI_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: systemPrompt,
+          },
+          {
+            role: "user",
+            content: request.userQuery,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      const errorData = await response.json();
+      throw new Error(`OpenAI API Error: ${errorData.error?.message || response.statusText}`);
     }
 
-    const data: ChatResponse = await response.json();
-    return data;
+    const data = await response.json();
+    const generatedAnswer = data.choices?.[0]?.message?.content || "Keine Antwort erhalten.";
+
+    return {
+      generatedAnswer,
+      sources: [
+        {
+          type: "quran" as const,
+          reference: "OpenAI GPT-3.5",
+          text: generatedAnswer,
+        },
+      ],
+    };
   } catch (error) {
     console.error("Failed to send chat request:", error);
     throw error;
