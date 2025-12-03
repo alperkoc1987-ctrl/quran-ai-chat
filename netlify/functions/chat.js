@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 exports.handler = async function(event, context) {
   // CORS headers
   const headers = {
@@ -92,7 +94,7 @@ exports.handler = async function(event, context) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: "Internal Server Error. Please try again later." }),
+      body: JSON.stringify({ error: `Internal Server Error: ${error.message}` }),
     };
   }
 };

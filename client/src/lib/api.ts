@@ -5,8 +5,10 @@
 
 import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
 
-// Use relative path for API calls to leverage Netlify redirects
-const API_BASE_URL = "/api";
+// Determine API URL based on environment
+// In production (Netlify), we call the function directly to avoid redirect issues
+const isProduction = import.meta.env.PROD;
+const API_BASE_URL = isProduction ? "/.netlify/functions" : "/api";
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
