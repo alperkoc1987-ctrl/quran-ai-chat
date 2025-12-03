@@ -20,7 +20,7 @@ export default function Chat() {
   const [inputValue, setInputValue] = useState("");
   const [language, setLanguage] = useState<Language>(Language.German);
   const [selectedSurah, setSelectedSurah] = useState<Surah | null>(null);
-  const [showSurahBrowser, setShowSurahBrowser] = useState(false);
+  const [showSurahBrowser, setShowSurahBrowser] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive

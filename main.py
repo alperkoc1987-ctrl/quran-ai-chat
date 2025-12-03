@@ -26,6 +26,11 @@ HADITH_API_KEY = os.environ.get("HADITH_API_KEY", "YOUR_HADITH_API_KEY_HERE")
 
 # --- RAG Helper Functions ---
 
+def is_greeting(query: str) -> bool:
+    """Check if the query is a greeting."""
+    greetings = ["hey", "hallo", "hi", "assalamu", "assalam", "moin", "yo", "heyy"]
+    return any(greeting in query.lower() for greeting in greetings)
+
 def retrieve_quran_data(query: str) -> List[SourceReference]:
     """
     Retrieves relevant Quran verses based on query keywords.
@@ -130,25 +135,33 @@ def retrieve_hadith_data(query: str) -> List[SourceReference]:
         ]
     return []
 
-def generate_ai_response(query: str, context: List[SourceReference]) -> str:
+def generate_ai_response(query: str, context: List[SourceReference], is_greeting_query: bool = False) -> str:
     """
     Generates the final AI response using the LLM based on the retrieved context.
     """
-    context_text = "\n\n".join([f"[{src.type.value} - {src.reference}]: {src.text}" for src in context])
-    
-    system_prompt = (
-        "Sie sind ein islamischer Gelehrter und KI-Assistent. Ihre Aufgabe ist es, die Benutzerfrage "
-        "praezise und respektvoll zu beantworten, indem Sie ausschliesslich die bereitgestellten "
-        "Koran- und Hadith-Zitate als Grundlage verwenden. Fassen Sie die Zitate zusammen und "
-        "geben Sie eine klare Antwort. Zitieren Sie die Quellen explizit in Ihrer Antwort, "
-        "bevor Sie die vollstaendigen Zitate am Ende auflisten."
-    )
-    
-    user_prompt = (
-        f"Benutzerfrage: {query}\n\n"
-        f"Verfuegbarer Kontext:\n{context_text}\n\n"
-        "Antworten Sie auf Deutsch und verwenden Sie nur den bereitgestellten Kontext."
-    )
+    if is_greeting_query:
+        # Special handling for greetings
+        system_prompt = (
+            "Sie sind ein freundlicher islamischer KI-Assistent. Antworten Sie auf die Begruessungen des Benutzers "
+            "mit einer warmen islamischen Begruessungsantwort und fragen Sie, wie Sie mit islamischen Fragen helfen koennen."
+        )
+        user_prompt = f"Der Benutzer sagt: {query}\n\nAntworten Sie auf Deutsch mit einer freundlichen islamischen Begruessungsantwort."
+    else:
+        context_text = "\n\n".join([f"[{src.type.value} - {src.reference}]: {src.text}" for src in context])
+        
+        system_prompt = (
+            "Sie sind ein islamischer Gelehrter und KI-Assistent. Ihre Aufgabe ist es, die Benutzerfrage "
+            "praezise und respektvoll zu beantworten, indem Sie ausschliesslich die bereitgestellten "
+            "Koran- und Hadith-Zitate als Grundlage verwenden. Fassen Sie die Zitate zusammen und "
+            "geben Sie eine klare Antwort. Zitieren Sie die Quellen explizit in Ihrer Antwort, "
+            "bevor Sie die vollstaendigen Zitate am Ende auflisten."
+        )
+        
+        user_prompt = (
+            f"Benutzerfrage: {query}\n\n"
+            f"Verfuegbarer Kontext:\n{context_text}\n\n"
+            "Antworten Sie auf Deutsch und verwenden Sie nur den bereitgestellten Kontext."
+        )
     
     try:
         response = client.chat.completions.create(
@@ -157,7 +170,7 @@ def generate_ai_response(query: str, context: List[SourceReference]) -> str:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.2
+            temperature=0.2 if not is_greeting_query else 0.7
         )
         return response.choices[0].message.content
     except Exception as e:
@@ -172,6 +185,17 @@ async def chat_endpoint(request: ChatRequest):
     Der Haupt-Endpunkt fuer die KI-Chat-Funktionalitaet.
     Fuehrt die RAG-Schritte (Retrieval, Augmentation, Generation) aus.
     """
+    
+    # Check if it's a greeting
+    greeting_query = is_greeting(request.userQuery)
+    
+    if greeting_query:
+        # For greetings, generate a friendly response without needing sources
+        generated_answer = generate_ai_response(request.userQuery, [], is_greeting_query=True)
+        return ChatResponse(
+            generatedAnswer=generated_answer,
+            sources=[]
+        )
     
     # 1. Retrieval (Abruf)
     quran_sources = retrieve_quran_data(request.userQuery)
