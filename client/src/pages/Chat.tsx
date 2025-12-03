@@ -12,7 +12,8 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown } from "lucide-react";
+import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown, Settings } from "lucide-react";
+import { SettingsModal } from "@/components/SettingsModal";
 import { Surah, Language } from "@/lib/types";
 
 export default function Chat() {
@@ -21,6 +22,7 @@ export default function Chat() {
   const [language, setLanguage] = useState<Language>(Language.German);
   const [selectedSurah, setSelectedSurah] = useState<Surah | null>(null);
   const [showSurahBrowser, setShowSurahBrowser] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -70,6 +72,14 @@ export default function Chat() {
 
           <div className="flex items-center gap-3">
             <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsSettingsOpen(true)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <Settings className="w-5 h-5" />
+            </Button>
             <Button
               variant="outline"
               size="sm"
@@ -175,6 +185,8 @@ export default function Chat() {
           )}
         </div>
       </div>
+
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
       {/* Surah Viewer Modal */}
       {selectedSurah && (
