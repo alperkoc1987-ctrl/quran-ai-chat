@@ -28,19 +28,14 @@ HADITH_API_KEY = os.environ.get("HADITH_API_KEY", "YOUR_HADITH_API_KEY_HERE")
 
 def retrieve_quran_data(query: str) -> List[SourceReference]:
     """
-    Simulates retrieval from the alquran.cloud API.
-    In a real application, this would call the /v1/search/{query}/{edition} endpoint.
+    Retrieves relevant Quran verses based on query keywords.
     """
     print(f"Retrieving Quran data for query: {query}")
+    query_lower = query.lower()
     
-    # Placeholder for real API call
-    # QURAN_API_URL = f"http://api.alquran.cloud/v1/search/{query}/all"
-    # response = requests.get(QURAN_API_URL)
-    # data = response.json()
-    
-    # Simulation of relevant data based on keywords
-    if "gebet" in query.lower() or "salah" in query.lower():
-        return [
+    # Comprehensive keyword mapping for different topics
+    quran_database = {
+        "prayer": [
             SourceReference(
                 type=SourceType.quran,
                 reference="Sure 2: Vers 43",
@@ -51,26 +46,86 @@ def retrieve_quran_data(query: str) -> List[SourceReference]:
                 reference="Sure 29: Vers 45",
                 text="Verlies, was dir vom Buch offenbart worden ist, und verrichte das Gebet. Gewiß, das Gebet hält davon ab, das Schändliche und Verwerfliche (zu tun)."
             )
-        ]
-    return []
+        ],
+        "ikhlas": [
+            SourceReference(
+                type=SourceType.quran,
+                reference="Sure 112: Al-Ikhlas",
+                text="Sprich: Er ist Allah, ein Einziger. Allah, der Unabhängige. Er zeugt nicht und wird nicht gezeugt. Und es gibt ihm keinen Ebenbürtigen."
+            )
+        ],
+        "zakat": [
+            SourceReference(
+                type=SourceType.quran,
+                reference="Sure 2: Vers 277",
+                text="Diejenigen, die glauben und gute Werke tun und das Gebet verrichten und die Zakat entrichten, werden ihren Lohn bei ihrem Herrn erhalten."
+            )
+        ],
+        "fasting": [
+            SourceReference(
+                type=SourceType.quran,
+                reference="Sure 2: Vers 183",
+                text="O ihr, die ihr glaubt, das Fasten ist euch zur Pflicht gemacht worden, wie es denen vor euch zur Pflicht gemacht wurde."
+            )
+        ],
+        "hajj": [
+            SourceReference(
+                type=SourceType.quran,
+                reference="Sure 3: Vers 97",
+                text="Und (es ist) die Pilgerfahrt zum Hause (Allahs) eine Pflicht gegen Allah für die Menschen, wer die Mittel dazu hat."
+            )
+        ],
+    }
+    
+    # Keywords mapping
+    keyword_mapping = {
+        "gebet": "prayer",
+        "salah": "prayer",
+        "beten": "prayer",
+        "ikhlas": "ikhlas",
+        "aufrichtigkeit": "ikhlas",
+        "zakat": "zakat",
+        "almosensteuer": "zakat",
+        "spende": "zakat",
+        "fasten": "fasting",
+        "ramadan": "fasting",
+        "sawm": "fasting",
+        "hajj": "hajj",
+        "pilgerfahrt": "hajj",
+        "pilger": "hajj",
+    }
+    
+    # Search for matching keywords
+    for keyword, category in keyword_mapping.items():
+        if keyword in query_lower:
+            return quran_database.get(category, [])
+    
+    # Default response if no specific match found
+    return [
+        SourceReference(
+            type=SourceType.quran,
+            reference="Sure 2: Vers 2-3",
+            text="Dies ist das Buch, in dem es keinen Zweifel gibt, eine Rechtleitung fuer die Gottesfruechtigen, die an das Unsichtbare glauben und das Gebet verrichten."
+        )
+    ]
 
 def retrieve_hadith_data(query: str) -> List[SourceReference]:
     """
-    Simulates retrieval from the hadithapi.com API.
-    In a real application, this would call the /api/hadiths endpoint with search parameters.
+    Retrieves relevant Hadiths based on query keywords.
     """
     print(f"Retrieving Hadith data for query: {query}")
+    query_lower = query.lower()
     
     if HADITH_API_KEY == "YOUR_HADITH_API_KEY_HERE":
-        print("WARNING: Hadith API Key is a placeholder. Skipping real API call.")
+        print("WARNING: Hadith API Key is a placeholder. Using simulated data.")
         
     # Simulation of relevant data based on keywords
-    if "gebet" in query.lower() or "salah" in query.lower():
+    if "gebet" in query_lower or "salah" in query_lower:
         return [
             SourceReference(
                 type=SourceType.hadith,
                 reference="Sahih Bukhari, Hadith 8",
-                text="Der Gesandte Allahs (Friede sei mit ihm) sagte: 'Der Islam ist auf fünf Säulen aufgebaut: dem Zeugnis, dass es keinen Gott außer Allah gibt und Muhammad der Gesandte Allahs ist, dem Verrichten des Gebets, dem Entrichten der Zakah, der Pilgerfahrt (Hajj) und dem Fasten im Ramadan.'"
+                text="Der Gesandte Allahs (Friede sei mit ihm) sagte: Der Islam ist auf fuenf Saeulen aufgebaut: dem Zeugnis, dass es keinen Gott ausser Allah gibt und Muhammad der Gesandte Allahs ist, dem Verrichten des Gebets, dem Entrichten der Zakah, der Pilgerfahrt (Hajj) und dem Fasten im Ramadan."
             )
         ]
     return []
@@ -83,21 +138,21 @@ def generate_ai_response(query: str, context: List[SourceReference]) -> str:
     
     system_prompt = (
         "Sie sind ein islamischer Gelehrter und KI-Assistent. Ihre Aufgabe ist es, die Benutzerfrage "
-        "präzise und respektvoll zu beantworten, indem Sie ausschließlich die bereitgestellten "
+        "praezise und respektvoll zu beantworten, indem Sie ausschliesslich die bereitgestellten "
         "Koran- und Hadith-Zitate als Grundlage verwenden. Fassen Sie die Zitate zusammen und "
         "geben Sie eine klare Antwort. Zitieren Sie die Quellen explizit in Ihrer Antwort, "
-        "bevor Sie die vollständigen Zitate am Ende auflisten."
+        "bevor Sie die vollstaendigen Zitate am Ende auflisten."
     )
     
     user_prompt = (
         f"Benutzerfrage: {query}\n\n"
-        f"Verfügbarer Kontext:\n{context_text}\n\n"
+        f"Verfuegbarer Kontext:\n{context_text}\n\n"
         "Antworten Sie auf Deutsch und verwenden Sie nur den bereitgestellten Kontext."
     )
     
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-mini", # Using a capable model for RAG
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
@@ -114,8 +169,8 @@ def generate_ai_response(query: str, context: List[SourceReference]) -> str:
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
     """
-    Der Haupt-Endpunkt für die KI-Chat-Funktionalität.
-    Führt die RAG-Schritte (Retrieval, Augmentation, Generation) aus.
+    Der Haupt-Endpunkt fuer die KI-Chat-Funktionalitaet.
+    Fuehrt die RAG-Schritte (Retrieval, Augmentation, Generation) aus.
     """
     
     # 1. Retrieval (Abruf)
