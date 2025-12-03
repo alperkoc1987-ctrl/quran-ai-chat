@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback } from "react";
-import { ChatMessage, SourceType } from "@/lib/types";
+import { ChatMessage } from "@/lib/types";
 import { sendChatRequest } from "@/lib/api";
 import { nanoid } from "nanoid";
 
@@ -37,6 +37,12 @@ export function useChat() {
       setError(null);
 
       try {
+        // Check for API key first
+        const apiKey = localStorage.getItem("openai_api_key");
+        if (!apiKey) {
+          throw new Error("MISSING_API_KEY");
+        }
+
         // Send to backend
         const response = await sendChatRequest({
           userQuery: userInput,
@@ -55,17 +61,31 @@ export function useChat() {
 
         setMessages((prev) => [...prev, aiMessage]);
       } catch (err) {
-        const errorMessage =
-          err instanceof Error
-            ? err.message
-            : "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+        let errorMessage = "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
+        let displayMessage = "Entschuldigung, es gab ein technisches Problem.";
+
+        if (err instanceof Error) {
+          if (err.message === "MISSING_API_KEY") {
+            errorMessage = "Bitte geben Sie Ihren OpenAI API Key in den Einstellungen ein.";
+            displayMessage = "Um den Chat zu nutzen, müssen Sie zuerst Ihren OpenAI API Key eingeben. Bitte klicken Sie oben rechts auf das Zahnrad-Symbol (Einstellungen).";
+          } else if (err.message.includes("401")) {
+            errorMessage = "Der API Key ist ungültig.";
+            displayMessage = "Der eingegebene API Key scheint ungültig zu sein. Bitte prüfen Sie ihn in den Einstellungen.";
+          } else if (err.message.includes("429")) {
+            errorMessage = "Guthaben aufgebraucht oder Limit erreicht.";
+            displayMessage = "Ihr OpenAI-Guthaben ist aufgebraucht oder das Limit wurde erreicht. Bitte prüfen Sie Ihren Account.";
+          } else {
+            errorMessage = err.message;
+            displayMessage = `Entschuldigung, ich konnte Ihre Anfrage nicht verarbeiten: ${errorMessage}`;
+          }
+        }
 
         setError(errorMessage);
 
-        // Add error message
+        // Add error message to chat
         const errorChatMessage: ChatMessage = {
           id: nanoid(),
-          text: `Entschuldigung, es gab ein Problem: ${errorMessage}`,
+          text: displayMessage,
           isUser: false,
           timestamp: new Date(),
         };

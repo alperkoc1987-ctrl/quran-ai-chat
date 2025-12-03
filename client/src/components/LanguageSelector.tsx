@@ -19,12 +19,12 @@ export function LanguageSelector({
   return (
     <div className="flex items-center gap-2">
       <Globe className="w-4 h-4 text-gray-600" />
-      <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+      <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5 md:p-1">
         <Button
           variant={currentLanguage === Language.German ? "default" : "ghost"}
           size="sm"
           onClick={() => onLanguageChange(Language.German)}
-          className="text-xs"
+          className="text-[10px] md:text-xs px-2 h-7"
         >
           Deutsch
         </Button>
@@ -32,7 +32,7 @@ export function LanguageSelector({
           variant={currentLanguage === Language.English ? "default" : "ghost"}
           size="sm"
           onClick={() => onLanguageChange(Language.English)}
-          className="text-xs"
+          className="text-[10px] md:text-xs px-2 h-7"
         >
           English
         </Button>
