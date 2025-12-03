@@ -85,10 +85,10 @@ export default function Chat() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Chat Section */}
-        <div className="flex-1 flex flex-col overflow-hidden border-b border-slate-200">
+        {/* Chat Section - Fixed height to prevent collapse */}
+        <div className="flex-1 flex flex-col overflow-hidden border-b border-slate-200 min-h-0">
           {/* Messages Area */}
-          <ScrollArea className="flex-1" ref={scrollRef}>
+          <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
             <div className="container max-w-6xl mx-auto px-4 py-6 space-y-4">
               {messages.map((message) => (
                 <MessageBubble key={message.id} message={message} />
@@ -112,8 +112,8 @@ export default function Chat() {
             </div>
           </ScrollArea>
 
-          {/* Input Area */}
-          <div className="bg-white border-t border-slate-200 shadow-lg p-4">
+          {/* Input Area - Fixed at bottom */}
+          <div className="bg-white border-t border-slate-200 shadow-lg p-4 flex-shrink-0">
             <div className="container max-w-6xl mx-auto">
               <div className="flex gap-2">
                 <Input
