@@ -7,6 +7,7 @@ import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
 
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
 // Get API key from localStorage
 function getAPIKey(): string {
@@ -26,7 +27,7 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
 Beantworten Sie Fragen auf ${request.language === "de" ? "Deutsch" : "Englisch"}.
 Seien Sie respektvoll und informativ.`;
 
-    const response = await fetch(OPENAI_API_URL, {
+    const response = await fetch(CORS_PROXY + OPENAI_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,8 +51,12 @@ Seien Sie respektvoll und informativ.`;
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`OpenAI API Error: ${errorData.error?.message || response.statusText}`);
+      try {
+        const errorData = await response.json();
+        throw new Error(`OpenAI API Error: ${errorData.error?.message || response.statusText}`);
+      } catch (e) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
     }
 
     const data = await response.json();
