@@ -44,10 +44,57 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
     print(f"Retrieving Dua data for query: {query}")
     query_lower = query.lower()
     
+    # Comprehensive keywords mapping for Duas
+    dua_keyword_mapping = {
+        "geld": "geld",
+        "geldverdienen": "geld",
+        "verdienst": "geld",
+        "reichtum": "geld",
+        "wohlstand": "geld",
+        "finanz": "geld",
+        "gesundheit": "gesundheit",
+        "krankheit": "gesundheit",
+        "heilung": "gesundheit",
+        "wohlbefinden": "gesundheit",
+        "vergebung": "vergebung",
+        "verzeihen": "vergebung",
+        "sünde": "vergebung",
+        "reue": "vergebung",
+        "geduld": "geduld",
+        "geduldig": "geduld",
+        "ausdauer": "geduld",
+        "prüfung": "geduld",
+        "hoffnung": "hoffnung",
+        "hoffnungsvoll": "hoffnung",
+        "zuversicht": "hoffnung",
+        "schutz": "schutz",
+        "schützen": "schutz",
+        "sicherheit": "schutz",
+        "böse": "schutz",
+        "wissen": "wissen",
+        "lernen": "wissen",
+        "studium": "wissen",
+        "verstand": "wissen",
+        "familie": "familie",
+        "kinder": "familie",
+        "eltern": "familie",
+        "ehepartner": "familie",
+        "verwandte": "familie",
+    }
+    
+    # Check for Dua keywords in the query
+    for keyword, category in dua_keyword_mapping.items():
+        if keyword in query_lower:
+            # Found a Dua category, retrieve it
+            break
+    else:
+        # No Dua keyword found
+        return [], ""
+    
     # Comprehensive Dua database with related Quranic verses
     dua_database = {
         "geld": {
-            "dua": "Allahumma inni as'aluka rizqan tayyiba wa 'ilman nafi'a wa 'amalan mutaqabbala.\n\nÜbersetzung: O Allah, ich bitte Dich um guten Rizq (Versorgung), nützliches Wissen und akzeptierte Taten.",
+            "dua": "Allahumma inni as'aluka rizqan tayyiba wa 'ilman nafi'a wa 'amalan mutaqabbala.\n\nÜbersetzung: O Allah, ich bitte Dich um guten Rizq (Versorgung), nützliches Wissen und akzeptierte Taten.\n\nAlternative Dua: Ya Razzaq, ya Qawi, ya Ghani - Ya Razaaq (O Versorger), ya Qawi (O Starker), ya Ghani (O Unabhängiger).",
             "source": "Überliefert von Ibn Majah",
             "related_verses": [
                 SourceReference(
@@ -63,7 +110,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "gesundheit": {
-            "dua": "Allahumma inni as'aluka 'afiyata fi dunyai wa 'akhirati.\n\nÜbersetzung: O Allah, ich bitte Dich um Wohlbefinden in dieser Welt und im Jenseits.",
+            "dua": "Allahumma inni as'aluka 'afiyata fi dunyai wa 'akhirati.\n\nÜbersetzung: O Allah, ich bitte Dich um Wohlbefinden in dieser Welt und im Jenseits.\n\nAlternative Dua: Allahumma 'afini fi badani, allahumma 'afini fi sam'i, allahumma 'afini fi basari - O Allah, gewähre mir Wohlbefinden in meinem Körper, O Allah, gewähre mir Wohlbefinden in meinem Gehör, O Allah, gewähre mir Wohlbefinden in meinem Sehvermögen.",
             "source": "Überliefert von Muslim",
             "related_verses": [
                 SourceReference(
@@ -79,7 +126,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "vergebung": {
-            "dua": "Allahumma ighfir li dhunubi kullahu, dhiruhu wa 'alaniytahu, awwalu wa akhirahu, wa 'alaniytahu wa sirrahu.\n\nÜbersetzung: O Allah, vergib mir all meine Sünden - die frühen und die späten, die offenen und die verborgenen.",
+            "dua": "Allahumma ighfir li dhunubi kullahu, dhiruhu wa 'alaniytahu, awwalu wa akhirahu, wa 'alaniytahu wa sirrahu.\n\nÜbersetzung: O Allah, vergib mir all meine Sünden - die frühen und die späten, die offenen und die verborgenen.\n\nAlternative Dua: Astaghfirullaha wa atubu ilayh - Ich bitte Allah um Vergebung und bereue mich zu Ihm.",
             "source": "Überliefert von Muslim",
             "related_verses": [
                 SourceReference(
@@ -95,7 +142,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "geduld": {
-            "dua": "Allahumma inni as'aluka sabran jamilan wa 'afiyatan 'inda al-bala.\n\nÜbersetzung: O Allah, ich bitte Dich um schöne Geduld und Wohlbefinden in der Prüfung.",
+            "dua": "Allahumma inni as'aluka sabran jamilan wa 'afiyatan 'inda al-bala.\n\nÜbersetzung: O Allah, ich bitte Dich um schöne Geduld und Wohlbefinden in der Prüfung.\n\nAlternative Dua: Inna lillahi wa inna ilayhi raji'un - Gewiß, wir gehören Allah und zu Ihm kehren wir zurück.",
             "source": "Überliefert von Ahmad",
             "related_verses": [
                 SourceReference(
@@ -111,7 +158,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "hoffnung": {
-            "dua": "Allahumma inni as'aluka husna al-khatimah wa tawbatan nasuha.\n\nÜbersetzung: O Allah, ich bitte Dich um ein gutes Ende und eine aufrichtige Reue.",
+            "dua": "Allahumma inni as'aluka husna al-khatimah wa tawbatan nasuha.\n\nÜbersetzung: O Allah, ich bitte Dich um ein gutes Ende und eine aufrichtige Reue.\n\nAlternative Dua: La hawla wa la quwwata illa billah - Es gibt keine Kraft und keine Macht außer bei Allah.",
             "source": "Überliefert von Tirmidhi",
             "related_verses": [
                 SourceReference(
@@ -127,7 +174,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "schutz": {
-            "dua": "A'udhu billahi min ash-shaytani ar-rajim.\n\nÜbersetzung: Ich suche Zuflucht bei Allah vor dem verfluchten Teufel.",
+            "dua": "A'udhu billahi min ash-shaytani ar-rajim.\n\nÜbersetzung: Ich suche Zuflucht bei Allah vor dem verfluchten Teufel.\n\nAlternative Dua: Allahumma inni a'udhu bika min sharri nafsee wa min sharri kulli dabbatin anta akhdhu bi nasiyatiha - O Allah, ich suche Zuflucht bei Dir vor dem Bösen meiner Seele und vor dem Bösen jedes Tieres, dessen Kontrolle Du hast.",
             "source": "Quran - Sure 16: Vers 98",
             "related_verses": [
                 SourceReference(
@@ -143,7 +190,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "wissen": {
-            "dua": "Allahumma inni as'aluka 'ilman nafi'a wa rizqan tayyiba wa 'amalan mutaqabbala.\n\nÜbersetzung: O Allah, ich bitte Dich um nützliches Wissen, gute Versorgung und akzeptierte Taten.",
+            "dua": "Allahumma inni as'aluka 'ilman nafi'a wa rizqan tayyiba wa 'amalan mutaqabbala.\n\nÜbersetzung: O Allah, ich bitte Dich um nützliches Wissen, gute Versorgung und akzeptierte Taten.\n\nAlternative Dua: Rabbee zidni 'ilma wa zidni 'aqlaa - Mein Herr, mehre mir an Wissen und Verstand.",
             "source": "Überliefert von Ibn Majah",
             "related_verses": [
                 SourceReference(
@@ -159,7 +206,7 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
             ]
         },
         "familie": {
-            "dua": "Allahumma ahsin ahlaqi wa ahsin akhlaq ahli wa waladi.\n\nÜbersetzung: O Allah, verbessere meinen Charakter und den Charakter meiner Familie und meiner Kinder.",
+            "dua": "Allahumma ahsin ahlaqi wa ahsin akhlaq ahli wa waladi.\n\nÜbersetzung: O Allah, verbessere meinen Charakter und den Charakter meiner Familie und meiner Kinder.\n\nAlternative Dua: Rabbana hab lana min azwajina wa dhurriyyatina qurrata a'yunin wa j'alna lilmuttaqina imama - Unser Herr, schenke uns an unseren Gattinnen und Nachkommen Freude und mache uns zu Führern der Gottesfürchtigen.",
             "source": "Überliefert von Ahmad",
             "related_verses": [
                 SourceReference(
@@ -176,10 +223,12 @@ def retrieve_dua_data(query: str) -> tuple[List[SourceReference], str]:
         }
     }
     
-    # Search for matching keywords
-    for keyword, dua_data in dua_database.items():
+    # Search for matching keywords using the mapping
+    for keyword, category in dua_keyword_mapping.items():
         if keyword in query_lower:
-            return dua_data["related_verses"], dua_data["dua"]
+            if category in dua_database:
+                dua_data = dua_database[category]
+                return dua_data["related_verses"], dua_data["dua"]
     
     return [], ""
 
@@ -570,6 +619,15 @@ async def chat_endpoint(request: ChatRequest):
                 generatedAnswer=generated_answer,
                 sources=dua_verses
             )
+        # If no specific Dua found but user asked for one, try regular retrieval with Dua context
+        else:
+            quran_sources = retrieve_quran_data(request.userQuery)
+            if quran_sources:
+                generated_answer = generate_ai_response(request.userQuery, quran_sources)
+                return ChatResponse(
+                    generatedAnswer=generated_answer,
+                    sources=quran_sources
+                )
     
     # 1. Retrieval (Abruf) for regular questions
     quran_sources = retrieve_quran_data(request.userQuery)
