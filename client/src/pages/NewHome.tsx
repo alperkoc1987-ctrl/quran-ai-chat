@@ -5,7 +5,7 @@ import { Link } from "wouter";
 import { useState } from "react";
 
 export default function NewHome() {
-  const [chatExpanded, setChatExpanded] = useState(false);
+  const [chatExpanded, setChatExpanded] = useState(true);
 
   const categories = [
     {

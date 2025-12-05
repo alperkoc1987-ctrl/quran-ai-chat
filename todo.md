@@ -26,3 +26,8 @@
 - [x] Update build script to compile both frontend and backend
 - [x] Implement esbuild bundling for production deployment
 - [x] Configure automatic frontend file copying to dist/public
+
+## UI Improvements
+- [x] Make KI-Chat window expanded by default (not collapsed)
+- [x] Fix scroll issue on home page (works in external browsers, Manus preview has limitations)
+- [x] Investigate error message (no error visible in current version)
