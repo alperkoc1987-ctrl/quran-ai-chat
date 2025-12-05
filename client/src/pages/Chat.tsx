@@ -29,6 +29,9 @@ export default function Chat() {
 
     // @ts-ignore - SpeechRecognition types are not standard yet
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) return;
+
     const recognition = new SpeechRecognition();
     
     recognition.continuous = false;
@@ -42,17 +45,11 @@ export default function Chat() {
     };
 
     recognition.onerror = (event: any) => {
-      console.error("Speech recognition error", event.error);
-      setIsListening(false);
-      
-      // Only alert on specific errors that user can fix
+      // Silently handle common errors to avoid user frustration
       if (event.error === 'not-allowed') {
         alert("Bitte erlauben Sie den Zugriff auf das Mikrofon.");
-      } else if (event.error === 'network') {
-        // Network errors are common with speech recognition, just stop listening silently
-        // or show a toast if we had one. For now, just logging is enough to avoid spamming alerts.
-        console.log("Speech recognition network error - possibly offline or blocked");
       }
+      setIsListening(false);
     };
 
     recognition.onend = () => {
