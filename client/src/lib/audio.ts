@@ -4,9 +4,10 @@
  */
 
 // Popular reciters with their everyayah.com identifiers
+// Verified working URLs from everyayah.com
 export const RECITERS = {
   mishary: {
-    id: "Mishary_Rashid_Alafasy_64kbps",
+    id: "Alafasy_64kbps",
     name: "Mishary Rashid Alafasy",
     description: "Einer der beliebtesten Rezitatoren weltweit",
   },

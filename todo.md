@@ -90,3 +90,6 @@
 
 ## UI/UX Enhancements
 - [x] Implement dark mode toggle with theme switcher (added to SettingsModal, enabled switchable theme in App.tsx)
+
+## Critical Audio Bug
+- [x] Fix audio playback - button changes to "Pause" but no sound plays (fixed reciter ID from Mishary_Rashid_Alafasy_64kbps to Alafasy_64kbps)
