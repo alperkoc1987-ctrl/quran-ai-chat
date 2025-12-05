@@ -14,14 +14,19 @@ const TransliterationContext = createContext<TransliterationContextType | undefi
 
 export function TransliterationProvider({ children }: { children: ReactNode }) {
   const [showTransliteration, setShowTransliterationState] = useState<boolean>(() => {
-    // Initialize from localStorage
-    const stored = localStorage.getItem("show_transliteration");
-    return stored === "true";
+    // Initialize from localStorage (with SSR safety check)
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("show_transliteration");
+      return stored === "true";
+    }
+    return false;
   });
 
   const setShowTransliteration = (show: boolean) => {
     setShowTransliterationState(show);
-    localStorage.setItem("show_transliteration", show.toString());
+    if (typeof window !== "undefined") {
+      localStorage.setItem("show_transliteration", show.toString());
+    }
   };
 
   return (

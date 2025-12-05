@@ -59,3 +59,6 @@
 - [x] Add audio player controls to SurahReader page (play/pause button for entire Surah)
 - [x] Add audio playback for individual verses (play button on each verse)
 - [x] Add audio playback for complete Surahs (sequential playback of all verses)
+
+## Critical Bug
+- [x] Fix white screen issue - app not loading at all (fixed localStorage SSR error in TransliterationContext)
