@@ -101,6 +101,10 @@ export default async function handler(req, res) {
     return res.status(200).json(data);
   } catch (error) {
     console.error("Internal Server Error:", error);
-    return res.status(500).json({ error: "Internal Server Error. Please try again later." });
+    const errorDetails = error instanceof Error ? error.message : String(error);
+    return res.status(500).json({ 
+      error: `Internal Server Error: ${errorDetails}`,
+      details: error.stack
+    });
   }
 }

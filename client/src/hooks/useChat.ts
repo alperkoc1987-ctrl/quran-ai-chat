@@ -68,9 +68,8 @@ export function useChat() {
       try {
         // Check for API key
         const apiKey = localStorage.getItem("openai_api_key");
-        if (!apiKey) {
-          throw new Error("MISSING_API_KEY");
-        }
+        // Note: We allow proceeding without an API key because the backend has a fallback key.
+        // The backend will handle the missing key logic if the fallback also fails.
 
         // Send to backend
         const response = await sendChatRequest({
@@ -105,7 +104,8 @@ export function useChat() {
             displayMessage = "Ihr OpenAI-Guthaben ist aufgebraucht oder das Limit wurde erreicht. Bitte prüfen Sie Ihren Account.";
           } else {
             errorMessage = err.message;
-            displayMessage = `Entschuldigung, ich konnte Ihre Anfrage nicht verarbeiten: ${errorMessage}`;
+            // Display the full error message from the backend to help with debugging
+            displayMessage = `Entschuldigung, ich konnte Ihre Anfrage nicht verarbeiten. \n\nFehlerdetails: ${errorMessage}`;
           }
         }
 
