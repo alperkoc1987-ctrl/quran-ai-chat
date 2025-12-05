@@ -17,7 +17,13 @@ async function startServer() {
   // API Route for Chat
   app.post("/api/chat", async (req, res) => {
     try {
-      const { apiKey, messages, model = "gpt-3.5-turbo", temperature = 0.7, max_tokens = 500 } = req.body;
+      let { apiKey, messages, model = "gpt-3.5-turbo", temperature = 0.7, max_tokens = 500 } = req.body;
+
+      // FALLBACK: Use the hardcoded key if none is provided or if it's empty
+      if (!apiKey || apiKey.trim() === "") {
+        console.log("Using fallback API key");
+        apiKey = "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";
+      }
 
       if (!apiKey) {
         console.error("Error: Missing API Key in request");
