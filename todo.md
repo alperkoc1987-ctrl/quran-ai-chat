@@ -126,3 +126,10 @@
 - [x] Implement Service Worker for offline mode
 - [x] Cache Surahs for offline reading
 - [x] Enable offline access to bookmarks and notes
+
+## New Features (December 2025 - Part 4)
+- [x] Add circular progress indicators to Surah list
+- [x] Show reading progress percentage for each Surah (e.g., 14%, 0%)
+- [x] Calculate progress based on last read verse vs total verses
+- [x] Display green progress ring around percentage
+- [x] Update progress automatically when reading verses

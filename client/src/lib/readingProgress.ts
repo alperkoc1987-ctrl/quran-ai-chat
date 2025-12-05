@@ -73,3 +73,15 @@ export function clearReadingProgress(): void {
 export function hasReadingProgress(): boolean {
   return getReadingProgress() !== null;
 }
+
+/**
+ * Get reading progress for a specific Surah
+ * Returns the last read verse number, or 0 if not read
+ */
+export function getSurahProgress(surahNumber: number): number {
+  const progress = getReadingProgress();
+  if (!progress || progress.surahNumber !== surahNumber) {
+    return 0;
+  }
+  return progress.verseNumber;
+}

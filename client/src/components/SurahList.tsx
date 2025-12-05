@@ -9,6 +9,8 @@ import { fetchAllSurahs } from "@/lib/api";
 import { Loader2, Play, Pause, Heart } from "lucide-react";
 import { getSurahAudioUrls, SurahAudioPlayer } from "@/lib/audio";
 import { toast } from "sonner";
+import { CircularProgress } from "@/components/CircularProgress";
+import { getSurahProgress } from "@/lib/readingProgress";
 
 interface SurahListProps {
   onSelectSurah: (surah: Surah) => void;
@@ -120,16 +122,16 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
       {/* Search Bar */}
-      <div className="p-4 bg-white border-b border-slate-200 flex-shrink-0">
+      <div className="p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
         <div className="relative">
           <input
             type="text"
             placeholder="Surah nach Name oder Nummer suchen..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-2 pl-10 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full px-4 py-2 pl-10 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
           <svg
             className="absolute left-3 top-2.5 w-5 h-5 text-slate-400"
@@ -156,13 +158,26 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
               onClick={() => onSelectSurah(surah)}
               className={`w-full p-4 rounded-lg text-left transition-all ${
                 selectedSurahNumber === surah.number
-                  ? "bg-teal-50 border-2 border-teal-600"
-                  : "bg-white border border-slate-200 hover:border-teal-300"
+                  ? "bg-teal-50 dark:bg-teal-900/30 border-2 border-teal-600 dark:border-teal-500"
+                  : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-600"
               }`}
             >
               <div className="flex items-center justify-between">
-                {/* Left Side: Play Icon and Text */}
+                {/* Left Side: Progress Circle, Play Icon and Text */}
                 <div className="flex items-center gap-4 flex-1">
+                  {/* Circular Progress */}
+                  <div className="flex-shrink-0">
+                    <CircularProgress 
+                      percentage={(() => {
+                        const lastVerse = getSurahProgress(surah.number);
+                        if (lastVerse === 0) return 0;
+                        return (lastVerse / surah.numberOfAyahs) * 100;
+                      })()}
+                      size={56}
+                      strokeWidth={4}
+                    />
+                  </div>
+
                   <div
                     className="flex-shrink-0 text-teal-600 hover:bg-teal-100 p-2 rounded-md cursor-pointer transition-colors"
                     onClick={(e) => handlePlayPause(surah, e)}
@@ -175,10 +190,10 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                       {surah.number}. {surah.englishName}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {surah.numberOfAyahs} Verse
                     </p>
                   </div>
@@ -186,12 +201,12 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
 
                 {/* Right Side: Arabic Name and Favorite */}
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <p className="text-right font-arabic text-lg text-teal-700 min-w-24">
+                  <p className="text-right font-arabic text-lg text-teal-700 dark:text-teal-400 min-w-24">
                     {surah.name}
                   </p>
 
                   <div
-                    className="flex-shrink-0 p-2 rounded-md hover:bg-slate-100 cursor-pointer transition-colors"
+                    className="flex-shrink-0 p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                     onClick={(e) => toggleFavorite(surah.number, e)}
                   >
                     <Heart
