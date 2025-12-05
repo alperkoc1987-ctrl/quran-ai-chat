@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useChat } from "@/hooks/useChat";
 import { MessageBubble } from "@/components/MessageBubble";
 import { SurahList } from "@/components/SurahList";
-import { LanguageSelector } from "@/components/LanguageSelector";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -175,8 +175,6 @@ export default function Chat() {
             </div>
 
           <div className="flex items-center gap-2 md:gap-3 w-full md:w-auto justify-between md:justify-end">
-            <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
-            
             <div className="flex items-center gap-2">
               {/* Desktop Settings Button */}
               <Button

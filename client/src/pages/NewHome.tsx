@@ -230,7 +230,7 @@ export default function NewHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 dark:from-slate-900 dark:to-slate-800">
       {/* Header */}
       <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
@@ -258,89 +258,10 @@ export default function NewHome() {
         <AyatOfTheDay />
       </div>
 
-      {/* Collapsible AI Chat Section */}
-      <div className="container mx-auto px-4 py-4">
-        <Card className="overflow-hidden">
-          <button
-            onClick={() => setChatExpanded(!chatExpanded)}
-            className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-white" />
-              </div>
-              <div className="text-left">
-                <h2 className="font-semibold text-slate-900 dark:text-white">KI-Assistent</h2>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Stellen Sie Fragen zum Koran und Hadith</p>
-              </div>
-            </div>
-            {chatExpanded ? (
-              <ChevronUp className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-            ) : (
-              <ChevronDown className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-            )}
-          </button>
-          
-          {chatExpanded && (
-            <div className="border-t border-slate-200 dark:border-slate-700">
-              {/* Chat Messages */}
-              {messages.length > 1 && (
-                <ScrollArea ref={scrollRef} className="h-64 px-6 py-4">
-                  {messages.map((msg) => (
-                    <MessageBubble key={msg.id} message={msg} />
-                  ))}
-                  {isLoading && (
-                    <div className="flex justify-start mb-4">
-                      <div className="bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-lg rounded-bl-none px-4 py-3 flex items-center gap-2">
-                        <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                          <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                          <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </ScrollArea>
-              )}
-              
-              {/* Input Area */}
-              <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50">
-                <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
-                  Fragen Sie nach Versen, Duas oder islamischen Themen
-                </p>
-                <div className="flex gap-2">
-                  <Input
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Stellen Sie eine Frage..."
-                    disabled={isLoading}
-                    className="flex-1"
-                  />
-                  <PushToTalkButton
-                    onTranscript={(text) => setInputValue(text)}
-                    className=""
-                  />
-                  <Button
-                    onClick={handleSend}
-                    disabled={isLoading || !inputValue.trim()}
-                    className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
-                  >
-                    {isLoading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Send className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </Card>
-      </div>
+
 
       {/* Main Content - Category Cards */}
-      <main className="container mx-auto px-4 pb-8">
+      <main className="container mx-auto px-4 pb-24">
         <div className="grid grid-cols-2 gap-3 md:gap-4">
           {categories.map((category) => {
             const Icon = category.icon;

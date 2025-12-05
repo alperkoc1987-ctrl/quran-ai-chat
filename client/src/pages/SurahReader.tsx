@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
+import { useTranslationLanguage } from "@/contexts/TranslationLanguageContext";
+import { getTranslationEdition } from "@/lib/translationEditions";
 import { SurahAudioPlayer, getSurahAudioUrls } from "@/lib/audio";
 import { toast } from "sonner";
 import { saveReadingProgress } from "@/lib/readingProgress";
@@ -34,6 +36,7 @@ export default function SurahReader() {
   const surahNumber = params?.number ? parseInt(params.number) : null;
 
   const { showTransliteration } = useTransliteration();
+  const { language: translationLanguage } = useTranslationLanguage();
   const [surahData, setSurahData] = useState<SurahWithAyahs | null>(null);
   const [translationData, setTranslationData] = useState<SurahWithAyahs | null>(null);
   const [transliterationData, setTransliterationData] = useState<SurahWithAyahs | null>(null);
@@ -70,10 +73,11 @@ export default function SurahReader() {
         }
         setSurahInfo(surah);
 
-        // Fetch complete Surah data
+        // Fetch complete Surah data with selected translation language
+        const translationEdition = getTranslationEdition(translationLanguage);
         const data = await fetchSurahComplete(
           surahNumber,
-          "de.bubenheim",
+          translationEdition,
           true // Always fetch transliteration, show/hide based on user preference
         );
 
@@ -90,7 +94,7 @@ export default function SurahReader() {
     };
 
     loadSurah();
-  }, [surahNumber]);
+  }, [surahNumber, translationLanguage]);
 
   // Save reading progress when user scrolls through verses
   useEffect(() => {

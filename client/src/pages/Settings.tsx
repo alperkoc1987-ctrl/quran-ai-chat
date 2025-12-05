@@ -3,10 +3,11 @@
  * Settings page with dark mode, transliteration, and reciter selection
  */
 
-import { ArrowLeft, Moon, Sun, Languages, Music, Bell } from "lucide-react";
+import { ArrowLeft, Moon, Sun, Languages, Music, Bell, Compass, Info, Shield } from "lucide-react";
 import { useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTransliteration } from "@/contexts/TransliterationContext";
+import { useTranslationLanguage, type TranslationLanguage } from "@/contexts/TranslationLanguageContext";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
 import {
@@ -22,6 +23,7 @@ export default function Settings() {
   const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { showTransliteration, setShowTransliteration } = useTransliteration();
+  const { language: translationLanguage, setLanguage: setTranslationLanguage } = useTranslationLanguage();
   
   // Reciter selection state
   const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
@@ -152,6 +154,72 @@ export default function Settings() {
                   showTransliteration ? "translate-x-7" : "translate-x-1"
                 }`}
               />
+            </button>
+          </div>
+        </div>
+
+        {/* Translation Language Setting */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-4">
+            <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Übersetzungssprache
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Wähle die Sprache für Koran-Übersetzungen
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <button
+              onClick={() => setTranslationLanguage("de")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "de"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇩🇪</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">Deutsch</div>
+            </button>
+
+            <button
+              onClick={() => setTranslationLanguage("en")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "en"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇬🇧</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">English</div>
+            </button>
+
+            <button
+              onClick={() => setTranslationLanguage("tr")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "tr"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇹🇷</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">Türkçe</div>
+            </button>
+
+            <button
+              onClick={() => setTranslationLanguage("ar")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "ar"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇸🇦</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">عربي</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">Nur Arabisch</div>
             </button>
           </div>
         </div>
@@ -319,6 +387,84 @@ export default function Settings() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Qibla Section */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <button
+            onClick={() => setLocation("/qibla")}
+            className="w-full flex items-center justify-between group hover:bg-teal-50 dark:hover:bg-slate-700 p-4 rounded-lg transition-colors"
+          >
+            <div className="flex items-center gap-4">
+              <Compass className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+              <div className="text-left">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Qibla
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Gebetsrichtung finden
+                </p>
+              </div>
+            </div>
+            <svg className="w-5 h-5 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* About Section */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-4">
+            <Info className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Über uns
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Informationen über die App
+              </p>
+            </div>
+          </div>
+          <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+            <p>
+              <strong>Koran & Hadith KI-Chat</strong> ist Ihr islamischer Begleiter für das Studium des Heiligen Korans und der Hadithe.
+            </p>
+            <p>
+              Die App bietet KI-gestützte Antworten auf Ihre Fragen, Gebetszeiten, Qibla-Richtung, Duas und vieles mehr.
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 pt-2">
+              Version 1.5 • Entwickelt mit ❤️
+            </p>
+          </div>
+        </div>
+
+        {/* Privacy Section */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-4">
+            <Shield className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Datenschutz
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Ihre Privatsphäre ist uns wichtig
+              </p>
+            </div>
+          </div>
+          <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+            <p>
+              <strong>Datenspeicherung:</strong> Alle Ihre Einstellungen und Lesezeichen werden lokal auf Ihrem Gerät gespeichert.
+            </p>
+            <p>
+              <strong>KI-Chat:</strong> Ihre Fragen werden an OpenAI gesendet, um Antworten zu generieren. Keine persönlichen Daten werden gespeichert.
+            </p>
+            <p>
+              <strong>Standort:</strong> Standortdaten werden nur für Gebetszeiten und Qibla-Richtung verwendet und nicht gespeichert.
+            </p>
+            <p>
+              <strong>Benachrichtigungen:</strong> Sie können Benachrichtigungen jederzeit in den Einstellungen deaktivieren.
+            </p>
+          </div>
         </div>
 
         {/* Info Section */}

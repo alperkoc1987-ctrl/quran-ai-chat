@@ -5,6 +5,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransliterationProvider } from "./contexts/TransliterationContext";
+import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
+import { BottomNavigation } from "./components/BottomNavigation";
 import NewHome from "./pages/NewHome";
 import Chat from "./pages/Chat";
 import Duas from "./pages/Duas";
@@ -61,10 +63,13 @@ function App() {
         switchable={true}
       >
         <TransliterationProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
+          <TranslationLanguageProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+              <BottomNavigation />
+            </TooltipProvider>
+          </TranslationLanguageProvider>
         </TransliterationProvider>
       </ThemeProvider>
     </ErrorBoundary>

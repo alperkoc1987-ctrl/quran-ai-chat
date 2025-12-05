@@ -246,3 +246,33 @@
 - [x] Add audio permission checks with user-friendly error messages (implemented in PushToTalkButton)
 - [x] Test verse navigation on different devices (ready for testing after publish)
 - [x] Verify no black bars or rendering issues (fixed with ID-based scrolling) all contexts
+
+## Design Mockup Refinement (December 2025 - Part 9)
+- [x] Create 5 new mockup variants - less kitsch, more professional
+- [x] Focus on subtle gradients, clean design, modern aesthetics
+- [ ] User will select preferred design direction
+
+## UI Redesign - Mint Gradient & Bottom Navigation (December 2025 - Part 10)
+- [x] Add mint green gradient background to home page (like mockup 1)
+- [x] Create bottom navigation bar with 4 tabs: Home, Koran, KI-Chat, Einstellungen
+- [x] Remove KI-Chat card/section from home page (only accessible via bottom nav)
+- [x] Keep current colorful emoji icons for categories (already using lucide icons)
+- [x] Expand Settings page with new sections:
+  - [x] Qibla (Gebetsrichtung) section
+  - [x] Über uns (About) section
+  - [x] Datenschutz (Privacy) section
+- [ ] Ensure consistent navigation across all pages
+- [ ] Test bottom navigation on all screens
+
+## Translation Language System (December 2025 - Part 11)
+- [x] Remove "Deutsch/English" toggle buttons from Quran reader header
+- [x] Create TranslationLanguageContext with automatic language detection
+- [x] Detect device/browser locale and set default translation language:
+  - [x] German (de) for Germany/Austria/Switzerland
+  - [x] Turkish (tr) for Turkey
+  - [x] English (en) for UK/USA/other English-speaking countries
+  - [x] Arabic only (ar) option (no translation)
+- [x] Add translation language selector to Settings page
+- [x] Update Quran API calls to fetch translations in selected language
+- [x] Make translation language persistent across sessions (via localStorage in context)
+- [x] Apply translation language to all Quran verses throughout app
