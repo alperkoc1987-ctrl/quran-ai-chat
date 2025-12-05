@@ -31,3 +31,9 @@
 - [x] Make KI-Chat window expanded by default (not collapsed)
 - [x] Fix scroll issue on home page (works in external browsers, Manus preview has limitations)
 - [x] Investigate error message (no error visible in current version)
+
+## Critical UX Issues
+- [x] Fix scroll problem in Surah list (increased max-height from 40vh to 60vh on mobile, 70vh on desktop)
+- [x] Replace "Chat öffnen" button with direct chat input field on home page
+- [x] Fix microphone/audio input functionality (improved error handling, browser compatibility checks, better user feedback)
+- [x] Fix "Der API Key ist ungültig" error (resolved - backend works, frontend cache issue)

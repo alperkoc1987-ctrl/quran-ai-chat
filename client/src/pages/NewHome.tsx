@@ -1,11 +1,147 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { BookOpen, HandHeart, Clock, Compass, MessageSquare, ChevronDown, ChevronUp } from "lucide-react";
-import { Link } from "wouter";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { useState, useRef, useEffect } from "react";
+import { useChat } from "@/hooks/useChat";
+import { MessageBubble } from "@/components/MessageBubble";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function NewHome() {
   const [chatExpanded, setChatExpanded] = useState(true);
+  const [inputValue, setInputValue] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const { messages, isLoading, sendMessage } = useChat();
+  const [, navigate] = useLocation();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (scrollRef.current && messages.length > 1) {
+      const scrollElement = scrollRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]"
+      );
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
+    }
+  }, [messages]);
+
+  const handleSend = async () => {
+    if (!inputValue.trim() || isLoading) return;
+    await sendMessage(inputValue);
+    setInputValue("");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const toggleListening = () => {
+    if (!speechSupported) {
+      alert('Spracheingabe nicht unterstützt. Bitte nutzen Sie Chrome oder Safari.');
+      return;
+    }
+
+    // @ts-ignore
+    const recognition = window.recognitionInstanceHome;
+    if (!recognition) {
+      alert('Spracheingabe konnte nicht initialisiert werden.');
+      return;
+    }
+
+    try {
+      if (isListening) {
+        recognition.stop();
+      } else {
+        recognition.start();
+      }
+    } catch (e: any) {
+      console.error('Speech error:', e);
+      setIsListening(false);
+      
+      if (e.message && e.message.includes('already started')) {
+        try {
+          recognition.stop();
+        } catch (stopError) {
+          // Ignore
+        }
+      }
+    }
+  };
+
+  // Speech Recognition Setup
+  useEffect(() => {
+    const hasWebkitSpeech = 'webkitSpeechRecognition' in window;
+    const hasStandardSpeech = 'SpeechRecognition' in window;
+    
+    if (!hasWebkitSpeech && !hasStandardSpeech) {
+      console.log('Speech recognition not supported');
+      setSpeechSupported(false);
+      return;
+    }
+
+    // @ts-ignore
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      setSpeechSupported(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'de-DE';
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInputValue((prev) => prev + (prev ? " " : "") + transcript);
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech error:', event.error);
+        setIsListening(false);
+        
+        if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+          alert('Bitte erlauben Sie den Zugriff auf das Mikrofon.');
+        } else if (event.error === 'no-speech') {
+          alert('Keine Sprache erkannt.');
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      // @ts-ignore
+      window.recognitionInstanceHome = recognition;
+      setSpeechSupported(true);
+
+      return () => {
+        try {
+          recognition.abort();
+        } catch (e) {
+          // Ignore
+        }
+      };
+    } catch (error) {
+      console.error('Failed to init speech:', error);
+      setSpeechSupported(false);
+    }
+  }, []);
 
   const categories = [
     {
@@ -85,15 +221,56 @@ export default function NewHome() {
           </button>
           
           {chatExpanded && (
-            <div className="px-6 pb-6 border-t border-slate-200 dark:border-slate-700 pt-4">
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                Fragen Sie nach Versen, Duas oder islamischen Themen. Beispiel: "Zeige mir ein Dua bei Trauer"
-              </p>
-              <Link href="/chat">
-                <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
-                  Chat öffnen
-                </Button>
-              </Link>
+            <div className="border-t border-slate-200 dark:border-slate-700">
+              {/* Chat Messages */}
+              {messages.length > 1 && (
+                <ScrollArea ref={scrollRef} className="h-64 px-6 py-4">
+                  {messages.map((msg) => (
+                    <MessageBubble key={msg.id} message={msg} />
+                  ))}
+                </ScrollArea>
+              )}
+              
+              {/* Input Area */}
+              <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                  Fragen Sie nach Versen, Duas oder islamischen Themen
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Stellen Sie eine Frage..."
+                    disabled={isLoading}
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={toggleListening}
+                    variant="outline"
+                    size="icon"
+                    disabled={isLoading}
+                    className={isListening ? "bg-red-100 dark:bg-red-900" : ""}
+                  >
+                    {isListening ? (
+                      <MicOff className="h-4 w-4 text-red-600" />
+                    ) : (
+                      <Mic className="h-4 w-4" />
+                    )}
+                  </Button>
+                  <Button
+                    onClick={handleSend}
+                    disabled={isLoading || !inputValue.trim()}
+                    className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
         </Card>

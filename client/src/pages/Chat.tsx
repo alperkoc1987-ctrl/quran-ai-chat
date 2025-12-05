@@ -19,75 +19,119 @@ export default function Chat() {
   const [showSurahBrowser, setShowSurahBrowser] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Speech Recognition Setup
   useEffect(() => {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    // Check if speech recognition is supported
+    const hasWebkitSpeech = 'webkitSpeechRecognition' in window;
+    const hasStandardSpeech = 'SpeechRecognition' in window;
+    
+    if (!hasWebkitSpeech && !hasStandardSpeech) {
+      console.log('Speech recognition not supported in this browser');
+      setSpeechSupported(false);
       return;
     }
 
     // @ts-ignore - SpeechRecognition types are not standard yet
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
-    if (!SpeechRecognition) return;
+    if (!SpeechRecognition) {
+      setSpeechSupported(false);
+      return;
+    }
 
-    const recognition = new SpeechRecognition();
-    
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'de-DE';
+    try {
+      const recognition = new SpeechRecognition();
+      
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'de-DE';
+      recognition.maxAlternatives = 1;
 
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      setInputValue((prev) => prev + (prev ? " " : "") + transcript);
-      setIsListening(false);
-    };
+      recognition.onstart = () => {
+        console.log('Speech recognition started');
+        setIsListening(true);
+      };
 
-    recognition.onerror = (event: any) => {
-      console.log("Speech error:", event.error);
-      setIsListening(false);
-      if (event.error === 'not-allowed') {
-        alert("Bitte erlauben Sie den Zugriff auf das Mikrofon.");
-      }
-    };
+      recognition.onresult = (event: any) => {
+        console.log('Speech result received');
+        const transcript = event.results[0][0].transcript;
+        setInputValue((prev) => prev + (prev ? " " : "") + transcript);
+      };
 
-    recognition.onend = () => {
-      setIsListening(false);
-    };
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+        
+        if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+          alert('Bitte erlauben Sie den Zugriff auf das Mikrofon in Ihren Browser-Einstellungen.');
+        } else if (event.error === 'no-speech') {
+          alert('Keine Sprache erkannt. Bitte versuchen Sie es erneut.');
+        } else if (event.error === 'network') {
+          alert('Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.');
+        }
+      };
 
-    // @ts-ignore
-    window.recognitionInstance = recognition;
+      recognition.onend = () => {
+        console.log('Speech recognition ended');
+        setIsListening(false);
+      };
 
-    return () => {
-      // Cleanup safely
-      try {
-        recognition.abort();
-      } catch (e) {
-        // Ignore abort errors
-      }
-    };
+      // @ts-ignore
+      window.recognitionInstance = recognition;
+      setSpeechSupported(true);
+      console.log('Speech recognition initialized successfully');
+
+      return () => {
+        try {
+          recognition.abort();
+        } catch (e) {
+          console.error('Error aborting recognition:', e);
+        }
+      };
+    } catch (error) {
+      console.error('Failed to initialize speech recognition:', error);
+      setSpeechSupported(false);
+    }
   }, []);
 
   const toggleListening = () => {
+    if (!speechSupported) {
+      alert('Spracheingabe wird in diesem Browser nicht unterstützt. Bitte nutzen Sie Chrome oder Safari.');
+      return;
+    }
+
     // @ts-ignore
     const recognition = window.recognitionInstance;
     if (!recognition) {
-      alert("Ihr Browser unterstützt keine Spracheingabe. Bitte nutzen Sie Chrome oder Safari.");
+      alert('Spracheingabe konnte nicht initialisiert werden. Bitte laden Sie die Seite neu.');
       return;
     }
 
     try {
       if (isListening) {
+        console.log('Stopping speech recognition');
         recognition.stop();
-        setIsListening(false);
       } else {
+        console.log('Starting speech recognition');
         recognition.start();
-        setIsListening(true);
       }
-    } catch (e) {
-      console.error("Speech toggle error:", e);
+    } catch (e: any) {
+      console.error('Speech toggle error:', e);
       setIsListening(false);
+      
+      if (e.message && e.message.includes('already started')) {
+        // Recognition is already running, stop it
+        try {
+          recognition.stop();
+        } catch (stopError) {
+          console.error('Error stopping recognition:', stopError);
+        }
+      } else {
+        alert('Fehler beim Starten der Spracheingabe. Bitte versuchen Sie es erneut.');
+      }
     }
   };
 
@@ -263,7 +307,7 @@ export default function Chat() {
         </div>
 
         {/* Surah Browser Section - Responsive height */}
-        <div className="flex-1 flex flex-col bg-white border-t border-slate-200 min-h-0 max-h-[40vh] md:max-h-[50vh]">
+        <div className="flex-1 flex flex-col bg-white border-t border-slate-200 min-h-0 max-h-[60vh] md:max-h-[70vh]">
           <div className="bg-white border-b border-slate-200 px-4 py-2 flex-shrink-0">
             <button
               onClick={() => setShowSurahBrowser(!showSurahBrowser)}
