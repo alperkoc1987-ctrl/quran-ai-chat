@@ -49,10 +49,18 @@ async function startServer() {
     try {
       let { apiKey, messages, model = "gpt-4o", temperature = 0.7, max_tokens = 2000 } = req.body;
 
-      // FALLBACK: Use Manus Built-in Forge API if no API key is provided
+      // FALLBACK: Use environment variable API keys if no API key is provided in request
       if (!apiKey || apiKey.trim() === "") {
-        console.log("Using Manus Built-in Forge API");
-        apiKey = process.env.BUILT_IN_FORGE_API_KEY;
+        // First try user's OpenAI API key
+        if (process.env.OPENAI_API_KEY) {
+          console.log("Using OPENAI_API_KEY from environment");
+          apiKey = process.env.OPENAI_API_KEY;
+        }
+        // Fallback to Manus Built-in Forge API
+        else if (process.env.BUILT_IN_FORGE_API_KEY) {
+          console.log("Using Manus Built-in Forge API");
+          apiKey = process.env.BUILT_IN_FORGE_API_KEY;
+        }
       }
 
       if (!apiKey) {
@@ -86,10 +94,17 @@ async function startServer() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-      // Use Manus Forge API URL if using built-in key, otherwise use OpenAI
-      const apiUrl = (!req.body.apiKey || req.body.apiKey.trim() === "") 
-        ? "https://forge.manus.ai/v1/chat/completions"
-        : "https://api.openai.com/v1/chat/completions";
+      // Determine API URL based on which key is being used
+      let apiUrl;
+      if (apiKey === process.env.BUILT_IN_FORGE_API_KEY) {
+        apiUrl = "https://forge.manus.ai/v1/chat/completions";
+      } else if (process.env.OPENAI_BASE_URL) {
+        // Use custom OpenAI base URL if configured (e.g., Manus proxy)
+        apiUrl = process.env.OPENAI_BASE_URL + "/chat/completions";
+      } else {
+        // Default to standard OpenAI API
+        apiUrl = "https://api.openai.com/v1/chat/completions";
+      }
 
       try {
         const response = await fetch(apiUrl, {

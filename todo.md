@@ -199,3 +199,8 @@
 - [x] Add German localization for UI (default for Germany)
 - [x] Create comprehensive Settings page for all prayer notification options
 - [x] Test notifications on different devices and browsers (will work after publish)
+
+## Critical API Key Issue (December 2025 - Part 11)
+- [x] Chatbot shows "API key invalid" error even after publishing
+- [x] Investigate why OpenAI API key is not being used correctly
+- [x] Fix API key configuration and test (now uses OPENAI_API_KEY env variable)
