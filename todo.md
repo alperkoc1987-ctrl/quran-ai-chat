@@ -112,3 +112,8 @@
 - [x] Add personal notes feature for individual verses
 - [x] Create favorites collections management (organize bookmarked verses)
 - [x] Add UI to view and manage all bookmarks and notes
+
+## Bug Fix (December 2025)
+- [x] Fix API key validation error in KI-Chat ("Der eingegebene API Key scheint ungültig zu sein")
+- [x] Verify OpenAI API key is correctly configured in environment variables
+- [x] Test chat functionality after fix

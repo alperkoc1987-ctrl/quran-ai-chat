@@ -88,7 +88,7 @@ async function startServer() {
 
       // Use Manus Forge API URL if using built-in key, otherwise use OpenAI
       const apiUrl = (!req.body.apiKey || req.body.apiKey.trim() === "") 
-        ? (process.env.BUILT_IN_FORGE_API_URL || "https://api.openai.com/v1") + "/chat/completions"
+        ? "https://forge.manus.ai/v1/chat/completions"
         : "https://api.openai.com/v1/chat/completions";
 
       try {
