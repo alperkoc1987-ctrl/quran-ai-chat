@@ -32,6 +32,21 @@ async function startServer() {
 
       console.log(`Attempting to connect to OpenAI with key ending in ...${apiKey.slice(-4)}`);
 
+      // Enhanced System Prompt to encourage structured JSON output for citations
+      const systemMessage = {
+        role: "system",
+        content: `Du bist ein hilfreicher islamischer Assistent. 
+        Wenn du Verse aus dem Koran zitierst, gib bitte IMMER die Suren-Nummer und Vers-Nummer an.
+        Format für Zitate: [Sure:Vers] (z.B. [2:255]).
+        
+        Wenn der Nutzer nach einem Dua für eine bestimmte Situation fragt (z.B. Trauer, Angst, Krankheit),
+        antworte einfühlsam und biete ein passendes Dua aus dem Koran oder der Sunnah an.
+        Zitiere den arabischen Text (wenn möglich), die Übersetzung und die Quelle.`
+      };
+
+      // Add system message if not present
+      const enhancedMessages = [systemMessage, ...messages];
+
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -40,13 +55,37 @@ async function startServer() {
         },
         body: JSON.stringify({
           model,
-          messages,
+          messages: enhancedMessages,
           temperature,
           max_tokens,
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as any;
+
+      // Post-process the response to extract citations and structure them
+      if (data.choices && data.choices[0] && data.choices[0].message) {
+        const content = data.choices[0].message.content;
+        
+        // Regex to find Quran citations like [2:255] or (Sure 2, Vers 255)
+        const citationRegex = /\[(\d+):(\d+)\]|\(Sure\s*(\d+),\s*Vers\s*(\d+)\)/g;
+        const sources = [];
+        let match;
+
+        while ((match = citationRegex.exec(content)) !== null) {
+          const surahNum = parseInt(match[1] || match[3]);
+          const ayahNum = parseInt(match[2] || match[4]);
+          
+          sources.push({
+            id: `quran-${surahNum}-${ayahNum}-${Date.now()}`,
+            type: "Koran",
+            reference: `Sure ${surahNum}, Vers ${ayahNum}`,
+            text: "Klicken Sie hier, um diesen Vers im Koran zu öffnen.",
+            surahNumber: surahNum,
+            ayahNumber: ayahNum
+          });
+        }
+      }
 
       if (!response.ok) {
         console.error("OpenAI API Error:", data);
