@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown } from "lucide-react";
+import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/useChat";
@@ -175,6 +175,22 @@ export default function NewHome() {
       icon: Compass,
       link: "/qibla",
       gradient: "from-orange-500 to-red-600"
+    },
+    {
+      id: "stories",
+      title: "Geschichten",
+      description: "Prophetengeschichten aus dem Koran",
+      icon: Scroll,
+      link: "/stories",
+      gradient: "from-amber-500 to-yellow-600"
+    },
+    {
+      id: "signs",
+      title: "Zeichen",
+      description: "Zeichen der Stunde",
+      icon: AlertTriangle,
+      link: "/signs",
+      gradient: "from-red-500 to-rose-600"
     }
   ];
 
@@ -283,24 +299,18 @@ export default function NewHome() {
             const Icon = category.icon;
             return (
               <Link key={category.id} href={category.link}>
-                <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-2 border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                  <div className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-16 h-16 bg-gradient-to-br ${category.gradient} rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all">
-                          {category.title}
-                        </h3>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                          {category.description}
-                        </p>
-                      </div>
+                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-700 h-full">
+                  <div className="p-4 flex flex-col items-center text-center h-full">
+                    <div className={`w-14 h-14 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 mb-3`}>
+                      <Icon className="w-7 h-7 text-white" />
                     </div>
-                  </div>
-                  <div className={`h-1 bg-gradient-to-r ${category.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left`} />
-                </Card>
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all">
+                      {category.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
+                      {category.description}
+                    </p>
+                  </div>                </Card>
               </Link>
             );
           })}

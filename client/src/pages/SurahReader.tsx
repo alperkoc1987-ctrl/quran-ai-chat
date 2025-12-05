@@ -23,6 +23,7 @@ import {
 import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { SurahAudioPlayer, getSurahAudioUrls } from "@/lib/audio";
+import { toast } from "sonner";
 
 export default function SurahReader() {
   const [, params] = useRoute("/surah/:number");
@@ -118,21 +119,40 @@ export default function SurahReader() {
   }, [surahInfo]);
 
   // Toggle play/pause for entire Surah
-  const toggleSurahPlayback = () => {
-    if (!audioPlayerRef.current) return;
+  const toggleSurahPlayback = async () => {
+    if (!audioPlayerRef.current) {
+      toast.error("Audio-Player nicht bereit", {
+        description: "Bitte warten Sie, bis die Surah geladen ist."
+      });
+      return;
+    }
 
     if (isPlaying) {
       audioPlayerRef.current.pause();
       setIsPlaying(false);
+      toast.info("Wiedergabe pausiert");
     } else {
-      audioPlayerRef.current.play();
-      setIsPlaying(true);
+      try {
+        await audioPlayerRef.current.play();
+        setIsPlaying(true);
+        toast.success("Wiedergabe gestartet", {
+          description: `${surahInfo?.englishName} wird abgespielt`
+        });
+      } catch (error) {
+        console.error("Audio playback error:", error);
+        toast.error("Wiedergabe fehlgeschlagen", {
+          description: "Bitte versuchen Sie es erneut."
+        });
+      }
     }
   };
 
   // Play a specific verse
-  const playVerse = (verseNumber: number) => {
-    if (!audioPlayerRef.current) return;
+  const playVerse = async (verseNumber: number) => {
+    if (!audioPlayerRef.current) {
+      toast.error("Audio-Player nicht bereit");
+      return;
+    }
 
     // Stop current playback
     audioPlayerRef.current.stop();
@@ -141,9 +161,15 @@ export default function SurahReader() {
     audioPlayerRef.current.jumpTo(verseNumber - 1);
     
     // Start playing
-    audioPlayerRef.current.play();
-    setIsPlaying(true);
-    setPlayingVerseNumber(verseNumber);
+    try {
+      await audioPlayerRef.current.play();
+      setIsPlaying(true);
+      setPlayingVerseNumber(verseNumber);
+      toast.success(`Vers ${verseNumber} wird abgespielt`);
+    } catch (error) {
+      console.error("Audio playback error:", error);
+      toast.error("Wiedergabe fehlgeschlagen");
+    }
   };
 
   const toggleFavorite = (verseNumber: number) => {
@@ -172,8 +198,15 @@ export default function SurahReader() {
     }
     textToCopy += `${translationText}`;
     
-    navigator.clipboard.writeText(textToCopy);
-    // Could add a toast notification here
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      toast.success("Vers kopiert!", {
+        description: `${surahInfo?.englishName} - Vers ${verseNumber} wurde in die Zwischenablage kopiert.`
+      });
+    }).catch(() => {
+      toast.error("Fehler beim Kopieren", {
+        description: "Der Vers konnte nicht kopiert werden."
+      });
+    });
   };
 
   const shareVerse = (verseNumber: number) => {

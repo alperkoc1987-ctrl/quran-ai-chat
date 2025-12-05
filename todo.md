@@ -65,3 +65,12 @@
 
 ## UI/UX Improvements
 - [x] Change homepage category cards from vertical stack to 2-column grid layout on mobile
+
+## Bug Fixes
+- [x] Fix category card sizing - cards are too large and inconsistent heights (reduced padding to p-4, fixed height with h-full)
+- [x] Add toast notification when verse is copied (added toast.success in copyVerse function)
+- [x] Fix Surah audio playback - "Surah abspielen" button not working (added async/await and toast feedback)
+
+## New Features
+- [x] Create "Islamische Geschichten" (Islamic Stories) section with categories by prophets (8 prophets with 2x4 grid layout)
+- [x] Create "Zeichen der Stunde" (Signs of the Hour) section for eschatological content (10 signs with filter: minor/major)
