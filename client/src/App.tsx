@@ -4,13 +4,24 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import NewHome from "./pages/NewHome";
 import Chat from "./pages/Chat";
+import Duas from "./pages/Duas";
+import DuaDetail from "./pages/DuaDetail";
+import PrayerTimes from "./pages/PrayerTimes";
+import Qibla from "./pages/Qibla";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path="/" component={Chat} />
+      <Route path="/" component={NewHome} />
+      <Route path="/chat" component={Chat} />
+      <Route path="/quran" component={Chat} />
+      <Route path="/duas" component={Duas} />
+      <Route path="/duas/:categoryId" component={DuaDetail} />
+      <Route path="/prayer-times" component={PrayerTimes} />
+      <Route path="/qibla" component={Qibla} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

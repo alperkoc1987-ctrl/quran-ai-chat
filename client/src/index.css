@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -127,7 +129,7 @@
     @apply bg-background text-foreground;
   }
   .font-arabic {
-    font-family: 'Noto Naskh Arabic', serif;
+    font-family: 'Amiri', serif;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
