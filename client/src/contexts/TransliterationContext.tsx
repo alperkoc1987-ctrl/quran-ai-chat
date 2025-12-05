@@ -17,9 +17,10 @@ export function TransliterationProvider({ children }: { children: ReactNode }) {
     // Initialize from localStorage (with SSR safety check)
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("show_transliteration");
-      return stored === "true";
+      // Default to true if not set
+      return stored === null ? true : stored === "true";
     }
-    return false;
+    return true; // Default to true
   });
 
   const setShowTransliteration = (show: boolean) => {

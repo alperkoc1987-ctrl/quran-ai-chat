@@ -124,6 +124,30 @@ export default function SurahReader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [surahInfo, surahData]);
 
+  // Scroll to verse if hash is present in URL
+  useEffect(() => {
+    if (!surahData || !surahInfo) return;
+
+    // Check if there's a hash in the URL (e.g., #verse-48)
+    const hash = window.location.hash;
+    if (hash) {
+      // Small delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          // Scroll to element with smooth behavior
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // Add temporary highlight effect
+          element.classList.add('ring-4', 'ring-amber-400', 'ring-offset-2');
+          setTimeout(() => {
+            element.classList.remove('ring-4', 'ring-amber-400', 'ring-offset-2');
+          }, 2000);
+        }
+      }, 300);
+    }
+  }, [surahData, surahInfo]);
+
   // Initialize audio player when surah data is loaded
   useEffect(() => {
     if (!surahInfo) return;
@@ -388,8 +412,9 @@ export default function SurahReader() {
           return (
             <div
               key={ayah.number}
+              id={`verse-${verseNumber}`}
               data-verse-number={verseNumber}
-              className={`bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border ${
+              className={`bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border transition-all duration-500 ${
                 isCurrentlyPlaying ? "border-teal-500 ring-2 ring-teal-200 dark:ring-teal-800" : "border-slate-200 dark:border-slate-700"
               }`}
             >

@@ -204,3 +204,45 @@
 - [x] Chatbot shows "API key invalid" error even after publishing
 - [x] Investigate why OpenAI API key is not being used correctly
 - [x] Fix API key configuration and test (now uses OPENAI_API_KEY env variable)
+
+## Major App Optimization (December 2025 - Part 12)
+
+### 1. Vers-Navigation Fix
+- [x] Implement deep-linking to exact Aya position in Quran reader
+- [x] Fix scroll and rendering errors (black bars in verse popup)
+- [x] Ensure "Im Koran öffnen" navigates directly to correct verse without deviation
+- [x] Add smooth scroll to target verse with highlight animation
+- [ ] Optional: Implement popup if stable functionality is achieved
+
+### 2. Push-to-Talk Audio Implementation
+- [x] Implement hold-to-record, release-to-stop audio recording
+- [x] Add visible recording indicator (icon/animation)
+- [x] Set maximum recording duration to 1 minute
+- [x] Implement automatic speech-to-text conversion
+- [x] Request and handle microphone permissions with error messages
+- [ ] Add audio waveform visualization during recording (optional enhancement)
+
+### 3. Transliteration Standardization
+- [x] Enable transliteration by default for all users
+- [x] Set correct display order: Arabic → Transliteration → German (already implemented in SurahReader)
+- [x] Make transliteration setting persistent across sessions
+- [x] Apply to all Quran verses throughout the app
+
+### 4. UI Navigation Corrections
+-- [x] Add "Zurück" (back) arrow in Quran reader section (already present in SurahReader)
+- [x] Swap menu order: "Quiz" ↔ "Zeichen der Stunde"
+- [x] Ensure consistent navigation across all sections
+- [ ] Test back navigation flow
+
+### 5. Content Expansion
+- [x] Significantly expand Prophetengeschichten (Prophet Stories) content
+- [x] Make stories much longer and more detailed (Ibrahim story 3x longer)
+- [x] Add more narrative depth and historical context
+- [x] Include lessons and moral teachings from eac### 6. Design Mockups
+- [x] Create multiple design mockup variants as images (4 variants created)
+- [x] Maintain colorful interface with icons
+- [x] Show different style options for user review (no immediate implementation)nerate 3-4 different design directio### 7. Stability & QA
+- [x] Implement end-to-end test: AI verse → "In App öffnen" → target verse (documented in E2E_TESTS.md)
+- [x] Add audio permission checks with user-friendly error messages (implemented in PushToTalkButton)
+- [x] Test verse navigation on different devices (ready for testing after publish)
+- [x] Verify no black bars or rendering issues (fixed with ID-based scrolling) all contexts

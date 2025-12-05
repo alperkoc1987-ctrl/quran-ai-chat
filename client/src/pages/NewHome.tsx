@@ -9,6 +9,7 @@ import { MessageBubble } from "@/components/MessageBubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResumeReadingCard } from "@/components/ResumeReadingCard";
 import { AyatOfTheDay } from "@/components/AyatOfTheDay";
+import { PushToTalkButton } from "@/components/PushToTalkButton";
 
 export default function NewHome() {
   const [chatExpanded, setChatExpanded] = useState(true);
@@ -187,12 +188,12 @@ export default function NewHome() {
       gradient: "from-amber-500 to-yellow-600"
     },
     {
-      id: "signs",
-      title: "Zeichen",
-      description: "Zeichen der Stunde",
-      icon: AlertTriangle,
-      link: "/signs",
-      gradient: "from-red-500 to-rose-600"
+      id: "quiz",
+      title: "Quiz",
+      description: "Teste dein islamisches Wissen",
+      icon: Brain,
+      link: "/quiz",
+      gradient: "from-purple-500 to-pink-600"
     },
     {
       id: "statistics",
@@ -203,12 +204,12 @@ export default function NewHome() {
       gradient: "from-blue-500 to-cyan-600"
     },
     {
-      id: "quiz",
-      title: "Quiz",
-      description: "Teste dein islamisches Wissen",
-      icon: Brain,
-      link: "/quiz",
-      gradient: "from-purple-500 to-pink-600"
+      id: "signs",
+      title: "Zeichen",
+      description: "Zeichen der Stunde",
+      icon: AlertTriangle,
+      link: "/signs",
+      gradient: "from-red-500 to-rose-600"
     },
     {
       id: "bookmarks",
@@ -316,19 +317,10 @@ export default function NewHome() {
                     disabled={isLoading}
                     className="flex-1"
                   />
-                  <Button
-                    onClick={toggleListening}
-                    variant="outline"
-                    size="icon"
-                    disabled={isLoading}
-                    className={isListening ? "bg-red-100 dark:bg-red-900" : ""}
-                  >
-                    {isListening ? (
-                      <MicOff className="h-4 w-4 text-red-600" />
-                    ) : (
-                      <Mic className="h-4 w-4" />
-                    )}
-                  </Button>
+                  <PushToTalkButton
+                    onTranscript={(text) => setInputValue(text)}
+                    className=""
+                  />
                   <Button
                     onClick={handleSend}
                     disabled={isLoading || !inputValue.trim()}

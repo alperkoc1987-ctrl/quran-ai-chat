@@ -140,11 +140,11 @@ export const prophetStoriesData: ProphetStoryDetail[] = [
     description: "Der Freund Allahs und Vater der Propheten",
     gradient: "from-amber-500 to-orange-600",
     story: {
-      introduction: "Ibrahim (Abraham) wird als 'Khalilullah' - der Freund Allahs - bezeichnet. Seine Geschichte zeigt vollkommene Hingabe an Allah, Mut im Glauben und bedingungslosen Gehorsam. Er ist der Vater der Propheten und Stammvater der Araber und Juden.",
+      introduction: "Ibrahim (Abraham) wird als 'Khalilullah' - der Freund Allahs - bezeichnet und ist eine der bedeutendsten Figuren im Islam. Seine Geschichte erstreckt sich über Jahrzehnte und umfasst zahlreiche Prüfungen, die seine vollkommene Hingabe an Allah demonstrieren. Geboren in einer Zeit des Götzendienstes in Mesopotamien, stand Ibrahim gegen sein gesamtes Volk auf, um die Wahrheit des Monotheismus zu verkünden. Seine Reise führte ihn von Ur über Palästina bis nach Mekka, wo er zusammen mit seinem Sohn Ismail die Kaaba errichtete. Ibrahim ist der Stammvater der Propheten - durch seinen Sohn Ishaq (Isaak) kamen die Propheten der Israeliten, und durch Ismail kam der letzte Prophet Muhammad (Friede sei mit ihnen allen). Seine Geschichte lehrt uns über Mut, Geduld, Vertrauen auf Allah und die Bedeutung des reinen Monotheismus.",
       sections: [
         {
-          title: "Die Zerstörung der Götzen",
-          content: "Ibrahim wuchs in einem Volk auf, das Götzen anbetete. Sein eigener Vater war ein Götzenschnitzer. Ibrahim erkannte die Wahrheit und zerstörte die Götzen seines Volkes, um ihnen ihre Sinnlosigkeit zu beweisen. Er wurde dafür ins Feuer geworfen, doch Allah machte das Feuer kühl und sicher für ihn.",
+          title: "Die Jugend und Suche nach der Wahrheit",
+          content: "Ibrahim wuchs in der Stadt Ur in Mesopotamien auf, in einer Gesellschaft, die tief im Götzendienst verwurzelt war. Sein Vater Azar war ein angesehener Götzenschnitzer, der Statuen herstellte und verkaufte. Doch Ibrahim war anders. Schon in jungen Jahren begann er, über die Schöpfung nachzudenken und die Wahrheit zu suchen. Er beobachtete die Sterne, den Mond und die Sonne und erkannte, dass diese vergänglichen Himmelskörper nicht Gott sein konnten. Als der Stern unterging, sagte er: 'Ich liebe nicht die Untergehenden.' Als der Mond unterging, sagte er: 'Wenn mein Herr mich nicht rechtleitet, werde ich gewiss zu den irregehenden Menschen gehören.' Und als die Sonne unterging, verkündete er mit Überzeugung: 'O mein Volk, ich sage mich los von dem, was ihr (Allah) beigesellt. Ich habe mein Angesicht in aufrichtigem Glauben Dem zugewandt, Der die Himmel und die Erde erschaffen hat, und ich gehöre nicht zu den Götzendienern.'",
           verses: [
             {
               reference: "Al-Anbiya 21:68-69",
@@ -154,8 +154,24 @@ export const prophetStoriesData: ProphetStoryDetail[] = [
           ]
         },
         {
-          title: "Die Prüfung mit Ismail",
-          content: "Allah prüfte Ibrahim mit dem schwersten Test: Er sollte seinen geliebten Sohn Ismail opfern. Beide waren bereit, sich Allahs Willen zu unterwerfen. Als Ibrahim das Messer ansetzte, ersetzte Allah Ismail durch einen Widder. Diese Hingabe wird bis heute im Opferfest (Eid al-Adha) gefeiert.",
+          title: "Die Zerstörung der Götzen und das Feuer",
+          content: "Ibrahim beschloss, seinem Volk die Sinnlosigkeit des Götzendienstes auf dramatische Weise zu demonstrieren. Als das Volk zu einem großen Fest auszog, blieb Ibrahim zurück. Er ging in den Tempel und zerstörte alle Götzen mit einer Axt - bis auf den größten, dem er die Axt in die Hand legte. Als das Volk zurückkehrte und die Zerstörung sah, waren sie entsetzt. Sie fragten: 'Wer hat das unseren Göttern angetan?' Ibrahim antwortete mit Ironie: 'Nein, dieser, der größte von ihnen, hat es getan. Fragt sie doch, wenn sie sprechen können!' Das Volk erkannte ihre eigene Unlogik - wie konnten sie Statuen anbeten, die sich nicht einmal selbst verteidigen konnten? Doch anstatt die Wahrheit anzunehmen, wurden sie wütend. Der König Nimrod befahl, Ibrahim zu verbrennen. Ein riesiges Feuer wurde entfacht, so groß, dass niemand nahe genug herankommen konnte, um Ibrahim hineinzuwerfen. Sie bauten eine Katapult und schleuderten ihn ins Feuer. Doch Allah befahl: 'O Feuer, sei Kühle und Frieden für Ibrahim!' Das Feuer verbrannte nur seine Fesseln. Ibrahim saß unversehrt im Feuer, als wäre es ein Garten. Dieses Wunder ließ einige Menschen an ihn glauben, doch die meisten blieben verstockt in ihrem Unglauben.",
+          verses: [
+            {
+              reference: "Al-Anbiya 21:68-69",
+              arabic: "قُلْنَا يَا نَارُ كُونِي بَرْدًا وَسَلَامًا عَلَىٰ إِبْرَاهِيمَ",
+              translation: "Wir sagten: 'O Feuer, sei Kühle und Frieden für Ibrahim!'"
+            },
+            {
+              reference: "Al-Anbiya 21:62-63",
+              arabic: "قَالُوا أَأَنتَ فَعَلْتَ هَٰذَا بِآلِهَتِنَا",
+              translation: "Sie sagten: 'Bist du es, der unseren Göttern das angetan hat, o Ibrahim?'"
+            }
+          ]
+        },
+        {
+          title: "Die ultimative Prüfung: Die Opferung Ismails",
+          content: "Nach vielen Jahren der Geduld und des Wartens wurde Ibrahim im hohen Alter mit einem Sohn gesegnet - Ismail. Die Freude war unbeschreiblich, denn Ibrahim hatte sich lange nach einem rechtschaffenen Nachkommen gesehnt. Doch als Ismail heranwuchs und alt genug war, um mit seinem Vater zu arbeiten, kam die schwerste Prüfung. Ibrahim sah in einem Traum, dass er seinen geliebten Sohn opfern sollte. Für einen Propheten sind Träume Offenbarungen von Allah. Ibrahim war hin- und hergerissen zwischen seiner Liebe zu seinem Sohn und seinem Gehorsam gegenüber Allah. Er ging zu Ismail und erzählte ihm von dem Traum. Die Antwort des jungen Ismail zeigte seine eigene Hingabe: 'O mein Vater, tu, was dir befohlen wird. Du wirst mich, so Allah will, unter den Geduldigen finden.' Beide begaben sich zum Ort der Opferung. Ibrahim legte Ismail auf die Stirn nieder und setzte das Messer an. In diesem Moment der vollkommenen Unterwerfung rief Allah: 'O Ibrahim, du hast die Vision bereits wahr gemacht!' Ein Widder wurde vom Himmel gesandt, um Ismail zu ersetzen. Diese Geschichte lehrt uns, dass Allah nichts Unmögliches von uns verlangt, sondern unsere Bereitschaft und Hingabe prüft. Das Opferfest (Eid al-Adha) erinnert Muslime weltweit jährlich an diese beispiellose Hingabe.",
           verses: [
             {
               reference: "As-Saffat 37:102-107",
