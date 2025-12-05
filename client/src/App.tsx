@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { TransliterationProvider } from "./contexts/TransliterationContext";
 import NewHome from "./pages/NewHome";
 import Chat from "./pages/Chat";
 import Duas from "./pages/Duas";
@@ -43,10 +44,12 @@ function App() {
         defaultTheme="light"
         // switchable
       >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <TransliterationProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </TransliterationProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

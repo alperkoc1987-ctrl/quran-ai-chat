@@ -45,3 +45,9 @@
 - [x] Add verse action icons (play audio, favorite, copy, share)
 - [x] Maintain existing teal/emerald color scheme in new design
 - [x] Update routing to navigate to fullscreen Surah page
+
+## Bug Fixes & Improvements
+- [x] Fix transliteration toggle to update immediately without page reload (using React Context)
+- [x] Fix scroll issue in Surah list on mobile browsers (replaced ScrollArea with native overflow-y-auto)
+- [x] Fix nested button error in SurahList component (replaced Button with div)
+- [x] Provide Vercel deployment instructions

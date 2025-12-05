@@ -303,7 +303,7 @@ export default function Chat() {
         </div>
 
         {/* Surah Browser Section - Responsive height */}
-        <div className="flex-1 flex flex-col bg-white border-t border-slate-200 min-h-0 max-h-[60vh] md:max-h-[70vh]">
+        <div className="flex flex-col bg-white border-t border-slate-200 h-[60vh] md:h-[70vh]">
           <div className="bg-white border-b border-slate-200 px-4 py-2 flex-shrink-0">
             <button
               onClick={() => setShowSurahBrowser(!showSurahBrowser)}
@@ -324,7 +324,7 @@ export default function Chat() {
           </div>
           
           {showSurahBrowser && (
-            <div className="flex-1 overflow-hidden min-h-0">
+            <div className="flex-1 overflow-auto min-h-0">
               <SurahList
                 onSelectSurah={handleSelectSurah}
               />

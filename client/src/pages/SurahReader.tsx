@@ -20,27 +20,22 @@ import {
   BookOpen
 } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
+import { useTransliteration } from "@/contexts/TransliterationContext";
 
 export default function SurahReader() {
   const [, params] = useRoute("/surah/:number");
   const [, navigate] = useLocation();
   const surahNumber = params?.number ? parseInt(params.number) : null;
 
+  const { showTransliteration } = useTransliteration();
   const [surahData, setSurahData] = useState<SurahWithAyahs | null>(null);
   const [translationData, setTranslationData] = useState<SurahWithAyahs | null>(null);
   const [transliterationData, setTransliterationData] = useState<SurahWithAyahs | null>(null);
   const [surahInfo, setSurahInfo] = useState<Surah | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showTransliteration, setShowTransliteration] = useState(false);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  // Load transliteration preference
-  useEffect(() => {
-    const translitPref = localStorage.getItem("show_transliteration");
-    setShowTransliteration(translitPref === "true");
-  }, []);
 
   // Load Surah data
   useEffect(() => {

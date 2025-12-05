@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Settings, X, Key, Languages } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { useTransliteration } from "@/contexts/TransliterationContext";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -13,9 +14,9 @@ interface SettingsModalProps {
 const DEFAULT_API_KEY = "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";
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
+  const { showTransliteration, setShowTransliteration } = useTransliteration();
   const [apiKey, setApiKey] = useState("");
   const [isSaved, setIsSaved] = useState(false);
-  const [showTransliteration, setShowTransliteration] = useState(false);
 
   useEffect(() => {
     const storedKey = localStorage.getItem("openai_api_key");
@@ -27,10 +28,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       // Also save it to localStorage immediately so it works right away
       localStorage.setItem("openai_api_key", DEFAULT_API_KEY);
     }
-
-    // Load transliteration preference
-    const translitPref = localStorage.getItem("show_transliteration");
-    setShowTransliteration(translitPref === "true");
   }, [isOpen]);
 
   const handleSave = () => {
@@ -39,9 +36,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     } else {
       localStorage.removeItem("openai_api_key");
     }
-
-    // Save transliteration preference
-    localStorage.setItem("show_transliteration", showTransliteration.toString());
 
     setIsSaved(true);
     setTimeout(() => {
