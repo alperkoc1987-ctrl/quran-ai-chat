@@ -10,8 +10,7 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-// Default API Key provided by user (fallback)
-const DEFAULT_API_KEY = "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";
+// No default API key - the backend will use Manus Built-in Forge API as fallback
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const { showTransliteration, setShowTransliteration } = useTransliteration();
@@ -22,12 +21,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const storedKey = localStorage.getItem("openai_api_key");
     if (storedKey) {
       setApiKey(storedKey);
-    } else {
-      // Auto-fill with default key if no key is stored
-      setApiKey(DEFAULT_API_KEY);
-      // Also save it to localStorage immediately so it works right away
-      localStorage.setItem("openai_api_key", DEFAULT_API_KEY);
     }
+    // If no key is stored, the backend will use Manus Built-in Forge API as fallback
   }, [isOpen]);
 
   const handleSave = () => {

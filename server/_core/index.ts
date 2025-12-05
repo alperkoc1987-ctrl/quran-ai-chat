@@ -49,18 +49,18 @@ async function startServer() {
     try {
       let { apiKey, messages, model = "gpt-3.5-turbo", temperature = 0.7, max_tokens = 500 } = req.body;
 
-      // FALLBACK: Use the hardcoded key if none is provided or if it's empty
+      // FALLBACK: Use Manus Built-in Forge API if no API key is provided
       if (!apiKey || apiKey.trim() === "") {
-        console.log("Using fallback API key");
-        apiKey = "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";
+        console.log("Using Manus Built-in Forge API");
+        apiKey = process.env.BUILT_IN_FORGE_API_KEY;
       }
 
       if (!apiKey) {
-        console.error("Error: Missing API Key in request");
+        console.error("Error: Missing API Key in request and no fallback available");
         return res.status(400).json({ error: "API Key is required. Please check your settings." });
       }
 
-      console.log(`Attempting to connect to OpenAI with key ending in ...${apiKey.slice(-4)}`);
+      console.log(`Attempting to connect to LLM API with key ending in ...${apiKey.slice(-4)}`);
 
       // Enhanced System Prompt to encourage structured JSON output for citations
       const systemMessage = {
@@ -80,8 +80,13 @@ async function startServer() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
+      // Use Manus Forge API URL if using built-in key, otherwise use OpenAI
+      const apiUrl = (!req.body.apiKey || req.body.apiKey.trim() === "") 
+        ? (process.env.BUILT_IN_FORGE_API_URL || "https://api.openai.com/v1") + "/chat/completions"
+        : "https://api.openai.com/v1/chat/completions";
+
       try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

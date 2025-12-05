@@ -3,7 +3,7 @@
  * Fullscreen page for reading Quran Surahs with Arabic text, transliteration, and translation.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRoute, useLocation } from "wouter";
 import { fetchSurahComplete, fetchAllSurahs } from "@/lib/api";
 import { SurahWithAyahs, Surah } from "@/lib/types";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowLeft, 
   Play, 
+  Pause,
   Heart, 
   Copy, 
   Share2, 
@@ -21,6 +22,7 @@ import {
 } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
+import { SurahAudioPlayer, getSurahAudioUrls } from "@/lib/audio";
 
 export default function SurahReader() {
   const [, params] = useRoute("/surah/:number");
@@ -36,6 +38,12 @@ export default function SurahReader() {
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  
+  // Audio player state
+  const audioPlayerRef = useRef<SurahAudioPlayer | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentVerseIndex, setCurrentVerseIndex] = useState(0);
+  const [playingVerseNumber, setPlayingVerseNumber] = useState<number | null>(null);
 
   // Load Surah data
   useEffect(() => {
@@ -78,6 +86,65 @@ export default function SurahReader() {
 
     loadSurah();
   }, [surahNumber]);
+
+  // Initialize audio player when surah data is loaded
+  useEffect(() => {
+    if (!surahInfo) return;
+
+    // Create audio URLs for all verses
+    const audioUrls = getSurahAudioUrls(surahInfo.number, surahInfo.numberOfAyahs);
+    
+    // Create audio player
+    const player = new SurahAudioPlayer(audioUrls);
+    
+    // Set up progress callback
+    player.onProgress((current, total) => {
+      setCurrentVerseIndex(current);
+      setPlayingVerseNumber(current + 1);
+    });
+    
+    // Set up end callback
+    player.onEnd(() => {
+      setIsPlaying(false);
+      setPlayingVerseNumber(null);
+    });
+    
+    audioPlayerRef.current = player;
+
+    // Cleanup on unmount
+    return () => {
+      player.destroy();
+    };
+  }, [surahInfo]);
+
+  // Toggle play/pause for entire Surah
+  const toggleSurahPlayback = () => {
+    if (!audioPlayerRef.current) return;
+
+    if (isPlaying) {
+      audioPlayerRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioPlayerRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  // Play a specific verse
+  const playVerse = (verseNumber: number) => {
+    if (!audioPlayerRef.current) return;
+
+    // Stop current playback
+    audioPlayerRef.current.stop();
+    
+    // Jump to the verse (0-indexed)
+    audioPlayerRef.current.jumpTo(verseNumber - 1);
+    
+    // Start playing
+    audioPlayerRef.current.play();
+    setIsPlaying(true);
+    setPlayingVerseNumber(verseNumber);
+  };
 
   const toggleFavorite = (verseNumber: number) => {
     setFavorites((prev) => {
@@ -198,14 +265,22 @@ export default function SurahReader() {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-4xl font-arabic mb-2">{surahInfo.name}</p>
               <Button
-                variant="secondary"
-                size="sm"
+                onClick={toggleSurahPlayback}
                 className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+                size="sm"
               >
-                <Play className="w-4 h-4 mr-2" />
-                Surah abspielen
+                {isPlaying ? (
+                  <>
+                    <Pause className="w-4 h-4 mr-2" />
+                    Pause
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 mr-2" />
+                    Surah abspielen
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -213,92 +288,116 @@ export default function SurahReader() {
       </div>
 
       {/* Verses */}
-      <div className="container max-w-4xl mx-auto px-4 pb-8">
-        <div className="space-y-6">
-          {surahData.ayahs.map((ayah, index) => {
-            const verseNumber = ayah.numberInSurah;
-            const isFavorite = favorites.has(verseNumber);
+      <div className="container max-w-4xl mx-auto px-4 pb-8 space-y-6">
+        {/* Bismillah */}
+        {surahInfo.number !== 1 && surahInfo.number !== 9 && (
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
+            <p className="text-center text-3xl font-arabic text-slate-800 mb-3">
+              ﷽ بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+            </p>
+            {showTransliteration && transliterationData?.ayahs[0] && (
+              <p className="text-center text-teal-600 italic text-sm mb-2">
+                Bismillaahir Rahmaanir Raheem
+              </p>
+            )}
+            <p className="text-center text-slate-600 text-sm">
+              Im Namen Allahs, des Allerbarmers, des Barmherzigen.
+            </p>
+            <div className="flex justify-center items-center gap-2 mt-4">
+              <span className="text-xs text-slate-400">1</span>
+            </div>
+          </div>
+        )}
 
-            return (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow"
-              >
-                {/* Bismillah for first verse (except Surah 1 and 9) */}
-                {index === 0 && surahNumber !== 1 && surahNumber !== 9 && (
-                  <p className="text-center text-2xl font-arabic text-teal-600 mb-6">
-                    بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
-                  </p>
-                )}
+        {/* Verses */}
+        {surahData.ayahs.map((ayah, index) => {
+          const verseNumber = ayah.numberInSurah;
+          const translation = translationData?.ayahs[index];
+          const transliteration = transliterationData?.ayahs[index];
+          const isCurrentlyPlaying = playingVerseNumber === verseNumber;
 
-                {/* Arabic Text */}
-                <p className="text-right text-2xl leading-loose text-slate-900 mb-4 font-arabic">
-                  {ayah.text}
+          return (
+            <div
+              key={ayah.number}
+              className={`bg-white rounded-lg p-6 shadow-sm border ${
+                isCurrentlyPlaying ? "border-teal-500 ring-2 ring-teal-200" : "border-slate-200"
+              }`}
+            >
+              {/* Arabic Text */}
+              <p className="text-right text-2xl md:text-3xl font-arabic leading-loose text-slate-800 mb-4">
+                {ayah.text}
+              </p>
+
+              {/* Transliteration */}
+              {showTransliteration && transliteration && (
+                <p className="text-teal-600 italic text-sm mb-3">
+                  {transliteration.text}
                 </p>
+              )}
 
-                {/* Transliteration (if enabled) */}
-                {showTransliteration && transliterationData && transliterationData.ayahs[index] && (
-                  <p className="text-left text-base text-teal-600 mb-3 italic leading-relaxed">
-                    {transliterationData.ayahs[index].text}
-                  </p>
-                )}
+              {/* German Translation */}
+              {translation && (
+                <p className="text-slate-700 leading-relaxed">
+                  {translation.text}
+                </p>
+              )}
 
-                {/* Translation */}
-                {translationData && translationData.ayahs[index] && (
-                  <p className="text-left text-base text-slate-700 mb-4 leading-relaxed">
-                    {translationData.ayahs[index].text}
-                  </p>
-                )}
-
-                {/* Verse Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                  <span className="text-sm font-semibold text-slate-900 bg-slate-100 px-3 py-1 rounded-full">
-                    {verseNumber}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-teal-600 hover:text-teal-700 hover:bg-teal-50"
-                      title="Vers abspielen"
-                    >
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+                <span className="text-sm font-medium text-slate-500">{verseNumber}</span>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-slate-600 hover:text-teal-600"
+                    onClick={() => playVerse(verseNumber)}
+                    title="Vers abspielen"
+                  >
+                    {isCurrentlyPlaying && isPlaying ? (
+                      <Pause className="w-4 h-4" />
+                    ) : (
                       <Play className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleFavorite(verseNumber)}
-                      className={isFavorite ? "text-red-500 hover:text-red-600" : "text-slate-400 hover:text-slate-600"}
-                      title="Zu Favoriten hinzufügen"
-                    >
-                      <Heart className={`w-4 h-4 ${isFavorite ? "fill-current" : ""}`} />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyVerse(verseNumber)}
-                      className="text-slate-600 hover:text-slate-700 hover:bg-slate-100"
-                      title="Vers kopieren"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => shareVerse(verseNumber)}
-                      className="text-slate-600 hover:text-slate-700 hover:bg-slate-100"
-                      title="Vers teilen"
-                    >
-                      <Share2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+                    )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`h-8 w-8 ${
+                      favorites.has(verseNumber)
+                        ? "text-red-500 hover:text-red-600"
+                        : "text-slate-600 hover:text-red-500"
+                    }`}
+                    onClick={() => toggleFavorite(verseNumber)}
+                    title="Zu Favoriten hinzufügen"
+                  >
+                    <Heart className="w-4 h-4" fill={favorites.has(verseNumber) ? "currentColor" : "none"} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-slate-600 hover:text-teal-600"
+                    onClick={() => copyVerse(verseNumber)}
+                    title="Vers kopieren"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-slate-600 hover:text-teal-600"
+                    onClick={() => shareVerse(verseNumber)}
+                    title="Vers teilen"
+                  >
+                    <Share2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
+      {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );

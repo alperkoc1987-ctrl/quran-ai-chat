@@ -51,3 +51,11 @@
 - [x] Fix scroll issue in Surah list on mobile browsers (replaced ScrollArea with native overflow-y-auto)
 - [x] Fix nested button error in SurahList component (replaced Button with div)
 - [x] Provide Vercel deployment instructions
+
+## New Tasks
+- [x] Fix API key error in chat functionality (using Manus Built-in Forge API as fallback)
+- [x] Implement audio playback for Quran recitation using everyayah.com API
+- [x] Add reciter selection (Mishary Rashid Alafasy as default)
+- [x] Add audio player controls to SurahReader page (play/pause button for entire Surah)
+- [x] Add audio playback for individual verses (play button on each verse)
+- [x] Add audio playback for complete Surahs (sequential playback of all verses)
