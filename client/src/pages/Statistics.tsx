@@ -1,0 +1,186 @@
+import { useEffect, useState } from "react";
+import { ArrowLeft, TrendingUp, Clock, Flame, BookOpen, Target } from "lucide-react";
+import { useLocation } from "wouter";
+import {
+  getStatistics,
+  getVersesReadToday,
+  getTimeSpentToday,
+  getRecentSessions,
+  getTotalProgressPercentage,
+  formatTime,
+  type ReadingSession,
+} from "@/lib/statistics";
+
+export function Statistics() {
+  const [, setLocation] = useLocation();
+  const [stats, setStats] = useState(getStatistics());
+  const [versesToday, setVersesToday] = useState(0);
+  const [timeToday, setTimeToday] = useState(0);
+  const [recentSessions, setRecentSessions] = useState<ReadingSession[]>([]);
+  const [totalProgress, setTotalProgress] = useState(0);
+
+  useEffect(() => {
+    // Load statistics
+    const statistics = getStatistics();
+    setStats(statistics);
+    setVersesToday(getVersesReadToday());
+    setTimeToday(getTimeSpentToday());
+    setRecentSessions(getRecentSessions(7)); // Last 7 days
+    setTotalProgress(getTotalProgressPercentage());
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+      {/* Header */}
+      <div className="bg-teal-600 dark:bg-teal-700 text-white p-4 shadow-md">
+        <div className="container mx-auto flex items-center gap-4">
+          <button
+            onClick={() => setLocation("/")}
+            className="p-2 hover:bg-teal-700 dark:hover:bg-teal-800 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h1 className="text-2xl font-bold">Statistiken</h1>
+            <p className="text-teal-100 text-sm">Ihr Lesefortschritt im Überblick</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto p-4 space-y-6">
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Total Progress */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-lg">
+                <Target className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Gesamtfortschritt</h3>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-teal-600 dark:text-teal-400">
+                {totalProgress.toFixed(1)}%
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {stats.totalVersesRead} von 6.236 Versen gelesen
+              </div>
+              {/* Progress Bar */}
+              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mt-3">
+                <div
+                  className="bg-teal-600 dark:bg-teal-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${totalProgress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Current Streak */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                <Flame className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Aktuelle Serie</h3>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+                {stats.currentStreak}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Tage in Folge
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                Längste Serie: {stats.longestStreak} Tage
+              </div>
+            </div>
+          </div>
+
+          {/* Total Time */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Gesamtzeit</h3>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                {formatTime(stats.totalTimeSpent)}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Insgesamt gelesen
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Today's Progress */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            Heute
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+              <span className="text-gray-700 dark:text-gray-300">Gelesene Verse</span>
+              <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">{versesToday}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-lg">
+              <span className="text-gray-700 dark:text-gray-300">Lesezeit</span>
+              <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {formatTime(timeToday)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            Letzte 7 Tage
+          </h3>
+          
+          {recentSessions.length > 0 ? (
+            <div className="space-y-3">
+              {recentSessions.map((session) => (
+                <div
+                  key={session.date}
+                  className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-lg"
+                >
+                  <div>
+                    <div className="font-medium text-gray-900 dark:text-gray-100">
+                      {new Date(session.date).toLocaleDateString("de-DE", {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {session.surahs.length} Suren
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-semibold text-teal-600 dark:text-teal-400">
+                      {session.versesRead} Verse
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {formatTime(session.timeSpent)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p>Noch keine Leseaktivität in den letzten 7 Tagen</p>
+              <p className="text-sm mt-1">Beginnen Sie mit dem Lesen, um Ihre Statistiken zu sehen!</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

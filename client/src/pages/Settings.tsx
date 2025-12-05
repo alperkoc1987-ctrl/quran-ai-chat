@@ -3,12 +3,20 @@
  * Settings page with dark mode, transliteration, and reciter selection
  */
 
-import { ArrowLeft, Moon, Sun, Languages, Music } from "lucide-react";
+import { ArrowLeft, Moon, Sun, Languages, Music, Bell } from "lucide-react";
 import { useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
+import {
+  getNotificationSettings,
+  saveNotificationSettings,
+  requestNotificationPermission,
+  areNotificationsAvailable,
+  initializeNotifications,
+  type NotificationSettings,
+} from "@/lib/notifications";
 
 export default function Settings() {
   const [, setLocation] = useLocation();
@@ -17,6 +25,8 @@ export default function Settings() {
   
   // Reciter selection state
   const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(getNotificationSettings());
+  const [notificationsAvailable, setNotificationsAvailable] = useState(areNotificationsAvailable());
 
   // Load saved reciter from localStorage
   useEffect(() => {
@@ -33,6 +43,35 @@ export default function Settings() {
     setSelectedReciter(reciter);
     if (typeof window !== "undefined") {
       localStorage.setItem("selectedReciter", reciter);
+    }
+  };
+
+  const handleNotificationToggle = async (enabled: boolean) => {
+    if (enabled && !notificationsAvailable) {
+      const granted = await requestNotificationPermission();
+      if (!granted) {
+        alert("Benachrichtigungen wurden abgelehnt. Bitte aktivieren Sie sie in den Browser-Einstellungen.");
+        return;
+      }
+      setNotificationsAvailable(true);
+    }
+
+    const newSettings = { ...notificationSettings, enabled };
+    setNotificationSettings(newSettings);
+    saveNotificationSettings(newSettings);
+
+    if (enabled) {
+      initializeNotifications();
+    }
+  };
+
+  const handleNotificationSettingChange = (key: keyof NotificationSettings, value: any) => {
+    const newSettings = { ...notificationSettings, [key]: value };
+    setNotificationSettings(newSettings);
+    saveNotificationSettings(newSettings);
+
+    if (notificationSettings.enabled) {
+      initializeNotifications();
     }
   };
 
@@ -175,6 +214,94 @@ export default function Settings() {
               );
             })}
           </div>
+        </div>
+
+        {/* Notification Settings */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-4">
+            <Bell className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Benachrichtigungen
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Erhalte Erinnerungen für Gebetszeiten und tägliche Verse
+              </p>
+            </div>
+          </div>
+
+          {/* Master Toggle */}
+          <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-lg mb-4">
+            <span className="font-medium text-gray-900 dark:text-gray-100">Benachrichtigungen aktivieren</span>
+            <button
+              onClick={() => handleNotificationToggle(!notificationSettings.enabled)}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+                notificationSettings.enabled ? "bg-teal-600" : "bg-gray-300"
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                  notificationSettings.enabled ? "translate-x-7" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+
+          {/* Individual Notification Settings */}
+          {notificationSettings.enabled && (
+            <div className="space-y-3">
+              {/* Daily Verse */}
+              <div className="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-slate-600">
+                <span className="text-sm text-gray-700 dark:text-gray-300">Täglicher Vers (8:00 Uhr)</span>
+                <button
+                  onClick={() =>
+                    handleNotificationSettingChange("dailyVerseEnabled", !notificationSettings.dailyVerseEnabled)
+                  }
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    notificationSettings.dailyVerseEnabled ? "bg-teal-600" : "bg-gray-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      notificationSettings.dailyVerseEnabled ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Reading Reminder */}
+              <div className="p-3 rounded-lg border border-gray-200 dark:border-slate-600 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Leseerinnerung</span>
+                  <button
+                    onClick={() =>
+                      handleNotificationSettingChange(
+                        "readingReminderEnabled",
+                        !notificationSettings.readingReminderEnabled
+                      )
+                    }
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      notificationSettings.readingReminderEnabled ? "bg-teal-600" : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        notificationSettings.readingReminderEnabled ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+                {notificationSettings.readingReminderEnabled && (
+                  <input
+                    type="time"
+                    value={notificationSettings.readingReminderTime}
+                    onChange={(e) => handleNotificationSettingChange("readingReminderTime", e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 text-sm"
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Info Section */}

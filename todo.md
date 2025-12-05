@@ -133,3 +133,18 @@
 - [x] Calculate progress based on last read verse vs total verses
 - [x] Display green progress ring around percentage
 - [x] Update progress automatically when reading verses
+
+## Bug Fix (December 2025 - Part 2)
+- [x] Fix audio playback issue in Surah list (audio not playing) - No bug found, audio works correctly
+
+## New Features (December 2025 - Part 5)
+- [x] Create statistics dashboard page
+- [x] Track total reading progress across all Surahs
+- [x] Track reading time (total and daily)
+- [x] Track verses read per day
+- [x] Implement streak counter (consecutive days of reading)
+- [x] Add daily reminder notifications for Gebetszeiten
+- [x] Add daily verse notifications
+- [x] Add reading progress reminder notifications
+- [x] Implement notification permission request
+- [x] Store notification preferences in localStorage
