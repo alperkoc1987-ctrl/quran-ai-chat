@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle } from "lucide-react";
+import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle, Settings as SettingsIcon } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/useChat";
 import { MessageBubble } from "@/components/MessageBubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ResumeReadingCard } from "@/components/ResumeReadingCard";
 
 export default function NewHome() {
   const [chatExpanded, setChatExpanded] = useState(true);
@@ -191,6 +192,14 @@ export default function NewHome() {
       icon: AlertTriangle,
       link: "/signs",
       gradient: "from-red-500 to-rose-600"
+    },
+    {
+      id: "settings",
+      title: "Einstellungen",
+      description: "Dark Mode, Rezitator & mehr",
+      icon: SettingsIcon,
+      link: "/settings",
+      gradient: "from-slate-500 to-slate-700"
     }
   ];
 
@@ -212,6 +221,11 @@ export default function NewHome() {
           </div>
         </div>
       </header>
+
+      {/* Resume Reading Card */}
+      <div className="container mx-auto px-4 pt-4">
+        <ResumeReadingCard />
+      </div>
 
       {/* Collapsible AI Chat Section */}
       <div className="container mx-auto px-4 py-4">

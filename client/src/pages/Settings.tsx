@@ -1,0 +1,190 @@
+/**
+ * Settings.tsx
+ * Settings page with dark mode, transliteration, and reciter selection
+ */
+
+import { ArrowLeft, Moon, Sun, Languages, Music } from "lucide-react";
+import { useLocation } from "wouter";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useTransliteration } from "@/contexts/TransliterationContext";
+import { useState, useEffect } from "react";
+import { RECITERS, ReciterKey } from "@/lib/audio";
+
+export default function Settings() {
+  const [, setLocation] = useLocation();
+  const { theme, toggleTheme } = useTheme();
+  const { showTransliteration, setShowTransliteration } = useTransliteration();
+  
+  // Reciter selection state
+  const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
+
+  // Load saved reciter from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("selectedReciter") as ReciterKey;
+      if (saved && RECITERS[saved]) {
+        setSelectedReciter(saved);
+      }
+    }
+  }, []);
+
+  // Save reciter to localStorage
+  const handleReciterChange = (reciter: ReciterKey) => {
+    setSelectedReciter(reciter);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedReciter", reciter);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      {/* Header */}
+      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-teal-200 dark:border-slate-700 sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+          <button
+            onClick={() => setLocation("/")}
+            className="p-2 hover:bg-teal-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-6 h-6 text-teal-700 dark:text-teal-400" />
+          </button>
+          <h1 className="text-2xl font-bold text-teal-800 dark:text-teal-300">
+            Einstellungen
+          </h1>
+        </div>
+      </div>
+
+      {/* Settings Content */}
+      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+        {/* Dark Mode Setting */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {theme === "dark" ? (
+                <Moon className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+              ) : (
+                <Sun className="w-6 h-6 text-teal-600" />
+              )}
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Dunkler Modus
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Aktiviere den dunklen Modus für bessere Lesbarkeit bei Nacht
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+                theme === "dark" ? "bg-teal-600" : "bg-gray-300"
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                  theme === "dark" ? "translate-x-7" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Transliteration Setting */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Transliteration
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Zeige lateinische Umschrift unter arabischem Text
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowTransliteration(!showTransliteration)}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
+                showTransliteration ? "bg-teal-600" : "bg-gray-300"
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                  showTransliteration ? "translate-x-7" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Reciter Selection */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-4">
+            <Music className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Rezitator auswählen
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Wähle deinen bevorzugten Koran-Rezitator
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3 mt-4">
+            {(Object.keys(RECITERS) as ReciterKey[]).map((key) => {
+              const reciter = RECITERS[key];
+              return (
+                <button
+                  key={key}
+                  onClick={() => handleReciterChange(key)}
+                  className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                    selectedReciter === key
+                      ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20 dark:border-teal-400"
+                      : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-500"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                        {reciter.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {reciter.description}
+                      </p>
+                    </div>
+                    {selectedReciter === key && (
+                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-600 flex items-center justify-center">
+                        <svg
+                          className="w-3 h-3 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Info Section */}
+        <div className="bg-teal-50 dark:bg-slate-800 rounded-xl p-6 border border-teal-200 dark:border-slate-700">
+          <p className="text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
+            <strong>Hinweis:</strong> Deine Einstellungen werden automatisch gespeichert und
+            bleiben auch nach dem Schließen der App erhalten.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

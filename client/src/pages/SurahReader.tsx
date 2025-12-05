@@ -24,6 +24,7 @@ import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { SurahAudioPlayer, getSurahAudioUrls } from "@/lib/audio";
 import { toast } from "sonner";
+import { saveReadingProgress } from "@/lib/readingProgress";
 
 export default function SurahReader() {
   const [, params] = useRoute("/surah/:number");
@@ -45,6 +46,7 @@ export default function SurahReader() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentVerseIndex, setCurrentVerseIndex] = useState(0);
   const [playingVerseNumber, setPlayingVerseNumber] = useState<number | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Load Surah data
   useEffect(() => {
@@ -87,6 +89,38 @@ export default function SurahReader() {
 
     loadSurah();
   }, [surahNumber]);
+
+  // Save reading progress when user scrolls through verses
+  useEffect(() => {
+    if (!surahInfo || !surahData) return;
+
+    const handleScroll = () => {
+      // Find the verse currently in view
+      const verses = document.querySelectorAll('[data-verse-number]');
+      const scrollTop = window.scrollY || window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const middleOfScreen = scrollTop + windowHeight / 2;
+
+      let currentVerse = 1;
+      verses.forEach((verse) => {
+        const rect = (verse as HTMLElement).getBoundingClientRect();
+        const verseTop = rect.top + scrollTop;
+        if (verseTop < middleOfScreen) {
+          currentVerse = parseInt((verse as HTMLElement).dataset.verseNumber || '1');
+        }
+      });
+
+      // Save progress
+      saveReadingProgress(surahInfo.number, currentVerse, surahInfo.englishName);
+    };
+
+    // Add scroll listener to window
+    window.addEventListener('scroll', handleScroll);
+    // Also save progress when component mounts
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [surahInfo, surahData]);
 
   // Initialize audio player when surah data is loaded
   useEffect(() => {
@@ -229,10 +263,10 @@ export default function SurahReader() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
-          <p className="text-sm text-slate-600">Lade Sure...</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">Lade Sure...</p>
         </div>
       </div>
     );
@@ -240,9 +274,9 @@ export default function SurahReader() {
 
   if (error || !surahData || !surahInfo) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg p-6 max-w-md w-full text-center">
-          <p className="text-red-600 mb-4">{error || "Fehler beim Laden"}</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-md w-full text-center">
+          <p className="text-red-600 dark:text-red-400 mb-4">{error || "Fehler beim Laden"}</p>
           <Button onClick={() => navigate("/chat")} variant="outline">
             Zurück
           </Button>
@@ -252,25 +286,25 @@ export default function SurahReader() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-sm sticky top-0 z-10">
         <div className="container max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate("/chat")}
-              className="text-slate-600 hover:text-slate-900"
+              className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                 {surahInfo.englishName}
                 <span className="text-teal-600 font-arabic text-xl">{surahInfo.name}</span>
               </h1>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {surahInfo.englishNameTranslation} • {surahInfo.revelationType} • {surahInfo.numberOfAyahs} Verse
               </p>
             </div>
@@ -324,8 +358,8 @@ export default function SurahReader() {
       <div className="container max-w-4xl mx-auto px-4 pb-8 space-y-6">
         {/* Bismillah */}
         {surahInfo.number !== 1 && surahInfo.number !== 9 && (
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
-            <p className="text-center text-3xl font-arabic text-slate-800 mb-3">
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <p className="text-center text-3xl font-arabic text-slate-800 dark:text-slate-100 mb-3">
               ﷽ بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
             </p>
             {showTransliteration && transliterationData?.ayahs[0] && (
@@ -333,11 +367,11 @@ export default function SurahReader() {
                 Bismillaahir Rahmaanir Raheem
               </p>
             )}
-            <p className="text-center text-slate-600 text-sm">
+            <p className="text-center text-slate-600 dark:text-slate-300 text-sm">
               Im Namen Allahs, des Allerbarmers, des Barmherzigen.
             </p>
             <div className="flex justify-center items-center gap-2 mt-4">
-              <span className="text-xs text-slate-400">1</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">1</span>
             </div>
           </div>
         )}
@@ -352,12 +386,13 @@ export default function SurahReader() {
           return (
             <div
               key={ayah.number}
-              className={`bg-white rounded-lg p-6 shadow-sm border ${
-                isCurrentlyPlaying ? "border-teal-500 ring-2 ring-teal-200" : "border-slate-200"
+              data-verse-number={verseNumber}
+              className={`bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border ${
+                isCurrentlyPlaying ? "border-teal-500 ring-2 ring-teal-200 dark:ring-teal-800" : "border-slate-200 dark:border-slate-700"
               }`}
             >
               {/* Arabic Text */}
-              <p className="text-right text-2xl md:text-3xl font-arabic leading-loose text-slate-800 mb-4">
+              <p className="text-right text-2xl md:text-3xl font-arabic leading-loose text-slate-800 dark:text-slate-100 mb-4">
                 {ayah.text}
               </p>
 
@@ -370,14 +405,14 @@ export default function SurahReader() {
 
               {/* German Translation */}
               {translation && (
-                <p className="text-slate-700 leading-relaxed">
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   {translation.text}
                 </p>
               )}
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
-                <span className="text-sm font-medium text-slate-500">{verseNumber}</span>
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{verseNumber}</span>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"

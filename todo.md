@@ -93,3 +93,13 @@
 
 ## Critical Audio Bug
 - [x] Fix audio playback - button changes to "Pause" but no sound plays (fixed reciter ID from Mishary_Rashid_Alafasy_64kbps to Alafasy_64kbps)
+
+## New Feature Requests (December 2025)
+- [x] Add play button functionality in Surah list (play audio without opening Surah detail page)
+- [x] Create dedicated Settings page in bottom navigation bar
+- [x] Move Dark Mode toggle to Settings page
+- [x] Move Transliteration toggle to Settings page
+- [x] Fix Dark Mode styling in Quran section (SurahReader page)
+- [x] Add multiple reciter selection in Settings (Abdul Basit, Al-Husary, Sudais, Alafasy)
+- [x] Expand Prophet Stories with full narratives, Quranic verses, and Hadiths (8 prophets)
+- [x] Implement reading progress tracking (save last read Surah + Verse, auto-resume)

@@ -3,10 +3,12 @@
  * Component for displaying a vertical list of all Surahs with selection functionality.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Surah } from "@/lib/types";
 import { fetchAllSurahs } from "@/lib/api";
-import { Loader2, Play, Heart } from "lucide-react";
+import { Loader2, Play, Pause, Heart } from "lucide-react";
+import { getSurahAudioUrls, SurahAudioPlayer } from "@/lib/audio";
+import { toast } from "sonner";
 
 interface SurahListProps {
   onSelectSurah: (surah: Surah) => void;
@@ -19,6 +21,8 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
+  const [playingSurahNumber, setPlayingSurahNumber] = useState<number | null>(null);
+  const audioPlayerRef = useRef<SurahAudioPlayer | null>(null);
 
   useEffect(() => {
     const loadSurahs = async () => {
@@ -50,6 +54,52 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
       return newFavorites;
     });
   };
+
+  const handlePlayPause = async (surah: Surah, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    // If this surah is already playing, pause it
+    if (playingSurahNumber === surah.number) {
+      audioPlayerRef.current?.pause();
+      setPlayingSurahNumber(null);
+      toast.info("Wiedergabe pausiert");
+      return;
+    }
+    
+    // Stop any currently playing audio
+    if (audioPlayerRef.current) {
+      audioPlayerRef.current.destroy();
+    }
+    
+    // Start playing the new surah
+    try {
+      const audioUrls = getSurahAudioUrls(surah.number, surah.numberOfAyahs);
+      const player = new SurahAudioPlayer(audioUrls);
+      
+      player.onEnd(() => {
+        setPlayingSurahNumber(null);
+        toast.success("Wiedergabe beendet");
+      });
+      
+      audioPlayerRef.current = player;
+      setPlayingSurahNumber(surah.number);
+      await player.play();
+      toast.success(`${surah.englishName} wird abgespielt`);
+    } catch (error) {
+      console.error("Error playing surah:", error);
+      toast.error("Fehler beim Abspielen");
+      setPlayingSurahNumber(null);
+    }
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (audioPlayerRef.current) {
+        audioPlayerRef.current.destroy();
+      }
+    };
+  }, []);
 
   const filteredSurahs = surahs.filter(
     (surah) =>
@@ -115,12 +165,13 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
                 <div className="flex items-center gap-4 flex-1">
                   <div
                     className="flex-shrink-0 text-teal-600 hover:bg-teal-100 p-2 rounded-md cursor-pointer transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Play functionality can be added later
-                    }}
+                    onClick={(e) => handlePlayPause(surah, e)}
                   >
-                    <Play className="w-5 h-5 fill-current" />
+                    {playingSurahNumber === surah.number ? (
+                      <Pause className="w-5 h-5 fill-current" />
+                    ) : (
+                      <Play className="w-5 h-5 fill-current" />
+                    )}
                   </div>
 
                   <div className="flex-1">

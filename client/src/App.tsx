@@ -14,6 +14,7 @@ import Qibla from "./pages/Qibla";
 import SurahReader from "./pages/SurahReader";
 import IslamicStories from "./pages/IslamicStories";
 import SignsOfTheHour from "./pages/SignsOfTheHour";
+import Settings from "./pages/Settings";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/qibla" component={Qibla} />
       <Route path="/stories" component={IslamicStories} />
       <Route path="/signs" component={SignsOfTheHour} />
+      <Route path="/settings" component={Settings} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

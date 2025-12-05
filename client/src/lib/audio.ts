@@ -21,6 +21,11 @@ export const RECITERS = {
     name: "Mahmoud Khalil Al-Husary",
     description: "Bekannt für seine klare Aussprache",
   },
+  sudais: {
+    id: "Abdul_Basit_Murattal_64kbps",
+    name: "Abdurrahman As-Sudais",
+    description: "Imam der Großen Moschee in Mekka",
+  },
 } as const;
 
 export type ReciterKey = keyof typeof RECITERS;
@@ -35,8 +40,15 @@ export type ReciterKey = keyof typeof RECITERS;
 export function getVerseAudioUrl(
   surahNumber: number,
   ayahNumber: number,
-  reciter: ReciterKey = "mishary"
+  reciter?: ReciterKey
 ): string {
+  // Get reciter from localStorage if not provided
+  if (!reciter && typeof window !== "undefined") {
+    const saved = localStorage.getItem("selectedReciter") as ReciterKey;
+    reciter = (saved && RECITERS[saved]) ? saved : "mishary";
+  } else if (!reciter) {
+    reciter = "mishary";
+  }
   const reciterInfo = RECITERS[reciter];
   
   // Format: surah number (3 digits) + ayah number (3 digits)
@@ -56,8 +68,15 @@ export function getVerseAudioUrl(
 export function getSurahAudioUrls(
   surahNumber: number,
   totalAyahs: number,
-  reciter: ReciterKey = "mishary"
+  reciter?: ReciterKey
 ): string[] {
+  // Get reciter from localStorage if not provided
+  if (!reciter && typeof window !== "undefined") {
+    const saved = localStorage.getItem("selectedReciter") as ReciterKey;
+    reciter = (saved && RECITERS[saved]) ? saved : "mishary";
+  } else if (!reciter) {
+    reciter = "mishary";
+  }
   const urls: string[] = [];
   
   for (let ayahNumber = 1; ayahNumber <= totalAyahs; ayahNumber++) {
