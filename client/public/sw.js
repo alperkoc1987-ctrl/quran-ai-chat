@@ -7,6 +7,9 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/sounds/adhan-mishary.mp3',
+  '/sounds/adhan-abdul-basit.mp3',
+  '/sounds/adhan-makkah.mp3',
 ];
 
 // Install event - cache static assets
@@ -117,5 +120,38 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
+  }
+});
+
+// Push event - handle push notifications for prayer times
+self.addEventListener('push', (event) => {
+  const data = event.data ? event.data.json() : {};
+  
+  const options = {
+    body: data.body || 'Es ist Zeit für das Gebet',
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
+    vibrate: [200, 100, 200],
+    tag: data.tag || 'prayer-notification',
+    requireInteraction: true,
+    actions: [
+      { action: 'open', title: 'Öffnen' },
+      { action: 'dismiss', title: 'Schließen' }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'Gebetszeit', options)
+  );
+});
+
+// Notification click event
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  if (event.action === 'open' || !event.action) {
+    event.waitUntil(
+      clients.openWindow('/')
+    );
   }
 });

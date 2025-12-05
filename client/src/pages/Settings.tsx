@@ -247,6 +247,23 @@ export default function Settings() {
             </button>
           </div>
 
+          {/* Prayer Settings Link */}
+          <button
+            onClick={() => setLocation("/prayer-settings")}
+            className="w-full p-4 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg transition-colors flex items-center justify-between group"
+          >
+            <div className="flex items-center gap-3">
+              <Bell className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <div className="text-left">
+                <div className="font-semibold text-gray-900 dark:text-gray-100">Gebetsbenachrichtigungen</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Adhan-Einstellungen & Gebetszeiten</div>
+              </div>
+            </div>
+            <svg className="w-5 h-5 text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
           {/* Individual Notification Settings */}
           {notificationSettings.enabled && (
             <div className="space-y-3">

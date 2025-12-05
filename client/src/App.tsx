@@ -16,6 +16,7 @@ import IslamicStories from "./pages/IslamicStories";
 import SignsOfTheHour from "./pages/SignsOfTheHour";
 import Settings from "./pages/Settings";
 import Bookmarks from "./pages/Bookmarks";
+import PrayerSettings from "./pages/PrayerSettings";
 
 import { Statistics } from "./pages/Statistics";
 import Quiz from "./pages/Quiz"; // Quiz feature added
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/stories" component={IslamicStories} />
       <Route path="/signs" component={SignsOfTheHour} />
       <Route path="/settings" component={Settings} />
+      <Route path="/prayer-settings" component={PrayerSettings} />
       <Route path="/bookmarks" component={Bookmarks} />
 
       <Route path="/statistics" component={Statistics} />
