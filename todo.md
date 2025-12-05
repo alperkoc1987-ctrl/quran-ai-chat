@@ -18,3 +18,7 @@
 - [x] Update routing for all new pages
 - [x] Integrate collapsible AI chat on home page
 - [x] Add Arabic font support (Amiri)
+
+## Bug Fixes
+- [x] Fixed deployment error by removing conflicting server/index.ts
+- [x] Updated package.json to use correct server entry point (server/_core/index.ts)

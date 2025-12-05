@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "npm-run-all --parallel dev:frontend dev:backend",
     "dev:frontend": "vite --host",
-    "dev:backend": "tsx server/index.ts",
+    "dev:backend": "tsx server/_core/index.ts",
     "build": "vite build",
-    "start": "NODE_ENV=production tsx server/index.ts",
+    "start": "NODE_ENV=production tsx server/_core/index.ts",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
