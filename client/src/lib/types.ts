@@ -47,6 +47,8 @@ export interface SourceReference {
   type: SourceType;
   reference: string;
   text: string;
+  surahNumber?: number;
+  ayahNumber?: number;
 }
 
 export interface ChatRequest {

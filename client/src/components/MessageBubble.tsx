@@ -6,15 +6,16 @@
 import { ChatMessage, SourceType, SourceReference } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Quote, X, Volume2, StopCircle } from "lucide-react";
+import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 interface MessageBubbleProps {
   message: ChatMessage;
+  onOpenSurah?: (surahNumber: number, ayahNumber?: number) => void;
 }
 
-export function MessageBubble({ message }: MessageBubbleProps) {
+export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -192,9 +193,24 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
             {/* Content */}
             <div className="flex-1 overflow-auto p-6">
-              <p className="text-gray-700 leading-relaxed text-base">
+              <p className="text-gray-700 leading-relaxed text-base mb-6">
                 {selectedSource?.text}
               </p>
+              
+              {selectedSource?.type === SourceType.Quran && selectedSource.surahNumber && (
+                <Button 
+                  className="w-full gap-2 bg-teal-600 hover:bg-teal-700"
+                  onClick={() => {
+                    if (onOpenSurah && selectedSource.surahNumber) {
+                      onOpenSurah(selectedSource.surahNumber, selectedSource.ayahNumber);
+                      setSelectedSource(null);
+                    }
+                  }}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Im Koran öffnen
+                </Button>
+              )}
             </div>
           </div>
         </div>

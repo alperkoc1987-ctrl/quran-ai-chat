@@ -7,7 +7,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown, Settings } from "lucide-react";
+import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown, Settings, Mic, MicOff } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
 import { Surah, Language } from "@/lib/types";
 
@@ -18,7 +18,63 @@ export default function Chat() {
   const [selectedSurah, setSelectedSurah] = useState<Surah | null>(null);
   const [showSurahBrowser, setShowSurahBrowser] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Speech Recognition Setup
+  useEffect(() => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      return;
+    }
+
+    // @ts-ignore - SpeechRecognition types are not standard yet
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'de-DE';
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInputValue((prev) => prev + (prev ? " " : "") + transcript);
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    // Store recognition instance on window to access it in toggle function
+    // @ts-ignore
+    window.recognitionInstance = recognition;
+
+    return () => {
+      recognition.abort();
+    };
+  }, []);
+
+  const toggleListening = () => {
+    // @ts-ignore
+    const recognition = window.recognitionInstance;
+    if (!recognition) {
+      alert("Ihr Browser unterstützt keine Spracheingabe.");
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+      setIsListening(false);
+    } else {
+      recognition.start();
+      setIsListening(true);
+    }
+  };
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -36,6 +92,20 @@ export default function Chat() {
     if (inputValue.trim()) {
       sendMessage(inputValue);
       setInputValue("");
+    }
+  };
+
+  const handleOpenSurah = async (surahNumber: number, ayahNumber?: number) => {
+    // Fetch surah details first to get the full object
+    try {
+      const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
+      const data = await response.json();
+      if (data.code === 200) {
+        setSelectedSurah(data.data);
+        // Note: Auto-scrolling to specific ayah would require additional implementation in SurahViewer
+      }
+    } catch (error) {
+      console.error("Failed to fetch surah details:", error);
     }
   };
 
@@ -110,7 +180,11 @@ export default function Chat() {
           <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
             <div className="container max-w-6xl mx-auto px-4 py-6 space-y-4">
               {messages.map((message) => (
-                <MessageBubble key={message.id} message={message} />
+                <MessageBubble 
+                  key={message.id} 
+                  message={message} 
+                  onOpenSurah={handleOpenSurah}
+                />
               ))}
 
               {isLoading && (
@@ -144,6 +218,16 @@ export default function Chat() {
                   disabled={isLoading}
                   className="flex-1"
                 />
+                <Button
+                  variant={isListening ? "destructive" : "outline"}
+                  size="icon"
+                  onClick={toggleListening}
+                  disabled={isLoading}
+                  className="flex-shrink-0"
+                  title={isListening ? "Aufnahme stoppen" : "Spracheingabe starten"}
+                >
+                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                </Button>
                 <Button
                   onClick={handleSendMessage}
                   disabled={isLoading || !inputValue.trim()}

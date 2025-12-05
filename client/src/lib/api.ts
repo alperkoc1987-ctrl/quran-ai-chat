@@ -3,7 +3,7 @@
  * Service for communicating with the backend and Quran APIs.
  */
 
-import { ChatRequest, ChatResponse, Surah, SurahWithAyahs } from "./types";
+import { ChatRequest, ChatResponse, Surah, SurahWithAyahs, SourceType } from "./types";
 
 // Determine API URL based on environment
 // On Vercel, we use /api/chat directly
@@ -68,9 +68,30 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
     
     // Transform OpenAI response format to our app's expected format if needed
     if (data.choices && data.choices[0]) {
+      const content = data.choices[0].message.content;
+      
+      // Parse sources from content on client side as well
+      const citationRegex = /\[(\d+):(\d+)\]|\(Sure\s*(\d+),\s*Vers\s*(\d+)\)/g;
+      const sources = [];
+      let match;
+
+      while ((match = citationRegex.exec(content)) !== null) {
+        const surahNum = parseInt(match[1] || match[3]);
+        const ayahNum = parseInt(match[2] || match[4]);
+        
+        sources.push({
+          id: `quran-${surahNum}-${ayahNum}-${Date.now()}-${Math.random()}`,
+          type: SourceType.Quran,
+          reference: `Sure ${surahNum}, Vers ${ayahNum}`,
+          text: "Klicken Sie hier, um diesen Vers im Koran zu öffnen.",
+          surahNumber: surahNum,
+          ayahNumber: ayahNum
+        });
+      }
+
       return {
-        generatedAnswer: data.choices[0].message.content,
-        sources: [] // Sources would need to be parsed or handled differently with direct OpenAI calls
+        generatedAnswer: content,
+        sources: sources
       };
     }
     
