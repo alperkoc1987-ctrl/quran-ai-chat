@@ -117,3 +117,12 @@
 - [x] Fix API key validation error in KI-Chat ("Der eingegebene API Key scheint ungültig zu sein")
 - [x] Verify OpenAI API key is correctly configured in environment variables
 - [x] Test chat functionality after fix
+
+## New Features (December 2025 - Part 3)
+- [x] Remove "Suren ausblenden" button from Quran page
+- [x] Make Surah list fullscreen (remove unnecessary padding/margins)
+- [x] Implement verse search functionality (search by keywords, verse content, themes)
+- [x] Add search results page with highlighted matches
+- [x] Implement Service Worker for offline mode
+- [x] Cache Surahs for offline reading
+- [x] Enable offline access to bookmarks and notes

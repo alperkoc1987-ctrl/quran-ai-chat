@@ -7,7 +7,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown, Settings, Mic, MicOff, MessageSquare, X } from "lucide-react";
+import { Loader2, Send, RotateCcw, BookOpen, Settings, Mic, MicOff, MessageSquare, X } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
 import { Surah, Language } from "@/lib/types";
 
@@ -16,7 +16,7 @@ export default function Chat() {
   const { messages, isLoading, error, sendMessage, clearMessages } = useChat();
   const [inputValue, setInputValue] = useState("");
   const [language, setLanguage] = useState<Language>(Language.German);
-  const [showSurahBrowser, setShowSurahBrowser] = useState(true);
+
   const [showChatArea, setShowChatArea] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -301,34 +301,13 @@ export default function Chat() {
           </div>
         )}
 
-        {/* Surah Browser Section - Responsive height */}
-        <div className="flex flex-col bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 h-[60vh] md:h-[70vh]">
-          <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-4 py-2 flex-shrink-0">
-            <button
-              onClick={() => setShowSurahBrowser(!showSurahBrowser)}
-              className="w-full flex items-center justify-center gap-2 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold text-sm py-2"
-            >
-              {showSurahBrowser ? (
-                <>
-                  <ChevronDown className="w-4 h-4" />
-                  Suren ausblenden
-                </>
-              ) : (
-                <>
-                  <ChevronUp className="w-4 h-4" />
-                  Suren anzeigen
-                </>
-              )}
-            </button>
+        {/* Surah Browser Section - Fullscreen */}
+        <div className="flex flex-col bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex-1 overflow-hidden">
+          <div className="flex-1 overflow-auto">
+            <SurahList
+              onSelectSurah={handleSelectSurah}
+            />
           </div>
-          
-          {showSurahBrowser && (
-            <div className="flex-1 overflow-auto min-h-0">
-              <SurahList
-                onSelectSurah={handleSelectSurah}
-              />
-            </div>
-          )}
         </div>
       </div>
 

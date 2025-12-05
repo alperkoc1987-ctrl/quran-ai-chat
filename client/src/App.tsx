@@ -16,6 +16,7 @@ import IslamicStories from "./pages/IslamicStories";
 import SignsOfTheHour from "./pages/SignsOfTheHour";
 import Settings from "./pages/Settings";
 import Bookmarks from "./pages/Bookmarks";
+import VerseSearch from "./pages/VerseSearch";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -33,6 +34,7 @@ function Router() {
       <Route path="/signs" component={SignsOfTheHour} />
       <Route path="/settings" component={Settings} />
       <Route path="/bookmarks" component={Bookmarks} />
+      <Route path="/search" component={VerseSearch} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
