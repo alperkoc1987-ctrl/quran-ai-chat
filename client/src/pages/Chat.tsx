@@ -44,6 +44,15 @@ export default function Chat() {
     recognition.onerror = (event: any) => {
       console.error("Speech recognition error", event.error);
       setIsListening(false);
+      
+      // Only alert on specific errors that user can fix
+      if (event.error === 'not-allowed') {
+        alert("Bitte erlauben Sie den Zugriff auf das Mikrofon.");
+      } else if (event.error === 'network') {
+        // Network errors are common with speech recognition, just stop listening silently
+        // or show a toast if we had one. For now, just logging is enough to avoid spamming alerts.
+        console.log("Speech recognition network error - possibly offline or blocked");
+      }
     };
 
     recognition.onend = () => {
