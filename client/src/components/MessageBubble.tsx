@@ -185,7 +185,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
 
       {/* Source Detail Modal */}
       {selectedSource !== null && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999]">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
             {/* Header */}
             <div className="bg-amber-50 border-b border-amber-200 px-6 py-4 flex items-center justify-between">

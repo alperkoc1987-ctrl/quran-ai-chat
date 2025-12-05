@@ -148,3 +148,10 @@
 - [x] Add reading progress reminder notifications
 - [x] Implement notification permission request
 - [x] Store notification preferences in localStorage
+
+## Bug Fixes & Changes (December 2025 - Part 3)
+- [x] Fix KI chat Surah links display issue (links are not visible/clickable properly)
+- [x] Fix Surah link navigation to open SurahReader in fullscreen mode
+- [x] Move search functionality from homepage to Quran section
+- [x] Remove standalone Search page and card from homepage
+- [x] Integrate search bar directly into Quran/Surah list page
