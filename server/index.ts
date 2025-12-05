@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import fetch from "node-fetch";
+// import fetch from "node-fetch"; // Use native fetch in Node 18+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +13,11 @@ async function startServer() {
 
   // Enable JSON body parsing
   app.use(express.json());
+
+  // Health check endpoint
+  app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+  });
 
   // API Route for Chat
   app.post("/api/chat", async (req, res) => {
