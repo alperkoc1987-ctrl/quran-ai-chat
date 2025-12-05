@@ -130,11 +130,11 @@ async function startServer() {
     res.sendFile(path.join(staticPath, "index.html"));
   });
 
-  // Use port 3001 for backend to avoid conflict with Vite (3000)
-  const port = 3001;
+  // Use port 5000 for production, 3001 for dev
+  const port = process.env.PORT || 5000;
 
-  server.listen(port, () => {
-    console.log(`Backend server running on http://localhost:${port}/`);
+  server.listen(Number(port), "0.0.0.0", () => {
+    console.log(`Backend server running on http://0.0.0.0:${port}/`);
   });
 }
 
