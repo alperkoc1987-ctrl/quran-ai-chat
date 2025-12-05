@@ -47,7 +47,7 @@ async function startServer() {
   // Custom OpenAI Chat API Route
   app.post("/api/chat", async (req, res) => {
     try {
-      let { apiKey, messages, model = "gpt-4o", temperature = 0.7, max_tokens = 500 } = req.body;
+      let { apiKey, messages, model = "gpt-4o", temperature = 0.7, max_tokens = 2000 } = req.body;
 
       // FALLBACK: Use Manus Built-in Forge API if no API key is provided
       if (!apiKey || apiKey.trim() === "") {

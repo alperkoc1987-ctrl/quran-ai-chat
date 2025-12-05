@@ -182,3 +182,8 @@
 ## Issue Report (December 2025 - Part 8)
 - [x] Chatbot stops responding mid-answer with gpt-4o-mini
 - [x] Switch back to gpt-4o for reliable responses
+
+## Critical Issue (December 2025 - Part 9)
+- [x] Chatbot responses are being truncated mid-sentence (even with gpt-4o)
+- [x] Investigate max_tokens parameter and response handling
+- [x] Fix truncation and ensure complete responses (increased max_tokens from 500 to 2000)
