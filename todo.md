@@ -155,3 +155,7 @@
 - [x] Move search functionality from homepage to Quran section
 - [x] Remove standalone Search page and card from homepage
 - [x] Integrate search bar directly into Quran/Surah list page
+
+## Bug Fixes (December 2025 - Part 4)
+- [x] Fix API error in KI chat ("Der eingegebene API Key scheint ungültig zu sein") - fixed by restarting server on port 3000
+- [x] Verify Search card is properly removed from homepage - confirmed removed from code, user needs to clear browser cache
