@@ -178,3 +178,7 @@
 - [x] Implement cool animation for correct answers
 - [x] Add points system for quiz (track correct answers)
 - [x] Integrate quiz points into Statistics dashboard
+
+## Issue Report (December 2025 - Part 8)
+- [x] Chatbot stops responding mid-answer with gpt-4o-mini
+- [x] Switch back to gpt-4o for reliable responses
