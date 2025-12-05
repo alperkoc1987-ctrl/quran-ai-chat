@@ -25,6 +25,8 @@ import { useTransliteration } from "@/contexts/TransliterationContext";
 import { SurahAudioPlayer, getSurahAudioUrls } from "@/lib/audio";
 import { toast } from "sonner";
 import { saveReadingProgress } from "@/lib/readingProgress";
+import { BookmarkButton } from "@/components/BookmarkButton";
+import { VerseNoteDialog } from "@/components/VerseNoteDialog";
 
 export default function SurahReader() {
   const [, params] = useRoute("/surah/:number");
@@ -427,19 +429,22 @@ export default function SurahReader() {
                       <Play className="w-4 h-4" />
                     )}
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className={`h-8 w-8 ${
-                      favorites.has(verseNumber)
-                        ? "text-red-500 hover:text-red-600"
-                        : "text-slate-600 hover:text-red-500"
-                    }`}
-                    onClick={() => toggleFavorite(verseNumber)}
-                    title="Zu Favoriten hinzufügen"
-                  >
-                    <Heart className="w-4 h-4" fill={favorites.has(verseNumber) ? "currentColor" : "none"} />
-                  </Button>
+                  <BookmarkButton
+                    surahNumber={surahInfo.number}
+                    verseNumber={verseNumber}
+                    surahName={surahInfo.englishName}
+                    verseText={ayah.text}
+                    translation={translation?.text || ''}
+                    className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400"
+                  />
+                  <VerseNoteDialog
+                    surahNumber={surahInfo.number}
+                    verseNumber={verseNumber}
+                    surahName={surahInfo.englishName}
+                    verseText={ayah.text}
+                    translation={translation?.text || ''}
+                    className="h-8 w-8 text-slate-600 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400"
+                  />
                   <Button
                     variant="ghost"
                     size="icon"

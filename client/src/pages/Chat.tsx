@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useChat } from "@/hooks/useChat";
 import { MessageBubble } from "@/components/MessageBubble";
@@ -7,7 +7,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown, Settings, Mic, MicOff } from "lucide-react";
+import { Loader2, Send, RotateCcw, BookOpen, ChevronUp, ChevronDown, Settings, Mic, MicOff, MessageSquare, X } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
 import { Surah, Language } from "@/lib/types";
 
@@ -17,6 +17,7 @@ export default function Chat() {
   const [inputValue, setInputValue] = useState("");
   const [language, setLanguage] = useState<Language>(Language.German);
   const [showSurahBrowser, setShowSurahBrowser] = useState(true);
+  const [showChatArea, setShowChatArea] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
@@ -98,15 +99,11 @@ export default function Chat() {
   }, []);
 
   const toggleListening = () => {
-    if (!speechSupported) {
-      alert('Spracheingabe wird in diesem Browser nicht unterstützt. Bitte nutzen Sie Chrome oder Safari.');
-      return;
-    }
-
     // @ts-ignore
     const recognition = window.recognitionInstance;
+    
     if (!recognition) {
-      alert('Spracheingabe konnte nicht initialisiert werden. Bitte laden Sie die Seite neu.');
+      console.error('Speech recognition not initialized');
       return;
     }
 
@@ -118,86 +115,64 @@ export default function Chat() {
         console.log('Starting speech recognition');
         recognition.start();
       }
-    } catch (e: any) {
-      console.error('Speech toggle error:', e);
+    } catch (error) {
+      console.error('Error toggling speech recognition:', error);
       setIsListening(false);
-      
-      if (e.message && e.message.includes('already started')) {
-        // Recognition is already running, stop it
-        try {
-          recognition.stop();
-        } catch (stopError) {
-          console.error('Error stopping recognition:', stopError);
-        }
-      } else {
-        alert('Fehler beim Starten der Spracheingabe. Bitte versuchen Sie es erneut.');
-      }
     }
   };
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (scrollRef.current) {
-      const scrollElement = scrollRef.current.querySelector(
-        "[data-radix-scroll-area-viewport]"
-      );
+      const scrollElement = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollElement) {
         scrollElement.scrollTop = scrollElement.scrollHeight;
       }
     }
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (inputValue.trim()) {
-      sendMessage(inputValue);
-      setInputValue("");
-    }
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return;
+
+    const message = inputValue.trim();
+    setInputValue("");
+    await sendMessage(message);
   };
 
-  const handleOpenSurah = async (surahNumber: number, ayahNumber?: number) => {
-    // Navigate to fullscreen Surah reader
-    navigate(`/surah/${surahNumber}`);
-  };
-
-  const handleSelectSurah = (surah: Surah) => {
-    // Navigate to fullscreen Surah reader
-    navigate(`/surah/${surah.number}`);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
+  const handleSelectSurah = (surah: Surah) => {
+    navigate(`/surah/${surah.number}`);
+  };
+
+  const handleOpenSurah = (surahNumber: number) => {
+    navigate(`/surah/${surahNumber}`);
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="flex flex-col h-screen bg-white dark:bg-slate-900">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 shadow-sm z-10">
-        <div className="container max-w-6xl mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-0">
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-teal-500 to-teal-700 rounded-lg flex items-center justify-center flex-shrink-0">
-              <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-white" />
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm flex-shrink-0">
+        <div className="container max-w-6xl mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-3 md:gap-4 flex-wrap">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="bg-teal-600 p-2 rounded-lg">
+                <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">
+                  Koran & Hadith KI-Chat
+                </h1>
+                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400">
+                  Stellen Sie Ihre Fragen und lesen Sie den Koran
+                </p>
+              </div>
             </div>
-            <div className="flex-1 md:flex-none">
-              <h1 className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">
-                Koran & Hadith KI-Chat
-              </h1>
-              <p className="text-[10px] md:text-sm text-gray-500 leading-tight">
-                Stellen Sie Ihre Fragen und lesen Sie den Koran
-              </p>
-            </div>
-            {/* Mobile Settings Button (visible only on mobile, right aligned) */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsSettingsOpen(true)}
-              className="md:hidden text-gray-500 hover:text-gray-700 -mr-2"
-            >
-              <Settings className="w-5 h-5" />
-            </Button>
-          </div>
 
           <div className="flex items-center gap-2 md:gap-3 w-full md:w-auto justify-between md:justify-end">
             <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
@@ -208,7 +183,7 @@ export default function Chat() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsSettingsOpen(true)}
-                className="hidden md:flex text-gray-500 hover:text-gray-700"
+                className="hidden md:flex text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
               >
                 <Settings className="w-5 h-5" />
               </Button>
@@ -217,7 +192,7 @@ export default function Chat() {
                 variant="outline"
                 size="sm"
                 onClick={clearMessages}
-                className="gap-2 h-8 md:h-9 text-xs md:text-sm"
+                className="gap-2 h-8 md:h-9 text-xs md:text-sm dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 <RotateCcw className="w-3 h-3 md:w-4 md:h-4" />
                 <span className="inline">Neu</span>
@@ -225,12 +200,25 @@ export default function Chat() {
             </div>
           </div>
         </div>
+      </div>
       </header>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Chat Section - Fixed height to prevent collapse */}
-        <div className="flex-1 flex flex-col overflow-hidden border-b border-slate-200 min-h-0">
+      <div className="flex-1 flex flex-col overflow-hidden relative">
+        {/* Floating Chat Button - Only show when chat is hidden */}
+        {!showChatArea && (
+          <button
+            onClick={() => setShowChatArea(true)}
+            className="fixed bottom-6 right-6 z-50 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all hover:scale-105"
+          >
+            <MessageSquare className="w-5 h-5" />
+            <span className="font-medium">Frage zum Tafsir stellen</span>
+          </button>
+        )}
+
+        {/* Chat Section - Only show when expanded */}
+        {showChatArea && (
+          <div className="flex-1 flex flex-col overflow-hidden border-b border-slate-200 dark:border-slate-700 min-h-0 bg-white dark:bg-slate-900">
           {/* Messages Area */}
           <ScrollArea className="flex-1 min-h-0" ref={scrollRef}>
             <div className="container max-w-6xl mx-auto px-4 py-6 space-y-4">
@@ -244,7 +232,7 @@ export default function Chat() {
 
               {isLoading && (
                 <div className="flex justify-start mb-4">
-                  <div className="bg-gray-100 text-gray-900 rounded-lg rounded-bl-none px-4 py-3 flex items-center gap-2">
+                  <div className="bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-lg rounded-bl-none px-4 py-3 flex items-center gap-2">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     <span className="text-sm">Antwort wird generiert...</span>
                   </div>
@@ -252,7 +240,7 @@ export default function Chat() {
               )}
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-red-800 text-sm">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-red-800 dark:text-red-200 text-sm">
                   <p className="font-semibold">Fehler</p>
                   <p>{error}</p>
                 </div>
@@ -261,9 +249,19 @@ export default function Chat() {
           </ScrollArea>
 
           {/* Input Area - Fixed at bottom */}
-          <div className="bg-white border-t border-slate-200 shadow-lg p-4 flex-shrink-0">
+          <div className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 shadow-lg p-4 flex-shrink-0">
             <div className="container max-w-6xl mx-auto">
-              <div className="flex gap-2">
+              <div className="flex gap-2 relative">
+                {/* Close Chat Button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowChatArea(false)}
+                  className="absolute -top-12 right-0 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                  title="Chat schließen"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
                 <Input
                   type="text"
                   placeholder="Stellen Sie eine Frage zum Koran oder den Hadithen..."
@@ -271,14 +269,14 @@ export default function Chat() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
                   disabled={isLoading}
-                  className="flex-1"
+                  className="flex-1 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700"
                 />
                 <Button
                   variant={isListening ? "destructive" : "outline"}
                   size="icon"
                   onClick={toggleListening}
                   disabled={isLoading}
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 dark:border-slate-700"
                   title={isListening ? "Aufnahme stoppen" : "Spracheingabe starten"}
                 >
                   {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
@@ -294,20 +292,21 @@ export default function Chat() {
               </div>
 
               {/* Disclaimer */}
-              <p className="text-xs text-gray-500 mt-2 text-center">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
                 Diese KI-Antworten dienen nur zu Informationszwecken. Bitte konsultieren Sie einen
                 islamischen Gelehrten für wichtige religiöse Fragen.
               </p>
             </div>
           </div>
-        </div>
+          </div>
+        )}
 
         {/* Surah Browser Section - Responsive height */}
-        <div className="flex flex-col bg-white border-t border-slate-200 h-[60vh] md:h-[70vh]">
-          <div className="bg-white border-b border-slate-200 px-4 py-2 flex-shrink-0">
+        <div className="flex flex-col bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 h-[60vh] md:h-[70vh]">
+          <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-4 py-2 flex-shrink-0">
             <button
               onClick={() => setShowSurahBrowser(!showSurahBrowser)}
-              className="w-full flex items-center justify-center gap-2 text-teal-600 hover:text-teal-700 font-semibold text-sm py-2"
+              className="w-full flex items-center justify-center gap-2 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold text-sm py-2"
             >
               {showSurahBrowser ? (
                 <>

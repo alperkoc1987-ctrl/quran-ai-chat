@@ -103,3 +103,12 @@
 - [x] Add multiple reciter selection in Settings (Abdul Basit, Al-Husary, Sudais, Alafasy)
 - [x] Expand Prophet Stories with full narratives, Quranic verses, and Hadiths (8 prophets)
 - [x] Implement reading progress tracking (save last read Surah + Verse, auto-resume)
+
+## New Feature Requests (December 2025 - Part 2)
+- [x] Fix Dark Mode in Quran section (still not working properly)
+- [x] Replace large AI chat window in Quran section with small floating icon
+- [x] Add floating chat icon with text "Frage zum Tafsir stellen"
+- [x] Implement verse bookmarking system (mark verses as favorites)
+- [x] Add personal notes feature for individual verses
+- [x] Create favorites collections management (organize bookmarked verses)
+- [x] Add UI to view and manage all bookmarks and notes

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle, Settings as SettingsIcon } from "lucide-react";
+import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle, Settings as SettingsIcon, Bookmark } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/useChat";
@@ -192,6 +192,14 @@ export default function NewHome() {
       icon: AlertTriangle,
       link: "/signs",
       gradient: "from-red-500 to-rose-600"
+    },
+    {
+      id: "bookmarks",
+      title: "Lesezeichen",
+      description: "Gespeicherte Verse & Notizen",
+      icon: Bookmark,
+      link: "/bookmarks",
+      gradient: "from-teal-500 to-emerald-600"
     },
     {
       id: "settings",
