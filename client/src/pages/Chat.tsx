@@ -45,23 +45,27 @@ export default function Chat() {
     };
 
     recognition.onerror = (event: any) => {
-      // Silently handle common errors to avoid user frustration
+      console.log("Speech error:", event.error);
+      setIsListening(false);
       if (event.error === 'not-allowed') {
         alert("Bitte erlauben Sie den Zugriff auf das Mikrofon.");
       }
-      setIsListening(false);
     };
 
     recognition.onend = () => {
       setIsListening(false);
     };
 
-    // Store recognition instance on window to access it in toggle function
     // @ts-ignore
     window.recognitionInstance = recognition;
 
     return () => {
-      recognition.abort();
+      // Cleanup safely
+      try {
+        recognition.abort();
+      } catch (e) {
+        // Ignore abort errors
+      }
     };
   }, []);
 
@@ -69,16 +73,21 @@ export default function Chat() {
     // @ts-ignore
     const recognition = window.recognitionInstance;
     if (!recognition) {
-      alert("Ihr Browser unterstützt keine Spracheingabe.");
+      alert("Ihr Browser unterstützt keine Spracheingabe. Bitte nutzen Sie Chrome oder Safari.");
       return;
     }
 
-    if (isListening) {
-      recognition.stop();
+    try {
+      if (isListening) {
+        recognition.stop();
+        setIsListening(false);
+      } else {
+        recognition.start();
+        setIsListening(true);
+      }
+    } catch (e) {
+      console.error("Speech toggle error:", e);
       setIsListening(false);
-    } else {
-      recognition.start();
-      setIsListening(true);
     }
   };
 
