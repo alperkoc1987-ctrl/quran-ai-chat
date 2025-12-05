@@ -61,6 +61,10 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      // If detailed error info is available, use it
+      if (errorData.error && errorData.details) {
+        throw new Error(`${errorData.error}\nDetails: ${errorData.details}`);
+      }
       throw new Error(errorData.error || `API Error: ${response.status} ${response.statusText}`);
     }
 

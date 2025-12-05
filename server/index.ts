@@ -104,7 +104,11 @@ async function startServer() {
       return res.status(200).json(data);
     } catch (error) {
       console.error("Internal Server Error:", error);
-      return res.status(500).json({ error: "Internal Server Error. Please try again later." });
+      const errorDetails = error instanceof Error ? error.message : String(error);
+      return res.status(500).json({ 
+        error: `Internal Server Error: ${errorDetails}`,
+        details: error instanceof Error ? error.stack : undefined
+      });
     }
   });
 
