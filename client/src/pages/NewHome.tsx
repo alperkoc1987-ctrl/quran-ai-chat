@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle, Settings as SettingsIcon, Bookmark, TrendingUp } from "lucide-react";
+import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle, Settings as SettingsIcon, Bookmark, TrendingUp, Brain } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/useChat";
 import { MessageBubble } from "@/components/MessageBubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResumeReadingCard } from "@/components/ResumeReadingCard";
+import { AyatOfTheDay } from "@/components/AyatOfTheDay";
 
 export default function NewHome() {
   const [chatExpanded, setChatExpanded] = useState(true);
@@ -202,6 +203,14 @@ export default function NewHome() {
       gradient: "from-blue-500 to-cyan-600"
     },
     {
+      id: "quiz",
+      title: "Quiz",
+      description: "Teste dein islamisches Wissen",
+      icon: Brain,
+      link: "/quiz",
+      gradient: "from-purple-500 to-pink-600"
+    },
+    {
       id: "bookmarks",
       title: "Lesezeichen",
       description: "Gespeicherte Verse & Notizen",
@@ -243,6 +252,11 @@ export default function NewHome() {
         <ResumeReadingCard />
       </div>
 
+      {/* Ayat des Tages */}
+      <div className="container mx-auto px-4 pt-4">
+        <AyatOfTheDay />
+      </div>
+
       {/* Collapsible AI Chat Section */}
       <div className="container mx-auto px-4 py-4">
         <Card className="overflow-hidden">
@@ -274,6 +288,17 @@ export default function NewHome() {
                   {messages.map((msg) => (
                     <MessageBubble key={msg.id} message={msg} />
                   ))}
+                  {isLoading && (
+                    <div className="flex justify-start mb-4">
+                      <div className="bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-lg rounded-bl-none px-4 py-3 flex items-center gap-2">
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                          <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                          <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </ScrollArea>
               )}
               

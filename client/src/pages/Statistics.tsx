@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, TrendingUp, Clock, Flame, BookOpen, Target } from "lucide-react";
+import { ArrowLeft, TrendingUp, Clock, Flame, BookOpen, Target, Brain, Award } from "lucide-react";
 import { useLocation } from "wouter";
 import {
   getStatistics,
@@ -18,6 +18,7 @@ export function Statistics() {
   const [timeToday, setTimeToday] = useState(0);
   const [recentSessions, setRecentSessions] = useState<ReadingSession[]>([]);
   const [totalProgress, setTotalProgress] = useState(0);
+  const [quizStats, setQuizStats] = useState({ totalQuestions: 0, correctAnswers: 0 });
 
   useEffect(() => {
     // Load statistics
@@ -27,6 +28,12 @@ export function Statistics() {
     setTimeToday(getTimeSpentToday());
     setRecentSessions(getRecentSessions(7)); // Last 7 days
     setTotalProgress(getTotalProgressPercentage());
+    
+    // Load quiz statistics
+    const savedQuizStats = localStorage.getItem('quizStats');
+    if (savedQuizStats) {
+      setQuizStats(JSON.parse(savedQuizStats));
+    }
   }, []);
 
   return (
@@ -93,6 +100,29 @@ export function Statistics() {
               <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
                 Längste Serie: {stats.longestStreak} Tage
               </div>
+            </div>
+          </div>
+
+          {/* Quiz Stats */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <Brain className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Quiz-Punkte</h3>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                {quizStats.correctAnswers}/{quizStats.totalQuestions}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Richtige Antworten
+              </div>
+              {quizStats.totalQuestions > 0 && (
+                <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                  Erfolgsquote: {Math.round((quizStats.correctAnswers / quizStats.totalQuestions) * 100)}%
+                </div>
+              )}
             </div>
           </div>
 

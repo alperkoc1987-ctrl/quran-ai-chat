@@ -18,6 +18,7 @@ import Settings from "./pages/Settings";
 import Bookmarks from "./pages/Bookmarks";
 
 import { Statistics } from "./pages/Statistics";
+import Quiz from "./pages/Quiz"; // Quiz feature added
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/bookmarks" component={Bookmarks} />
 
       <Route path="/statistics" component={Statistics} />
+      <Route path="/quiz" component={Quiz} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

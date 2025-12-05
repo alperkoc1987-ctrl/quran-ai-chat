@@ -233,8 +233,11 @@ export default function Chat() {
               {isLoading && (
                 <div className="flex justify-start mb-4">
                   <div className="bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-lg rounded-bl-none px-4 py-3 flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-sm">Antwort wird generiert...</span>
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                      <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                      <span className="w-2 h-2 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    </div>
                   </div>
                 </div>
               )}

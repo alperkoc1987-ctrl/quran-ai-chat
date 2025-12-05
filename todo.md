@@ -163,3 +163,18 @@
 ## Critical Bugs (December 2025 - Part 5)
 - [x] API error still occurring in KI chat - fixed by clearing build cache and restarting server on port 3000
 - [x] Search card still visible on homepage - fixed by clearing Vite build cache
+
+## User-Reported Issues (December 2025 - Part 6)
+- [ ] Search card still visible on user's device (needs verification on actual deployed site)
+- [ ] Statistics card not visible on user's device
+- [ ] API still not working on user's device
+
+## New Feature Requests (December 2025 - Part 7)
+- [x] Add loading animation with 3 animated dots while chatbot is generating response
+- [x] Switch to cheaper OpenAI model (gpt-3.5-turbo or gpt-4o-mini) to reduce costs
+- [x] Implement "Ayat des Tages" (Verse of the Day) feature with special/inspirational verses
+- [x] Create quiz section with Islamic knowledge questions
+- [x] Add 4 answer options per quiz question
+- [x] Implement cool animation for correct answers
+- [x] Add points system for quiz (track correct answers)
+- [x] Integrate quiz points into Statistics dashboard
