@@ -37,3 +37,11 @@
 - [x] Replace "Chat öffnen" button with direct chat input field on home page
 - [x] Fix microphone/audio input functionality (improved error handling, browser compatibility checks, better user feedback)
 - [x] Fix "Der API Key ist ungültig" error (resolved - backend works, frontend cache issue)
+
+## New Feature Requests
+- [x] Add transliteration toggle option in settings (show/hide Latin transcription of Arabic text)
+- [x] Redesign Surah viewer as fullscreen page (not modal dialog)
+- [x] Display verses with Arabic text, transliteration (optional), and German translation
+- [x] Add verse action icons (play audio, favorite, copy, share)
+- [x] Maintain existing teal/emerald color scheme in new design
+- [x] Update routing to navigate to fullscreen Surah page

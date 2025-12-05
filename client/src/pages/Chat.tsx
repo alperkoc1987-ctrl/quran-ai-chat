@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { useChat } from "@/hooks/useChat";
 import { MessageBubble } from "@/components/MessageBubble";
 import { SurahList } from "@/components/SurahList";
-import { SurahViewer } from "@/components/SurahViewer";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,10 +12,10 @@ import { SettingsModal } from "@/components/SettingsModal";
 import { Surah, Language } from "@/lib/types";
 
 export default function Chat() {
+  const [, navigate] = useLocation();
   const { messages, isLoading, error, sendMessage, clearMessages } = useChat();
   const [inputValue, setInputValue] = useState("");
   const [language, setLanguage] = useState<Language>(Language.German);
-  const [selectedSurah, setSelectedSurah] = useState<Surah | null>(null);
   const [showSurahBrowser, setShowSurahBrowser] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -155,17 +155,13 @@ export default function Chat() {
   };
 
   const handleOpenSurah = async (surahNumber: number, ayahNumber?: number) => {
-    // Fetch surah details first to get the full object
-    try {
-      const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
-      const data = await response.json();
-      if (data.code === 200) {
-        setSelectedSurah(data.data);
-        // Note: Auto-scrolling to specific ayah would require additional implementation in SurahViewer
-      }
-    } catch (error) {
-      console.error("Failed to fetch surah details:", error);
-    }
+    // Navigate to fullscreen Surah reader
+    navigate(`/surah/${surahNumber}`);
+  };
+
+  const handleSelectSurah = (surah: Surah) => {
+    // Navigate to fullscreen Surah reader
+    navigate(`/surah/${surah.number}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -330,8 +326,7 @@ export default function Chat() {
           {showSurahBrowser && (
             <div className="flex-1 overflow-hidden min-h-0">
               <SurahList
-                onSelectSurah={setSelectedSurah}
-                selectedSurahNumber={selectedSurah?.number}
+                onSelectSurah={handleSelectSurah}
               />
             </div>
           )}
@@ -339,19 +334,6 @@ export default function Chat() {
       </div>
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-
-      {/* Surah Viewer Modal */}
-      {selectedSurah && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden">
-            <SurahViewer
-              surah={selectedSurah}
-              language={language}
-              onClose={() => setSelectedSurah(null)}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

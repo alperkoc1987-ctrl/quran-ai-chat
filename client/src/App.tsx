@@ -10,6 +10,7 @@ import Duas from "./pages/Duas";
 import DuaDetail from "./pages/DuaDetail";
 import PrayerTimes from "./pages/PrayerTimes";
 import Qibla from "./pages/Qibla";
+import SurahReader from "./pages/SurahReader";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/" component={NewHome} />
       <Route path="/chat" component={Chat} />
       <Route path="/quran" component={Chat} />
+      <Route path="/surah/:number" component={SurahReader} />
       <Route path="/duas" component={Duas} />
       <Route path="/duas/:categoryId" component={DuaDetail} />
       <Route path="/prayer-times" component={PrayerTimes} />

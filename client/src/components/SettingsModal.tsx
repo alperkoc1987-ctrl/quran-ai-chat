@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Settings, X, Key } from "lucide-react";
+import { Settings, X, Key, Languages } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ const DEFAULT_API_KEY = "sk-proj-9Rr0SQrwjljxA26aefs7IBYlEPjNetNzXchu5eS62zaW-7r
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [apiKey, setApiKey] = useState("");
   const [isSaved, setIsSaved] = useState(false);
+  const [showTransliteration, setShowTransliteration] = useState(false);
 
   useEffect(() => {
     const storedKey = localStorage.getItem("openai_api_key");
@@ -25,19 +27,27 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       // Also save it to localStorage immediately so it works right away
       localStorage.setItem("openai_api_key", DEFAULT_API_KEY);
     }
+
+    // Load transliteration preference
+    const translitPref = localStorage.getItem("show_transliteration");
+    setShowTransliteration(translitPref === "true");
   }, [isOpen]);
 
   const handleSave = () => {
     if (apiKey.trim()) {
       localStorage.setItem("openai_api_key", apiKey.trim());
-      setIsSaved(true);
-      setTimeout(() => {
-        setIsSaved(false);
-        onClose();
-      }, 1000);
     } else {
       localStorage.removeItem("openai_api_key");
     }
+
+    // Save transliteration preference
+    localStorage.setItem("show_transliteration", showTransliteration.toString());
+
+    setIsSaved(true);
+    setTimeout(() => {
+      setIsSaved(false);
+      onClose();
+    }, 1000);
   };
 
   if (!isOpen) return null;
@@ -73,6 +83,22 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             <p className="text-xs text-gray-500 mt-1">
               Ihr Key wird nur lokal in Ihrem Browser gespeichert und niemals an unseren Server gesendet (außer zur Weiterleitung an OpenAI).
             </p>
+          </div>
+
+          <div className="border-t pt-4">
+            <label className="flex items-center justify-between cursor-pointer">
+              <div className="flex items-center gap-3">
+                <Languages className="w-5 h-5 text-teal-600" />
+                <div>
+                  <p className="text-sm font-medium text-gray-700">Transliteration anzeigen</p>
+                  <p className="text-xs text-gray-500">Lateinische Umschrift des arabischen Textes</p>
+                </div>
+              </div>
+              <Switch
+                checked={showTransliteration}
+                onCheckedChange={setShowTransliteration}
+              />
+            </label>
           </div>
 
           <div className="flex justify-end gap-2 mt-6">

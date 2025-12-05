@@ -153,3 +153,33 @@ export async function fetchSurahWithTranslation(
     throw error;
   }
 }
+
+export async function fetchSurahComplete(
+  surahNumber: number,
+  translationEdition: string = "de.bubenheim",
+  includeTransliteration: boolean = false
+): Promise<{ 
+  arabic: SurahWithAyahs; 
+  translation: SurahWithAyahs;
+  transliteration?: SurahWithAyahs;
+}> {
+  try {
+    const arabicResponse = await fetchSurahWithAyahs(surahNumber, "quran-uthmani");
+    const translationResponse = await fetchSurahWithAyahs(surahNumber, translationEdition);
+    
+    const result: any = {
+      arabic: arabicResponse,
+      translation: translationResponse,
+    };
+
+    if (includeTransliteration) {
+      const transliterationResponse = await fetchSurahWithAyahs(surahNumber, "en.transliteration");
+      result.transliteration = transliterationResponse;
+    }
+
+    return result;
+  } catch (error) {
+    console.error(`Failed to fetch complete Surah data:`, error);
+    throw error;
+  }
+}
