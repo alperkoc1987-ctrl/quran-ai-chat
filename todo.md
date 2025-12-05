@@ -62,3 +62,6 @@
 
 ## Critical Bug
 - [x] Fix white screen issue - app not loading at all (fixed localStorage SSR error in TransliterationContext)
+
+## UI/UX Improvements
+- [x] Change homepage category cards from vertical stack to 2-column grid layout on mobile

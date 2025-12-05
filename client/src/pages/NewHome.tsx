@@ -278,7 +278,7 @@ export default function NewHome() {
 
       {/* Main Content - Category Cards */}
       <main className="container mx-auto px-4 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
           {categories.map((category) => {
             const Icon = category.icon;
             return (
