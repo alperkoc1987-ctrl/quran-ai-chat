@@ -159,3 +159,7 @@
 ## Bug Fixes (December 2025 - Part 4)
 - [x] Fix API error in KI chat ("Der eingegebene API Key scheint ungültig zu sein") - fixed by restarting server on port 3000
 - [x] Verify Search card is properly removed from homepage - confirmed removed from code, user needs to clear browser cache
+
+## Critical Bugs (December 2025 - Part 5)
+- [x] API error still occurring in KI chat - fixed by clearing build cache and restarting server on port 3000
+- [x] Search card still visible on homepage - fixed by clearing Vite build cache
