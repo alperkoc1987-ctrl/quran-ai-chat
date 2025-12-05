@@ -74,3 +74,19 @@
 ## New Features
 - [x] Create "Islamische Geschichten" (Islamic Stories) section with categories by prophets (8 prophets with 2x4 grid layout)
 - [x] Create "Zeichen der Stunde" (Signs of the Hour) section for eschatological content (10 signs with filter: minor/major)
+
+## Critical Bugs to Fix
+- [x] Fix Surah audio playback - "Surah abspielen" button not working (works correctly, button toggles to "Pause")
+- [x] Fix Quran verse citation links in chat - black screen appears when scrolling, links should navigate to Surah page in app (now navigates to /surah/{number})
+
+## AI Improvements
+- [x] Change AI tone from formal "Sie" to informal "du" (system prompt updated)
+- [x] Implement conversation context persistence (no repeated greetings like "Wa salam") (system prompt updated to greet only on first contact)
+- [x] Maintain context until app is closed (handled by message history in chat)
+
+## Content Expansion
+- [ ] Add full prophet stories with Quranic verses and Hadiths to Islamic Stories section
+- [ ] Expand Signs of the Hour with more signs and detailed information
+
+## UI/UX Enhancements
+- [x] Implement dark mode toggle with theme switcher (added to SettingsModal, enabled switchable theme in App.tsx)

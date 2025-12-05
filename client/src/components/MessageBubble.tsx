@@ -9,10 +9,30 @@ import { Badge } from "@/components/ui/badge";
 import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 
 interface MessageBubbleProps {
   message: ChatMessage;
   onOpenSurah?: (surahNumber: number, ayahNumber?: number) => void;
+}
+
+function SurahNavigationButton({ surahNumber, ayahNumber, onNavigate }: { surahNumber: number; ayahNumber?: number; onNavigate: () => void }) {
+  const [, setLocation] = useLocation();
+  
+  const handleNavigate = () => {
+    onNavigate();
+    setLocation(`/surah/${surahNumber}${ayahNumber ? `#verse-${ayahNumber}` : ''}`);
+  };
+  
+  return (
+    <Button 
+      className="w-full gap-2 bg-teal-600 hover:bg-teal-700"
+      onClick={handleNavigate}
+    >
+      <ExternalLink className="w-4 h-4" />
+      Im Koran öffnen
+    </Button>
+  );
 }
 
 export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
@@ -198,18 +218,11 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
               </p>
               
               {selectedSource?.type === SourceType.Quran && selectedSource.surahNumber && (
-                <Button 
-                  className="w-full gap-2 bg-teal-600 hover:bg-teal-700"
-                  onClick={() => {
-                    if (onOpenSurah && selectedSource.surahNumber) {
-                      onOpenSurah(selectedSource.surahNumber, selectedSource.ayahNumber);
-                      setSelectedSource(null);
-                    }
-                  }}
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Im Koran öffnen
-                </Button>
+                <SurahNavigationButton 
+                  surahNumber={selectedSource.surahNumber}
+                  ayahNumber={selectedSource.ayahNumber}
+                  onNavigate={() => setSelectedSource(null)}
+                />
               )}
             </div>
           </div>
