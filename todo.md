@@ -629,3 +629,10 @@
 - [x] Position hint top-right next to Dhikr text
 - [x] Hint disappears after first tap or 5 seconds
 - [x] Subtle fade in/out animation for first 3 seconds
+
+
+## Home Page Gradient Fix (Dec 6, 2024 - 22:25)
+- [x] Reverse gradient direction (dark top to light bottom)
+- [x] Make background theme-aware (only Modern theme gets mint green)
+- [x] Other themes (Classic, Sepia, Dark) use their own background colors
+- [x] Test all themes to ensure no color conflicts
