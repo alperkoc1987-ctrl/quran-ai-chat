@@ -501,3 +501,12 @@
 - [x] Fix chat TTS audio (Vorlesen button) not playing - Changed voice from amber to alloy
 - [ ] Test TTS API endpoint and audio generation - Ready for testing
 - [x] Add better error messages for permission denied scenarios - Already implemented
+
+
+## Quran Audio Freeze Issue (Dec 6, 2024 - 18:56)
+- [x] Fix audio playback freeze when playing long Surahs (e.g., Surah 2 with 286 verses) - Implemented lazy loading
+- [x] Implement lazy loading for audio files (don't preload all verses) - Only load current verse
+- [x] Add memory management to clean up old audio objects - Cleanup after each verse
+- [x] Improve error handling with better user feedback - Added specific error messages
+- [x] Add timeout for long loading times - 10 second timeout per verse
+- [ ] Test with Surah 2 (Al-Baqarah) - 286 verses - Ready for testing

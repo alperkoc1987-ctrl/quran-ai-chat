@@ -210,19 +210,29 @@ export default function SurahReader() {
         });
       } catch (error: any) {
         console.error("Audio playback error:", error);
+        setIsPlaying(false);
+        setPlayingVerseNumber(null);
         
         // Handle specific browser autoplay errors
         if (error.name === 'NotAllowedError' || error.message?.includes('play')) {
           toast.error("Wiedergabe blockiert", {
-            description: "Bitte tippen Sie nochmal auf Play, um die Wiedergabe zu starten. Ihr Browser blockiert automatisches Abspielen."
+            description: "Bitte tippen Sie nochmal auf Play, um die Wiedergabe zu starten. Ihr Browser blockiert automatisches Abspielen.",
+            duration: 5000
           });
-        } else if (error.message?.includes('network') || error.message?.includes('load')) {
+        } else if (error.message?.includes('timeout') || error.message?.includes('load')) {
+          toast.error("Ladefehler", {
+            description: "Die Audio-Datei konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+            duration: 5000
+          });
+        } else if (error.message?.includes('network')) {
           toast.error("Netzwerkfehler", {
-            description: "Die Audio-Datei konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung."
+            description: "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung.",
+            duration: 5000
           });
         } else {
           toast.error("Wiedergabe fehlgeschlagen", {
-            description: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+            description: `Ein Fehler ist aufgetreten: ${error.message || 'Unbekannter Fehler'}. Bitte versuchen Sie es erneut.`,
+            duration: 5000
           });
         }
       }

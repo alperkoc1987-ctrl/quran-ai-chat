@@ -102,25 +102,29 @@ export function preloadAudio(url: string): Promise<HTMLAudioElement> {
 
 /**
  * Audio player class for sequential playback of multiple verses
+ * Optimized for long Surahs with lazy loading and memory management
  */
 export class SurahAudioPlayer {
-  private audioElements: HTMLAudioElement[] = [];
+  private audioUrls: string[] = [];
+  private currentAudio: HTMLAudioElement | null = null;
   private currentIndex = 0;
   private isPlaying = false;
   private onProgressCallback?: (current: number, total: number) => void;
   private onEndCallback?: () => void;
+  private loadTimeout = 10000; // 10 seconds timeout for loading
 
   constructor(audioUrls: string[]) {
-    this.audioElements = audioUrls.map(url => new Audio(url));
+    console.log('[SurahAudioPlayer] Created with', audioUrls.length, 'verses');
+    this.audioUrls = audioUrls;
   }
 
   /**
    * Play the audio from the current index
    */
   async play() {
-    console.log('[SurahAudioPlayer] play() called, currentIndex:', this.currentIndex, 'total:', this.audioElements.length);
+    console.log('[SurahAudioPlayer] play() called, currentIndex:', this.currentIndex, 'total:', this.audioUrls.length);
     
-    if (this.currentIndex >= this.audioElements.length) {
+    if (this.currentIndex >= this.audioUrls.length) {
       console.log('[SurahAudioPlayer] Resetting to start');
       this.currentIndex = 0;
     }
@@ -130,49 +134,119 @@ export class SurahAudioPlayer {
   }
 
   /**
-   * Play the current audio element
+   * Load audio with timeout
+   */
+  private loadAudioWithTimeout(url: string): Promise<HTMLAudioElement> {
+    return new Promise((resolve, reject) => {
+      const audio = new Audio();
+      let timeoutId: NodeJS.Timeout;
+      let loaded = false;
+
+      const cleanup = () => {
+        if (timeoutId) clearTimeout(timeoutId);
+        audio.removeEventListener('canplaythrough', onCanPlay);
+        audio.removeEventListener('error', onError);
+      };
+
+      const onCanPlay = () => {
+        if (loaded) return;
+        loaded = true;
+        cleanup();
+        console.log('[SurahAudioPlayer] Audio loaded successfully:', url);
+        resolve(audio);
+      };
+
+      const onError = (e: any) => {
+        if (loaded) return;
+        loaded = true;
+        cleanup();
+        console.error('[SurahAudioPlayer] Audio load error:', e, 'URL:', url);
+        reject(new Error(`Failed to load audio: ${url}`));
+      };
+
+      // Set timeout
+      timeoutId = setTimeout(() => {
+        if (loaded) return;
+        loaded = true;
+        cleanup();
+        console.error('[SurahAudioPlayer] Audio load timeout:', url);
+        reject(new Error(`Audio load timeout: ${url}`));
+      }, this.loadTimeout);
+
+      audio.addEventListener('canplaythrough', onCanPlay, { once: true });
+      audio.addEventListener('error', onError, { once: true });
+      
+      audio.src = url;
+      audio.load();
+    });
+  }
+
+  /**
+   * Play the current audio element (lazy loading)
    */
   private async playCurrentAudio() {
-    if (!this.isPlaying || this.currentIndex >= this.audioElements.length) {
+    if (!this.isPlaying || this.currentIndex >= this.audioUrls.length) {
       console.log('[SurahAudioPlayer] Playback stopped or ended');
       this.isPlaying = false;
+      this.cleanup();
       this.onEndCallback?.();
       return;
     }
 
-    const audio = this.audioElements[this.currentIndex];
-    const audioUrl = audio.src;
-    console.log('[SurahAudioPlayer] Playing audio:', audioUrl, 'index:', this.currentIndex);
-    
-    // Set up event listeners
-    audio.onended = () => {
-      console.log('[SurahAudioPlayer] Audio ended, moving to next');
-      this.currentIndex++;
-      this.onProgressCallback?.(this.currentIndex, this.audioElements.length);
-      this.playCurrentAudio();
-    };
-
-    audio.onerror = (e) => {
-      console.error('[SurahAudioPlayer] Audio error event:', e, 'URL:', audioUrl);
-    };
+    const audioUrl = this.audioUrls[this.currentIndex];
+    console.log('[SurahAudioPlayer] Loading audio:', audioUrl, 'index:', this.currentIndex);
 
     try {
-      console.log('[SurahAudioPlayer] Calling audio.play()');
-      const playPromise = audio.play();
-      console.log('[SurahAudioPlayer] Play promise:', playPromise);
-      await playPromise;
+      // Clean up previous audio
+      this.cleanup();
+
+      // Lazy load current audio
+      this.currentAudio = await this.loadAudioWithTimeout(audioUrl);
+      
+      // Set up event listeners
+      this.currentAudio.onended = () => {
+        console.log('[SurahAudioPlayer] Audio ended, moving to next');
+        this.currentIndex++;
+        this.onProgressCallback?.(this.currentIndex, this.audioUrls.length);
+        this.playCurrentAudio();
+      };
+
+      this.currentAudio.onerror = (e) => {
+        console.error('[SurahAudioPlayer] Audio playback error:', e, 'URL:', audioUrl);
+        this.isPlaying = false;
+        this.cleanup();
+        this.onEndCallback?.();
+      };
+
+      // Play audio
+      console.log('[SurahAudioPlayer] Playing audio');
+      await this.currentAudio.play();
       console.log('[SurahAudioPlayer] Audio playing successfully');
-      this.onProgressCallback?.(this.currentIndex, this.audioElements.length);
+      this.onProgressCallback?.(this.currentIndex, this.audioUrls.length);
+      
     } catch (error: any) {
-      console.error('[SurahAudioPlayer] Error playing audio:', error);
+      console.error('[SurahAudioPlayer] Error in playCurrentAudio:', error);
       console.error('[SurahAudioPlayer] Error name:', error.name);
       console.error('[SurahAudioPlayer] Error message:', error.message);
       console.error('[SurahAudioPlayer] Audio URL:', audioUrl);
-      console.error('[SurahAudioPlayer] Audio readyState:', audio.readyState);
-      console.error('[SurahAudioPlayer] Audio networkState:', audio.networkState);
+      
       this.isPlaying = false;
+      this.cleanup();
       this.onEndCallback?.();
       throw error; // Re-throw to let caller handle it
+    }
+  }
+
+  /**
+   * Clean up current audio element
+   */
+  private cleanup() {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.src = '';
+      this.currentAudio.onended = null;
+      this.currentAudio.onerror = null;
+      this.currentAudio = null;
     }
   }
 
@@ -180,10 +254,10 @@ export class SurahAudioPlayer {
    * Pause the audio
    */
   pause() {
+    console.log('[SurahAudioPlayer] Pausing');
     this.isPlaying = false;
-    const currentAudio = this.audioElements[this.currentIndex];
-    if (currentAudio) {
-      currentAudio.pause();
+    if (this.currentAudio) {
+      this.currentAudio.pause();
     }
   }
 
@@ -191,12 +265,10 @@ export class SurahAudioPlayer {
    * Stop the audio and reset to the beginning
    */
   stop() {
+    console.log('[SurahAudioPlayer] Stopping');
     this.pause();
     this.currentIndex = 0;
-    this.audioElements.forEach(audio => {
-      audio.pause();
-      audio.currentTime = 0;
-    });
+    this.cleanup();
   }
 
   /**
@@ -204,8 +276,9 @@ export class SurahAudioPlayer {
    * @param index - Verse index (0-based)
    */
   jumpTo(index: number) {
+    console.log('[SurahAudioPlayer] Jumping to index:', index);
     this.stop();
-    this.currentIndex = Math.max(0, Math.min(index, this.audioElements.length - 1));
+    this.currentIndex = Math.max(0, Math.min(index, this.audioUrls.length - 1));
   }
 
   /**
@@ -231,7 +304,7 @@ export class SurahAudioPlayer {
     return {
       isPlaying: this.isPlaying,
       currentIndex: this.currentIndex,
-      total: this.audioElements.length,
+      total: this.audioUrls.length,
     };
   }
 
@@ -239,7 +312,8 @@ export class SurahAudioPlayer {
    * Clean up resources
    */
   destroy() {
+    console.log('[SurahAudioPlayer] Destroying');
     this.stop();
-    this.audioElements = [];
+    this.audioUrls = [];
   }
 }
