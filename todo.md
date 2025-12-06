@@ -611,3 +611,10 @@
 - [x] Show spinner animation while TTS audio is being generated
 - [x] Replace speaker icon with loading spinner during generation
 - [x] Improve UX feedback for TTS button
+
+
+## Mini-Player Bug Fix (Dec 6, 2024 - 21:25)
+- [x] Fix mini-player not appearing when clicking play button in Surah list
+- [x] Ensure mini-player shows Surah info and controls when playing from list
+- [x] Verify mini-player persists when navigating between pages
+- [x] Test play/pause functionality from Surah list

@@ -3,15 +3,15 @@
  * Component for displaying a vertical list of all Surahs with selection functionality.
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Surah } from "@/lib/types";
 import { fetchAllSurahs } from "@/lib/api";
 import { Loader2, Play, Pause, Heart, Search } from "lucide-react";
-import { getSurahAudioUrls, SurahAudioPlayer } from "@/lib/audio";
 import { toast } from "sonner";
 import { CircularProgress } from "@/components/CircularProgress";
 import { getSurahProgress } from "@/lib/readingProgress";
 import { useLocation } from "wouter";
+import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 // Removed tRPC import - using localStorage instead
 
 interface SurahListProps {
@@ -25,9 +25,8 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
-  const [playingSurahNumber, setPlayingSurahNumber] = useState<number | null>(null);
-  const audioPlayerRef = useRef<SurahAudioPlayer | null>(null);
   const [, navigate] = useLocation();
+  const { state: audioState, playSurah, pause, resume } = useAudioPlayer();
 
   useEffect(() => {
     const loadSurahs = async () => {
@@ -106,48 +105,34 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   const handlePlayPause = async (surah: Surah, e: React.MouseEvent) => {
     e.stopPropagation();
     
-    // If this surah is already playing, pause it
-    if (playingSurahNumber === surah.number) {
-      audioPlayerRef.current?.pause();
-      setPlayingSurahNumber(null);
-      toast.info("Wiedergabe pausiert");
+    // If this surah is already playing, pause or resume it
+    if (audioState.surahNumber === surah.number) {
+      if (audioState.isPlaying) {
+        pause();
+        toast.info("Wiedergabe pausiert");
+      } else {
+        try {
+          await resume();
+          toast.info("Wiedergabe fortgesetzt");
+        } catch (error) {
+          console.error("Error resuming surah:", error);
+          toast.error("Fehler beim Fortsetzen");
+        }
+      }
       return;
     }
     
-    // Stop any currently playing audio
-    if (audioPlayerRef.current) {
-      audioPlayerRef.current.destroy();
-    }
-    
-    // Start playing the new surah
+    // Start playing the new surah using global audio player context
     try {
-      const audioUrls = getSurahAudioUrls(surah.number, surah.numberOfAyahs);
-      const player = new SurahAudioPlayer(audioUrls);
-      
-      player.onEnd(() => {
-        setPlayingSurahNumber(null);
-        toast.success("Wiedergabe beendet");
-      });
-      
-      audioPlayerRef.current = player;
-      setPlayingSurahNumber(surah.number);
-      await player.play();
+      await playSurah(surah.number, surah.englishName, surah.numberOfAyahs, 0);
       toast.success(`${surah.englishName} wird abgespielt`);
     } catch (error) {
       console.error("Error playing surah:", error);
       toast.error("Fehler beim Abspielen");
-      setPlayingSurahNumber(null);
     }
   };
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (audioPlayerRef.current) {
-        audioPlayerRef.current.destroy();
-      }
-    };
-  }, []);
+  // No cleanup needed - AudioPlayerContext handles it
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchQuery.trim()) {
@@ -244,7 +229,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
                     className="flex-shrink-0 text-teal-600 hover:bg-teal-100 p-2 rounded-md cursor-pointer transition-colors"
                     onClick={(e) => handlePlayPause(surah, e)}
                   >
-                    {playingSurahNumber === surah.number ? (
+                    {audioState.surahNumber === surah.number && audioState.isPlaying ? (
                       <Pause className="w-5 h-5 fill-current" />
                     ) : (
                       <Play className="w-5 h-5 fill-current" />
