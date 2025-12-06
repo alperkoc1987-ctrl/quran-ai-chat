@@ -41,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
       body: JSON.stringify({
         model: "tts-1",
-        voice: "alloy", // Neutral, clear voice (compatible with all APIs)
+        voice: "echo", // Male, deep, warm voice
         input: text,
         speed: 1.0,
       }),

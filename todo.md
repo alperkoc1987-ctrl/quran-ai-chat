@@ -545,3 +545,7 @@
 ## Quiz UX Improvement (Dec 6, 2024 - 19:58)
 - [x] Add auto-scroll to "Nächste Frage" button after selecting answer
 - [x] Improve quiz user experience - Auto-scrolls after 300ms
+
+
+## TTS Voice Change (Dec 6, 2024 - 20:15)
+- [x] Change TTS voice from alloy to echo (male, deep, warm voice)
