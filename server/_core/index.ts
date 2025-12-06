@@ -108,11 +108,8 @@ async function startServer() {
       let apiUrl;
       if (apiKey === process.env.BUILT_IN_FORGE_API_KEY) {
         apiUrl = "https://forge.manus.ai/v1/chat/completions";
-      } else if (process.env.OPENAI_BASE_URL) {
-        // Use custom OpenAI base URL if configured (e.g., Manus proxy)
-        apiUrl = process.env.OPENAI_BASE_URL + "/chat/completions";
       } else {
-        // Default to standard OpenAI API
+        // Always use real OpenAI API for OPENAI_API_KEY (Manus proxy doesn't work reliably)
         apiUrl = "https://api.openai.com/v1/chat/completions";
       }
 
