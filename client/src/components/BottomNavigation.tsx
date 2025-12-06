@@ -1,4 +1,4 @@
-import { Home, BookOpen, MessageSquare, Settings } from "lucide-react";
+import { Home, BookOpen, HandHeart, Sparkles, Settings } from "lucide-react";
 import { useLocation } from "wouter";
 
 export function BottomNavigation() {
@@ -18,10 +18,16 @@ export function BottomNavigation() {
       path: "/quran",
     },
     {
-      id: "chat",
-      label: "KI-Chat",
-      icon: MessageSquare,
-      path: "/",
+      id: "duas",
+      label: "Duas",
+      icon: HandHeart,
+      path: "/duas",
+    },
+    {
+      id: "dhikr",
+      label: "Dhikr",
+      icon: Sparkles,
+      path: "/dhikr",
     },
     {
       id: "settings",

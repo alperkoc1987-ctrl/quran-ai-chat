@@ -663,3 +663,18 @@
 - [x] Add rounded corners to KI-Assistent card (like other category cards)
 - [x] Add debug logging for verse navigation
 - [ ] Test verse links from KI-Chat responses and verify logs
+
+
+## Home Page Layout Redesign (Dec 7, 2024 - 01:00)
+- [ ] Make category cards more compact (reduce height, smaller icons)
+- [ ] Implement 2x2 grid layout for better space utilization
+- [ ] Keep all existing categories (Koran, Duas, Gebetszeiten, Qibla, Zeichen der Stunde, etc.)
+- [ ] Update bottom navigation: Remove KI-Chat, add Duas and Dhikr
+- [ ] Ensure KI-Chat remains accessible on Home page as card
+
+## Home Page Layout Improvements (December 2025)
+- [x] Make home page cards more compact by removing description text
+- [x] Reduce card height for better space utilization
+- [x] Keep only icon + title in category cards
+- [x] Update bottom navigation: Remove KI-Chat, add Duas and Dhikr
+- [x] Final order: Home, Koran, Duas, Dhikr, Einstellungen

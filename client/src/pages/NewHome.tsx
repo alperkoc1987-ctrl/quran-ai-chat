@@ -345,18 +345,16 @@ export default function NewHome() {
             const Icon = category.icon;
             return (
               <Link key={category.id} href={category.link}>
-                <Card className={`group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border ${themeConfig.id === 'modern' ? 'border-emerald-200 bg-emerald-50/80 hover:bg-emerald-50' : `${themeConfig.colors.border} ${themeConfig.colors.card} ${themeConfig.colors.cardHover}`} h-full`}>
-                  <div className="p-4 flex flex-col items-center text-center h-full">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 mb-3`}>
-                      <Icon className="w-7 h-7 text-white" />
+                <Card className={`group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border ${themeConfig.id === 'modern' ? 'border-emerald-200 bg-emerald-50/80 hover:bg-emerald-50' : `${themeConfig.colors.border} ${themeConfig.colors.card} ${themeConfig.colors.cardHover}`} rounded-3xl`}>
+                  <div className="p-4 flex flex-col items-center text-center gap-2">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${category.gradient} rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300`}>
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className={`text-base font-bold ${themeConfig.colors.text} mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all`}>
+                    <h3 className={`text-sm font-bold ${themeConfig.colors.text} group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all`}>
                       {category.title}
                     </h3>
-                    <p className={`text-xs ${themeConfig.colors.textSecondary} line-clamp-2`}>
-                      {category.description}
-                    </p>
-                  </div>                </Card>
+                  </div>
+                </Card>
               </Link>
             );
           })}
