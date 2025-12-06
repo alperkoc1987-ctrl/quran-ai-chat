@@ -450,16 +450,16 @@
 
 ## 404 Navigation Bug (Dec 6, 2024 - 15:52)
 
-- [ ] Analyze back button navigation flow from Surah → Quran → Home
-- [ ] Fix 404 error when navigating back from Koran section
+- [x] Analyze back button navigation flow from Surah → Quran → Home
+- [x] Fix 404 error when navigating back from Koran section
 - [ ] Test complete navigation flow
 - [ ] Deploy fix to Vercel
 - [ ] Fix Vorlesen (audio playback) not working in Koran section
 
 ## Manual Prayer Time Adjustment on Main Page (Dec 6, 2024 - 15:58)
 
-- [ ] Add click handlers to prayer time cards on PrayerTimes.tsx
-- [ ] Create time picker dialog for manual adjustment
-- [ ] Integrate with existing time offset system from PrayerSettings
-- [ ] Save adjustments to localStorage
+- [x] Add click handlers to prayer time cards on PrayerTimes.tsx
+- [x] Create time picker dialog for manual adjustment
+- [x] Integrate with existing time offset system from PrayerSettings
+- [x] Save adjustments to localStorage
 - [ ] Test manual time adjustment flow
