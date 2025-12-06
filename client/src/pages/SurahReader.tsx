@@ -138,23 +138,39 @@ export default function SurahReader() {
 
     // Scroll to verse if URL parameters specify a target verse
   useEffect(() => {
-    if (!surahData || !surahInfo || !targetVerseNumber) return;
+    console.log('[SurahReader] Verse scroll effect triggered');
+    console.log('[SurahReader] targetVerseNumber:', targetVerseNumber);
+    console.log('[SurahReader] shouldHighlight:', shouldHighlight);
+    console.log('[SurahReader] surahData:', !!surahData);
+    console.log('[SurahReader] surahInfo:', !!surahInfo);
+    
+    if (!surahData || !surahInfo || !targetVerseNumber) {
+      console.log('[SurahReader] Skipping verse scroll - missing data');
+      return;
+    }
 
     // Small delay to ensure DOM is fully rendered
     setTimeout(() => {
       const element = document.getElementById(`verse-${targetVerseNumber}`);
+      console.log('[SurahReader] Looking for element:', `verse-${targetVerseNumber}`);
+      console.log('[SurahReader] Element found:', !!element);
+      
       if (element) {
+        console.log('[SurahReader] Scrolling to verse:', targetVerseNumber);
         // Scroll to element with smooth behavior
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         // Add highlight effect if requested
         if (shouldHighlight) {
+          console.log('[SurahReader] Highlighting verse:', targetVerseNumber);
           setHighlightedVerse(targetVerseNumber);
           // Remove highlight after 3 seconds
           setTimeout(() => {
             setHighlightedVerse(null);
           }, 3000);
         }
+      } else {
+        console.error('[SurahReader] Verse element not found:', `verse-${targetVerseNumber}`);
       }
     }, 300);
   }, [surahData, surahInfo, targetVerseNumber, shouldHighlight]);

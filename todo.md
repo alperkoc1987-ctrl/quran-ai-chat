@@ -656,3 +656,10 @@
 - [x] Fix "Vers lesen" button to navigate to specific verse with highlighting
 - [x] Add verse parameter to URL when clicking on Ayat des Tages
 - Note: Already working correctly! Code uses proper URL format with verse & highlight params
+
+
+## UI Fixes - KI-Chat Design (Dec 7, 2024 - 00:10)
+- [x] Change KI-Chat icon background from white to mint green
+- [x] Add rounded corners to KI-Assistent card (like other category cards)
+- [x] Add debug logging for verse navigation
+- [ ] Test verse links from KI-Chat responses and verify logs

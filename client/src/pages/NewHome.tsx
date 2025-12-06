@@ -270,13 +270,13 @@ export default function NewHome() {
 
       {/* KI-Assistent Section */}
       <div className="container mx-auto px-4 mt-4">
-        <Card className={`overflow-hidden border ${themeConfig.colors.border}`}>
+        <Card className={`overflow-hidden border ${themeConfig.colors.border} rounded-3xl`}>
           <button
             onClick={() => setChatExpanded(!chatExpanded)}
             className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
                 <MessageSquare className="w-5 h-5" />
               </div>
               <div className="text-left">

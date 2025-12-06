@@ -180,8 +180,14 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
 
             {message.sources.map((source) => {
               const handleSourceClick = () => {
+                console.log('[MessageBubble] Source clicked:', source);
                 if (source.type === SourceType.Quran && source.surahNumber) {
-                  setLocation(`/surah/${source.surahNumber}${source.ayahNumber ? `?verse=${source.ayahNumber}&highlight=true` : ''}`);
+                  const url = `/surah/${source.surahNumber}${source.ayahNumber ? `?verse=${source.ayahNumber}&highlight=true` : ''}`;
+                  console.log('[MessageBubble] Navigating to:', url);
+                  console.log('[MessageBubble] ayahNumber:', source.ayahNumber);
+                  setLocation(url);
+                  // Force scroll to top after navigation
+                  setTimeout(() => window.scrollTo(0, 0), 100);
                 } else {
                   setSelectedSource(source);
                 }
