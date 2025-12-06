@@ -587,3 +587,20 @@
 - [x] Change AI chat from formal "Sie" to informal "Du" (explicitly stated in prompt)
 - [x] Remove "Salamu Aleykum" from every response (explicitly forbidden in prompt)
 - [x] Update system prompt to be more natural and conversational
+
+
+## Dhikr Complete Texts (Dec 6, 2024 - 21:05)
+- [x] Write complete Ayat al-Kursi (2:255) - full Arabic, transliteration, translation
+- [x] Split "3 Quls" into 3 separate entries
+- [x] Write complete Sure Al-Ikhlas (112) - all 4 verses with transliteration
+- [x] Write complete Sure Al-Falaq (113) - all 5 verses with transliteration
+- [x] Write complete Sure An-Nas (114) - all 6 verses with transliteration
+- [x] Write complete last 2 verses of Al-Baqarah with transliteration
+- [x] Check all other Dhikr for abbreviations and complete them
+- [x] No "..." abbreviations anywhere
+- [x] Fix TypeScript errors in Dhikr.tsx
+
+## Auto-Scroll to Top (Dec 6, 2024 - 21:13)
+- [x] Add automatic scroll to top when navigating to any page
+- [x] Applies to all pages: Home, Koran, KI-Chat, Dhikr, Settings, etc.
+- [x] Created ScrollToTop component with instant scroll behavior

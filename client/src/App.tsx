@@ -10,6 +10,7 @@ import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
 import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
+import { ScrollToTop } from "./components/ScrollToTop";
 import NewHome from "./pages/NewHome";
 
 import Quran from "./pages/Quran";
@@ -32,7 +33,9 @@ import Dhikr from "./pages/Dhikr"; // Dhikr feature added
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
+    <>
+      <ScrollToTop />
+      <Switch>
       <Route path="/" component={NewHome} />
 
       <Route path="/quran" component={Quran} />
@@ -55,6 +58,7 @@ function Router() {
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
+    </>
   );
 }
 
