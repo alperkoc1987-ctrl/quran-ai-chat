@@ -325,3 +325,42 @@
 - [x] Round KI-Chat icon corners (not square, use rounded-xl or rounded-2xl)
 - [x] Shorten AI responses - make them concise and to-the-point (update system prompt)
 - [x] Fix verse link navigation - direct navigation without popup (avoid black bar issue)
+
+## Surah Bookmarks & Statistics Sharing (December 2025 - Part 15)
+
+### Persistent Surah Bookmarks
+- [ ] Add surah_bookmarks table to database schema
+- [ ] Implement backend API for saving/deleting Surah bookmarks
+- [ ] Update SurahList component to save bookmarks to database
+- [ ] Fix bookmark persistence (currently disappears on page reload)
+- [ ] Update Bookmarks page to show mixed list (verses + surahs)
+- [ ] Add badge to distinguish between "Vers" and "Surah" bookmarks
+
+### Statistics Sharing
+- [ ] Add share button to Statistics page (Gesamtfortschritt card)
+- [ ] Implement share functionality for reading progress (e.g., "0,0% vom Koran gelesen - 0 von 6.236 Versen")
+- [ ] Add share button for Quiz points (e.g., "0/0 richtige Antworten")
+- [ ] Add share button for Streak (e.g., "0 Tage in Folge")
+- [ ] Use Web Share API for native sharing on mobile
+- [ ] Fallback to clipboard copy for desktop
+
+### Quiz Improvements
+- [ ] Expand quiz question pool (currently too few questions)
+- [ ] Add at least 50+ unique quiz questions about Quran
+- [ ] Implement question tracking to prevent repetitions
+- [ ] Store answered questions in database per user
+- [ ] Filter out already answered questions from quiz pool
+- [ ] Add "Reset Quiz" button to allow re-answering all questions
+
+## Microphone Speech Recognition Fix (December 2025 - Part 15)
+- [ ] Debug speech recognition error ("Fehler bei der Spracherkennung")
+- [ ] Check PushToTalkButton component for API issues
+- [ ] Verify backend speech-to-text endpoint is working
+- [ ] Test with Chrome on mobile after fix
+- [ ] Add better error messages for debugging
+
+## TTS Voice Improvement (December 2025 - Part 16)
+- [ ] Replace robotic TTS voice with realistic male voice
+- [ ] Use high-quality voice (Google Wavenet or similar)
+- [ ] Test voice quality on mobile devices
+- [ ] Ensure voice works in all browsers (Chrome, Safari)

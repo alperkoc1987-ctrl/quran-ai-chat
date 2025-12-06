@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { CircularProgress } from "@/components/CircularProgress";
 import { getSurahProgress } from "@/lib/readingProgress";
 import { useLocation } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 interface SurahListProps {
   onSelectSurah: (surah: Surah) => void;
@@ -46,17 +47,62 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
     loadSurahs();
   }, []);
 
-  const toggleFavorite = (surahNumber: number, e: React.MouseEvent) => {
+  // Load bookmarks from database
+  const { data: bookmarksData } = trpc.surahBookmarks.list.useQuery();
+  const addBookmark = trpc.surahBookmarks.add.useMutation();
+  const removeBookmark = trpc.surahBookmarks.remove.useMutation();
+
+  useEffect(() => {
+    if (bookmarksData) {
+      const bookmarkedSurahs = new Set(bookmarksData.map(b => b.surahNumber));
+      setFavorites(bookmarkedSurahs);
+    }
+  }, [bookmarksData]);
+
+  const toggleFavorite = async (surahNumber: number, e: React.MouseEvent) => {
     e.stopPropagation();
+    const surah = surahs.find(s => s.number === surahNumber);
+    if (!surah) return;
+
+    const isCurrentlyFavorite = favorites.has(surahNumber);
+    
+    // Optimistic update
     setFavorites((prev) => {
       const newFavorites = new Set(prev);
-      if (newFavorites.has(surahNumber)) {
+      if (isCurrentlyFavorite) {
         newFavorites.delete(surahNumber);
       } else {
         newFavorites.add(surahNumber);
       }
       return newFavorites;
     });
+
+    try {
+      if (isCurrentlyFavorite) {
+        await removeBookmark.mutateAsync({ surahNumber });
+        toast.success("Lesezeichen entfernt");
+      } else {
+        await addBookmark.mutateAsync({
+          surahNumber: surah.number,
+          surahName: surah.englishName,
+          surahNameArabic: surah.name,
+          verseCount: surah.numberOfAyahs,
+        });
+        toast.success("Lesezeichen hinzugefügt");
+      }
+    } catch (error) {
+      // Revert optimistic update on error
+      setFavorites((prev) => {
+        const newFavorites = new Set(prev);
+        if (isCurrentlyFavorite) {
+          newFavorites.add(surahNumber);
+        } else {
+          newFavorites.delete(surahNumber);
+        }
+        return newFavorites;
+      });
+      toast.error("Fehler beim Speichern des Lesezeichens");
+    }
   };
 
   const handlePlayPause = async (surah: Surah, e: React.MouseEvent) => {

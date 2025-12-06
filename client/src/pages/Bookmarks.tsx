@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { ArrowLeft, Bookmark, StickyNote, Trash2, Plus, FolderPlus, Folder } from 'lucide-react';
+import { ArrowLeft, Bookmark, StickyNote, Trash2, Plus, FolderPlus, Folder, BookOpen } from 'lucide-react';
+import { trpc } from '@/lib/trpc';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -38,6 +40,10 @@ export default function Bookmarks() {
   const [newCollectionName, setNewCollectionName] = useState('');
   const [newCollectionDesc, setNewCollectionDesc] = useState('');
   const [showNewCollection, setShowNewCollection] = useState(false);
+
+  // Load Surah bookmarks from database
+  const { data: surahBookmarksData } = trpc.surahBookmarks.list.useQuery();
+  const removeSurahBookmark = trpc.surahBookmarks.remove.useMutation();
 
   const loadData = () => {
     const allBookmarks = getAllBookmarks();
@@ -115,7 +121,7 @@ export default function Bookmarks() {
                   Meine Lesezeichen
                 </h1>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
-                  {displayedBookmarks.length} gespeicherte Verse
+                  {displayedBookmarks.length} Verse + {surahBookmarksData?.length || 0} Suren
                 </p>
               </div>
             </div>
@@ -212,18 +218,72 @@ export default function Bookmarks() {
 
           {/* Bookmarks List */}
           <div className="lg:col-span-3">
-            {displayedBookmarks.length === 0 ? (
+            {displayedBookmarks.length === 0 && (!surahBookmarksData || surahBookmarksData.length === 0) ? (
               <div className="text-center py-12">
                 <Bookmark className="w-16 h-16 mx-auto text-slate-300 dark:text-slate-600 mb-4" />
                 <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Keine Lesezeichen
                 </h3>
                 <p className="text-slate-500 dark:text-slate-400">
-                  Markieren Sie Verse beim Lesen, um sie hier zu sehen
+                  Markieren Sie Verse oder Suren, um sie hier zu sehen
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
+                {/* Surah Bookmarks */}
+                {surahBookmarksData?.map((surahBookmark) => (
+                  <div
+                    key={`surah-${surahBookmark.surahNumber}`}
+                    className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold text-slate-800 dark:text-slate-100">
+                              {surahBookmark.surahNumber}. {surahBookmark.surahName}
+                            </h3>
+                            <Badge variant="secondary" className="bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400">
+                              Surah
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">
+                            {surahBookmark.verseCount} Verse
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => navigate(`/surah/${surahBookmark.surahNumber}`)}
+                          className="text-teal-600 dark:text-teal-400"
+                          title="Zur Surah"
+                        >
+                          <ArrowLeft className="w-4 h-4 rotate-180" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={async () => {
+                            await removeSurahBookmark.mutateAsync({ surahNumber: surahBookmark.surahNumber });
+                            toast.success('Surah-Lesezeichen entfernt');
+                          }}
+                          className="text-red-500 dark:text-red-400"
+                          title="Entfernen"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <p className="text-right text-xl font-arabic text-slate-800 dark:text-slate-100">
+                      {surahBookmark.surahNameArabic}
+                    </p>
+                  </div>
+                ))}
+
+                {/* Verse Bookmarks */}
                 {displayedBookmarks.map((bookmark) => (
                   <div
                     key={`${bookmark.surahNumber}:${bookmark.verseNumber}`}
@@ -231,9 +291,14 @@ export default function Bookmarks() {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="font-semibold text-slate-800 dark:text-slate-100">
-                          {bookmark.surahName} - Vers {bookmark.verseNumber}
-                        </h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold text-slate-800 dark:text-slate-100">
+                            {bookmark.surahName} - Vers {bookmark.verseNumber}
+                          </h3>
+                          <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                            Vers
+                          </Badge>
+                        </div>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
                           {new Date(bookmark.updatedAt).toLocaleDateString('de-DE')}
                         </p>

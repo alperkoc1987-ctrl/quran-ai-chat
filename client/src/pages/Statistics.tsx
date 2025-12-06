@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
-import { ArrowLeft, TrendingUp, Clock, Flame, BookOpen, Target, Brain, Award } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, TrendingUp, Clock, Flame, BookOpen, Target, Brain, Award, Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { useLocation } from "wouter";
 import {
   getStatistics,
@@ -79,6 +81,26 @@ export function Statistics() {
                   style={{ width: `${totalProgress}%` }}
                 />
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full mt-3 gap-2 text-teal-600 dark:text-teal-400"
+                onClick={() => {
+                  const text = `🕌 Ich habe ${totalProgress.toFixed(1)}% vom Koran gelesen - ${stats.totalVersesRead} von 6.236 Versen! 📖`;
+                  if (navigator.share) {
+                    navigator.share({ text }).catch(() => {
+                      navigator.clipboard.writeText(text);
+                      toast.success('In Zwischenablage kopiert');
+                    });
+                  } else {
+                    navigator.clipboard.writeText(text);
+                    toast.success('In Zwischenablage kopiert');
+                  }
+                }}
+              >
+                <Share2 className="w-4 h-4" />
+                Teilen
+              </Button>
             </div>
           </div>
 
@@ -100,6 +122,26 @@ export function Statistics() {
               <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
                 Längste Serie: {stats.longestStreak} Tage
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full mt-3 gap-2 text-orange-600 dark:text-orange-400"
+                onClick={() => {
+                  const text = `🔥 Ich habe eine ${stats.currentStreak}-Tage-Serie beim Koran-Lesen! Längste Serie: ${stats.longestStreak} Tage 📚`;
+                  if (navigator.share) {
+                    navigator.share({ text }).catch(() => {
+                      navigator.clipboard.writeText(text);
+                      toast.success('In Zwischenablage kopiert');
+                    });
+                  } else {
+                    navigator.clipboard.writeText(text);
+                    toast.success('In Zwischenablage kopiert');
+                  }
+                }}
+              >
+                <Share2 className="w-4 h-4" />
+                Teilen
+              </Button>
             </div>
           </div>
 
@@ -123,6 +165,27 @@ export function Statistics() {
                   Erfolgsquote: {Math.round((quizStats.correctAnswers / quizStats.totalQuestions) * 100)}%
                 </div>
               )}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full mt-3 gap-2 text-purple-600 dark:text-purple-400"
+                onClick={() => {
+                  const successRate = quizStats.totalQuestions > 0 ? Math.round((quizStats.correctAnswers / quizStats.totalQuestions) * 100) : 0;
+                  const text = `🧠 Ich habe ${quizStats.correctAnswers}/${quizStats.totalQuestions} Quizfragen richtig beantwortet! Erfolgsquote: ${successRate}% 🎯`;
+                  if (navigator.share) {
+                    navigator.share({ text }).catch(() => {
+                      navigator.clipboard.writeText(text);
+                      toast.success('In Zwischenablage kopiert');
+                    });
+                  } else {
+                    navigator.clipboard.writeText(text);
+                    toast.success('In Zwischenablage kopiert');
+                  }
+                }}
+              >
+                <Share2 className="w-4 h-4" />
+                Teilen
+              </Button>
             </div>
           </div>
 
