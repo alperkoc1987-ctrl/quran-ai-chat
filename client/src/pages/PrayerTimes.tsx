@@ -2,9 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "wouter";
-import { ArrowLeft, MapPin, Sunrise, Sun, Sunset, Moon, Clock, Loader2, Search, Navigation, Edit3 } from "lucide-react";
+import { ArrowLeft, MapPin, Sunrise, Sun, Sunset, Moon, Clock, Loader2, Search, Navigation, Edit3, Edit } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { getPrayerSettings, savePrayerSettings, type PrayerSettings } from "@/lib/notificationService";
 
 interface PrayerTimesData {
   Fajr: string;
@@ -34,6 +36,9 @@ export default function PrayerTimes() {
   const [searchResults, setSearchResults] = useState<CitySearchResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number } | null>(null);
+  const [showTimeAdjustDialog, setShowTimeAdjustDialog] = useState(false);
+  const [selectedPrayer, setSelectedPrayer] = useState<string | null>(null);
+  const [prayerSettings, setPrayerSettings] = useState<PrayerSettings>(getPrayerSettings());
 
   // Load saved location preference on mount
   useEffect(() => {
@@ -436,10 +441,26 @@ export default function PrayerTimes() {
             {/* Prayer Times */}
             {prayers.map((prayer) => {
               const Icon = prayer.icon;
-              const time = prayerTimes[prayer.name as keyof PrayerTimesData] as string;
+              const baseTime = prayerTimes[prayer.name as keyof PrayerTimesData] as string;
+              const prayerKey = prayer.name.toLowerCase() as keyof PrayerSettings;
+              const adjustment = prayerSettings[prayerKey]?.timeAdjustment || 0;
+              
+              // Apply time adjustment
+              const [hours, minutes] = baseTime.split(':').map(Number);
+              const adjustedMinutes = minutes + adjustment;
+              const finalHours = (hours + Math.floor(adjustedMinutes / 60) + 24) % 24;
+              const finalMinutes = ((adjustedMinutes % 60) + 60) % 60;
+              const displayTime = `${String(finalHours).padStart(2, '0')}:${String(finalMinutes).padStart(2, '0')}`;
               
               return (
-                <Card key={prayer.name} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <Card 
+                  key={prayer.name} 
+                  className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                  onClick={() => {
+                    setSelectedPrayer(prayer.name);
+                    setShowTimeAdjustDialog(true);
+                  }}
+                >
                   <div className="p-5 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className={`w-12 h-12 bg-gradient-to-br ${prayer.color} rounded-xl flex items-center justify-center`}>
@@ -447,10 +468,21 @@ export default function PrayerTimes() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-900 dark:text-white">{prayer.label}</h4>
+                        {adjustment !== 0 && (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            {adjustment > 0 ? '+' : ''}{adjustment} min angepasst
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-slate-900 dark:text-white">{time}</p>
+                    <div className="text-right flex items-center gap-2">
+                      <div>
+                        <p className="text-2xl font-bold text-slate-900 dark:text-white">{displayTime}</p>
+                        {adjustment !== 0 && (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Original: {baseTime}</p>
+                        )}
+                      </div>
+                      <Edit className="w-4 h-4 text-slate-400" />
                     </div>
                   </div>
                 </Card>
@@ -462,10 +494,98 @@ export default function PrayerTimes() {
               <p className="text-xs text-amber-800 dark:text-amber-300">
                 <strong>Hinweis:</strong> Die Gebetszeiten werden basierend auf Ihrem Standort berechnet. 
                 Bitte überprüfen Sie die Zeiten mit Ihrer lokalen Moschee, da kleine Abweichungen möglich sind.
+                Tippen Sie auf eine Gebetszeit, um sie manuell anzupassen.
               </p>
             </Card>
           </div>
         )}
+
+        {/* Time Adjustment Dialog */}
+        <Dialog open={showTimeAdjustDialog} onOpenChange={setShowTimeAdjustDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Gebetszeit anpassen</DialogTitle>
+              <DialogDescription>
+                Passen Sie die Gebetszeit an Ihre lokalen Berechnungsmethoden an (±30 Minuten)
+              </DialogDescription>
+            </DialogHeader>
+            {selectedPrayer && (() => {
+              const prayerKey = selectedPrayer.toLowerCase() as keyof PrayerSettings;
+              const currentAdjustment = prayerSettings[prayerKey]?.timeAdjustment || 0;
+              const prayer = prayers.find(p => p.name === selectedPrayer);
+              
+              return (
+                <div className="space-y-4">
+                  <div className="text-center py-4">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                      {prayer?.label}
+                    </h3>
+                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                      {currentAdjustment > 0 ? '+' : ''}{currentAdjustment} Minuten
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <input
+                      type="range"
+                      min="-30"
+                      max="30"
+                      value={currentAdjustment}
+                      onChange={(e) => {
+                        const newAdjustment = parseInt(e.target.value);
+                        const newSettings = {
+                          ...prayerSettings,
+                          [prayerKey]: {
+                            ...prayerSettings[prayerKey],
+                            timeAdjustment: newAdjustment,
+                          },
+                        };
+                        setPrayerSettings(newSettings);
+                        savePrayerSettings(newSettings);
+                      }}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+                      <span>-30 min</span>
+                      <span>0</span>
+                      <span>+30 min</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const newSettings = {
+                          ...prayerSettings,
+                          [prayerKey]: {
+                            ...prayerSettings[prayerKey],
+                            timeAdjustment: 0,
+                          },
+                        };
+                        setPrayerSettings(newSettings);
+                        savePrayerSettings(newSettings);
+                        toast.success('Anpassung zurückgesetzt');
+                      }}
+                      className="flex-1"
+                    >
+                      Zurücksetzen
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setShowTimeAdjustDialog(false);
+                        toast.success('Gebetszeit angepasst');
+                      }}
+                      className="flex-1"
+                    >
+                      Fertig
+                    </Button>
+                  </div>
+                </div>
+              );
+            })()}
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );

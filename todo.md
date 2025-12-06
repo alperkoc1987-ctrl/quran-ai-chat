@@ -447,3 +447,19 @@
 - [x] Fix "An unexpected error occurred" in Koran section - Replaced tRPC with localStorage
 - [x] Test Koran section locally - Build successful
 - [ ] Deploy fix to Vercel and verify on production
+
+## 404 Navigation Bug (Dec 6, 2024 - 15:52)
+
+- [ ] Analyze back button navigation flow from Surah → Quran → Home
+- [ ] Fix 404 error when navigating back from Koran section
+- [ ] Test complete navigation flow
+- [ ] Deploy fix to Vercel
+- [ ] Fix Vorlesen (audio playback) not working in Koran section
+
+## Manual Prayer Time Adjustment on Main Page (Dec 6, 2024 - 15:58)
+
+- [ ] Add click handlers to prayer time cards on PrayerTimes.tsx
+- [ ] Create time picker dialog for manual adjustment
+- [ ] Integrate with existing time offset system from PrayerSettings
+- [ ] Save adjustments to localStorage
+- [ ] Test manual time adjustment flow

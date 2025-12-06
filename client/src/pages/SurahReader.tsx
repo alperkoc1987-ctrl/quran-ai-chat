@@ -329,7 +329,7 @@ export default function SurahReader() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => navigate("/chat")}
+              onClick={() => navigate("/quran")}
               className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
             >
               <ArrowLeft className="w-5 h-5" />
