@@ -10,7 +10,6 @@ import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink } from "lucide-re
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { getCachedAudio, cacheAudio, recordCacheHit, recordCacheMiss } from "@/lib/audioCache";
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -43,7 +42,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const [, setLocation] = useLocation();
 
-  // Handle speech synthesis with OpenAI TTS and caching
+  // Handle speech synthesis with OpenAI TTS
   const handleSpeak = async () => {
     if (isSpeaking && audioElement) {
       audioElement.pause();
@@ -54,57 +53,22 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
       try {
         setIsSpeaking(true);
         
-        // Check cache first
-        const cachedAudioBase64 = getCachedAudio(message.text);
-        
-        let audioUrl: string;
-        
-        if (cachedAudioBase64) {
-          // Cache hit - use cached audio
-          console.log('[TTS] Cache hit - using cached audio');
-          recordCacheHit();
-          
-          // Convert base64 to blob
-          const binaryString = atob(cachedAudioBase64);
-          const bytes = new Uint8Array(binaryString.length);
-          for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-          }
-          const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
-          audioUrl = URL.createObjectURL(audioBlob);
-        } else {
-          // Cache miss - call API
-          console.log('[TTS] Cache miss - calling API');
-          recordCacheMiss();
-          
-          const response = await fetch("/api/tts", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ text: message.text }),
-          });
+        // Call backend TTS API
+        const response = await fetch("/api/tts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: message.text }),
+        });
 
-          if (!response.ok) {
-            throw new Error("TTS generation failed");
-          }
-
-          // Get audio blob and cache it
-          const audioBlob = await response.blob();
-          
-          // Convert blob to base64 for caching
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64 = (reader.result as string).split(',')[1];
-            cacheAudio(message.text, base64);
-            console.log('[TTS] Audio cached successfully');
-          };
-          reader.readAsDataURL(audioBlob);
-          
-          audioUrl = URL.createObjectURL(audioBlob);
+        if (!response.ok) {
+          throw new Error("TTS generation failed");
         }
-        
-        // Play audio
+
+        // Create audio from response
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
         
         audio.onended = () => {

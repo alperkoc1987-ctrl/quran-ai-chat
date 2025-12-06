@@ -20,12 +20,6 @@ export default function NewHome() {
   const [, navigate] = useLocation();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Reset chat state when component mounts
-  useEffect(() => {
-    setChatExpanded(false);
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
-
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (scrollRef.current && messages.length > 1) {
