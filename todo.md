@@ -440,3 +440,10 @@
 - [ ] Test build locally to ensure code changes are reflected in dist/
 - [x] Check Vercel build logs for any compilation errors - Added detailed debug error messages to frontend
 - [x] Verify that latest git commit is deployed (not old preview deployment) - Triggered new deployment with empty commit
+
+## Koran Section JavaScript Errors (Dec 6, 2024 - 15:32)
+
+- [ ] Analyze Koran.tsx component for JavaScript errors
+- [ ] Fix "An unexpected error occurred" in Koran section
+- [ ] Test Koran section locally
+- [ ] Deploy fix to Vercel and verify on production

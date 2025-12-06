@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { CircularProgress } from "@/components/CircularProgress";
 import { getSurahProgress } from "@/lib/readingProgress";
 import { useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
+// Removed tRPC import - using localStorage instead
 
 interface SurahListProps {
   onSelectSurah: (surah: Surah) => void;
@@ -47,17 +47,18 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
     loadSurahs();
   }, []);
 
-  // Load bookmarks from database
-  const { data: bookmarksData } = trpc.surahBookmarks.list.useQuery();
-  const addBookmark = trpc.surahBookmarks.add.useMutation();
-  const removeBookmark = trpc.surahBookmarks.remove.useMutation();
-
+  // Load bookmarks from localStorage
   useEffect(() => {
-    if (bookmarksData) {
-      const bookmarkedSurahs = new Set(bookmarksData.map(b => b.surahNumber));
-      setFavorites(bookmarkedSurahs);
+    try {
+      const stored = localStorage.getItem('surah_bookmarks');
+      if (stored) {
+        const bookmarkedNumbers = JSON.parse(stored);
+        setFavorites(new Set(bookmarkedNumbers));
+      }
+    } catch (error) {
+      console.error('Error loading bookmarks:', error);
     }
-  }, [bookmarksData]);
+  }, []);
 
   const toggleFavorite = async (surahNumber: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -78,16 +79,13 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
     });
 
     try {
+      // Save to localStorage
+      const bookmarksArray = Array.from(favorites);
+      localStorage.setItem('surah_bookmarks', JSON.stringify(bookmarksArray));
+      
       if (isCurrentlyFavorite) {
-        await removeBookmark.mutateAsync({ surahNumber });
         toast.success("Lesezeichen entfernt");
       } else {
-        await addBookmark.mutateAsync({
-          surahNumber: surah.number,
-          surahName: surah.englishName,
-          surahNameArabic: surah.name,
-          verseCount: surah.numberOfAyahs,
-        });
         toast.success("Lesezeichen hinzugefügt");
       }
     } catch (error) {
