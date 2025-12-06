@@ -93,20 +93,9 @@ export function useChat() {
         let displayMessage = "Entschuldigung, es gab ein technisches Problem.";
 
         if (err instanceof Error) {
-          if (err.message === "MISSING_API_KEY") {
-            errorMessage = "Bitte geben Sie Ihren OpenAI API Key in den Einstellungen ein.";
-            displayMessage = "Um komplexe Fragen zu beantworten, benötige ich Ihren OpenAI API Key. Bitte klicken Sie oben rechts auf das Zahnrad-Symbol (Einstellungen).";
-          } else if (err.message.includes("401")) {
-            errorMessage = "Der API Key ist ungültig.";
-            displayMessage = "Der eingegebene API Key scheint ungültig zu sein. Bitte prüfen Sie ihn in den Einstellungen.";
-          } else if (err.message.includes("429")) {
-            errorMessage = "Guthaben aufgebraucht oder Limit erreicht.";
-            displayMessage = "Ihr OpenAI-Guthaben ist aufgebraucht oder das Limit wurde erreicht. Bitte prüfen Sie Ihren Account.";
-          } else {
-            errorMessage = err.message;
-            // Display the full error message from the backend to help with debugging
-            displayMessage = `Entschuldigung, ich konnte Ihre Anfrage nicht verarbeiten. \n\nFehlerdetails: ${errorMessage}`;
-          }
+          errorMessage = err.message;
+          // ALWAYS display the full error message from the backend for debugging
+          displayMessage = `❌ FEHLER:\n\n${errorMessage}\n\n(Dies ist eine Debug-Nachricht. Bitte schicken Sie diesen Text an den Entwickler!)`;
         }
 
         setError(errorMessage);

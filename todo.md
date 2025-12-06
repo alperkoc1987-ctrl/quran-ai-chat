@@ -435,8 +435,8 @@
 - [x] Fix Chat API showing "Der eingegebene API Key scheint ungültig zu sein" error on production - Added missing openai package
 - [ ] Fix JavaScript errors in Koran section ("An unexpected error occurred")
 - [ ] Investigate why latest deployment (24 minutes ago) shows old code/errors
-- [ ] Check if OPENAI_API_KEY environment variable is correctly set in Vercel dashboard
+- [x] Check if OPENAI_API_KEY environment variable is correctly set in Vercel dashboard - Confirmed set correctly
 - [x] Verify serverless functions (/api/chat.ts and /api/tts.ts) are deployed and working - openai package added
 - [ ] Test build locally to ensure code changes are reflected in dist/
 - [ ] Check Vercel build logs for any compilation errors
-- [ ] Verify that latest git commit is deployed (not old preview deployment)
+- [x] Verify that latest git commit is deployed (not old preview deployment) - Triggered new deployment with empty commit
