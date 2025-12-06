@@ -493,3 +493,11 @@
 - [x] Ensure entire quiz content is visible without scrolling - Fixed with bottom padding
 - [ ] Fix audio playback still not working despite error handling improvements - Added debug logging
 - [ ] Test audio with different browsers and provide fallback solution - Needs user testing with console logs
+
+
+## Microphone & Chat Audio Issues (Dec 6, 2024 - 18:20)
+- [x] Fix microphone speech recognition error "Fehler bei der Spracherkennung" - Created /api/speech-to-text.ts
+- [x] Investigate browser permission handling for microphone access - Already handled in PushToTalkButton
+- [x] Fix chat TTS audio (Vorlesen button) not playing - Changed voice from amber to alloy
+- [ ] Test TTS API endpoint and audio generation - Ready for testing
+- [x] Add better error messages for permission denied scenarios - Already implemented
