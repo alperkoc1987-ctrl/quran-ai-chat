@@ -560,3 +560,17 @@
 - [x] Apply reading themes to Quran page
 - [x] Ensure consistent theming across all main pages
 - [ ] Test theme switching on all pages - Ready for testing
+
+
+## Dhikr Section with Counter (Dec 6, 2024 - 21:00)
+- [x] Create Dhikr database with authentic Adhkar (Ahlul Sunnah)
+- [x] Include Hadiths with sources (Bukhari, Muslim, etc.)
+- [x] Add rewards/benefits (Fadl) for each Dhikr
+- [x] Build Dhikr counter component with tap/click functionality
+- [x] Add vibration feedback on mobile devices
+- [x] Create Dhikr page with categories (Morning, Evening, After Prayer, etc.)
+- [x] Implement Dhikr statistics tracking
+- [x] Integrate Dhikr stats into Statistics page
+- [x] Add Arabic text, transliteration, and German translation
+- [x] Add navigation to Dhikr page from Home
+- [ ] Test counter functionality and statistics - Ready for testing

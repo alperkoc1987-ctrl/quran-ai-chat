@@ -27,6 +27,7 @@ import PrayerSettings from "./pages/PrayerSettings";
 
 import { Statistics } from "./pages/Statistics";
 import Quiz from "./pages/Quiz"; // Quiz feature added
+import Dhikr from "./pages/Dhikr"; // Dhikr feature added
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -49,6 +50,7 @@ function Router() {
 
       <Route path="/statistics" component={Statistics} />
       <Route path="/quiz" component={Quiz} />
+      <Route path="/dhikr" component={Dhikr} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

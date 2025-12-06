@@ -13,6 +13,8 @@ import {
   type ReadingSession,
 } from "@/lib/statistics";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { getDhikrStatistics, type DhikrStats } from "@/lib/dhikrStats";
+import { Sparkles } from "lucide-react";
 
 export function Statistics() {
   const { themeConfig } = useReadingTheme();
@@ -23,6 +25,7 @@ export function Statistics() {
   const [recentSessions, setRecentSessions] = useState<ReadingSession[]>([]);
   const [totalProgress, setTotalProgress] = useState(0);
   const [quizStats, setQuizStats] = useState({ totalQuestions: 0, correctAnswers: 0 });
+  const [dhikrStats, setDhikrStats] = useState<DhikrStats | null>(null);
 
   useEffect(() => {
     // Load statistics
@@ -38,6 +41,9 @@ export function Statistics() {
     if (savedQuizStats) {
       setQuizStats(JSON.parse(savedQuizStats));
     }
+    
+    // Load Dhikr statistics
+    setDhikrStats(getDhikrStatistics());
   }, []);
 
   return (
@@ -208,6 +214,34 @@ export function Statistics() {
               </div>
             </div>
           </div>
+
+          {/* Dhikr Stats */}
+          {dhikrStats && (
+            <div className={`${themeConfig.colors.card} rounded-xl p-6 shadow-md border ${themeConfig.colors.border}`}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                  <Sparkles className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h3 className={`font-semibold ${themeConfig.colors.text}`}>Dhikr-Zähler</h3>
+              </div>
+              <div className="space-y-2">
+                <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
+                  {dhikrStats.totalDhikrCount.toLocaleString()}
+                </div>
+                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
+                  Gesamt gezählt
+                </div>
+                <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
+                  <div className={themeConfig.colors.textMuted}>
+                    Heute: <span className="font-semibold text-amber-600 dark:text-amber-400">{dhikrStats.todayDhikrCount}</span>
+                  </div>
+                  <div className={themeConfig.colors.textMuted}>
+                    Serie: <span className="font-semibold text-amber-600 dark:text-amber-400">{dhikrStats.currentStreak} Tage</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Today's Progress */}
