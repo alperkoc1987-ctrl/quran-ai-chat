@@ -644,3 +644,9 @@
 - [x] Implement verse highlighting when opening from KI-Chat link
 - [x] Add auto-scroll to specific verse when navigating from KI-Chat
 - [x] Add bottom padding to Surah reader so last verses are not covered by mini-player/navigation
+
+
+## Remaining UI Issues (Dec 6, 2024 - 23:30)
+- [x] KI-Chat background still white (not theme-aware as expected)
+- [ ] Verse navigation from KI-Chat links goes to Surah start, not specific verse
+- [ ] Debug why verse highlighting/auto-scroll not working from KI-Chat

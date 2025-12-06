@@ -43,8 +43,13 @@ export default function Chat() {
     setInputValue(text);
   };
 
+  // Theme-aware background: Modern theme gets darker mint green gradient, others use their theme colors
+  const backgroundClass = themeConfig.id === 'modern' 
+    ? 'flex flex-col h-screen bg-gradient-to-b from-teal-200 to-emerald-50'
+    : `flex flex-col h-screen ${themeConfig.colors.background}`;
+
   return (
-    <div className={`flex flex-col h-screen ${themeConfig.colors.background}`}>
+    <div className={backgroundClass}>
       {/* Header */}
       <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm px-4 py-3 flex items-center justify-between`}>
         <div>
