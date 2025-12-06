@@ -253,12 +253,73 @@ export default function NewHome() {
         <ResumeReadingCard />
       </div>
 
-      {/* Ayat des Tages */}
-      <div className="container mx-auto px-4 pt-4">
-        <AyatOfTheDay />
+      {/* KI-Assistent Section */}
+      <div className="container mx-auto px-4 mt-4">
+        <Card className="overflow-hidden border border-slate-200 dark:border-slate-700">
+          <button
+            onClick={() => setChatExpanded(!chatExpanded)}
+            className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <MessageSquare className="w-5 h-5" />
+              <div className="text-left">
+                <h3 className="font-semibold text-sm">KI-Assistent</h3>
+                <p className="text-xs opacity-90">Stellen Sie Fragen zum Koran und Hadith</p>
+              </div>
+            </div>
+            {chatExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          </button>
+
+          {chatExpanded && (
+            <div className="bg-white dark:bg-slate-800">
+              {/* Messages */}
+              <ScrollArea className="h-96 px-4 py-4" ref={scrollRef}>
+                <div className="space-y-3">
+                  {messages.map((message) => (
+                    <MessageBubble key={message.id} message={message} />
+                  ))}
+                  {isLoading && (
+                    <div className="flex justify-start">
+                      <div className="bg-slate-100 dark:bg-slate-700 rounded-2xl px-4 py-2">
+                        <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+
+              {/* Input */}
+              <div className="border-t border-slate-200 dark:border-slate-700 p-4">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+                  Fragen Sie nach Versen, Duas oder islamischen Themen
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Stellen Sie eine Frage..."
+                    disabled={isLoading}
+                    className="flex-1"
+                  />
+                  <PushToTalkButton
+                    onTranscript={(text) => setInputValue(text)}
+                    className="shrink-0"
+                  />
+                  <Button
+                    onClick={handleSend}
+                    disabled={!inputValue.trim() || isLoading}
+                    size="icon"
+                    className="shrink-0 bg-emerald-500 hover:bg-emerald-600"
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </Card>
       </div>
-
-
 
       {/* Main Content - Category Cards */}
       <main className="container mx-auto px-4 pb-24">
@@ -282,6 +343,11 @@ export default function NewHome() {
               </Link>
             );
           })}
+        </div>
+
+        {/* Ayat des Tages */}
+        <div className="mt-8">
+          <AyatOfTheDay />
         </div>
 
         {/* Quick Info Section */}

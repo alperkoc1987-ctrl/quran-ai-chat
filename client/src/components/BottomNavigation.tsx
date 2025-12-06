@@ -21,7 +21,7 @@ export function BottomNavigation() {
       id: "chat",
       label: "KI-Chat",
       icon: MessageSquare,
-      path: "/chat",
+      path: "/",
     },
     {
       id: "settings",

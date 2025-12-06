@@ -276,3 +276,46 @@
 - [x] Update Quran API calls to fetch translations in selected language
 - [x] Make translation language persistent across sessions (via localStorage in context)
 - [x] Apply translation language to all Quran verses throughout app
+
+## KI-Chat Vollbild-Seite & GPT-4o-mini Migration (December 2025 - Part 12)
+
+### Backend AI Model Update
+- [x] Switch from GPT-4o to GPT-4o-mini (16x cheaper: ~25€/month for 1000 users)
+- [x] Increase max_tokens from 2000 to 3000 to prevent truncated responses
+- [ ] Test response quality with Islamic questions
+- [ ] Ensure complete answers without cutoffs
+
+### Separate KI-Chat Seite
+- [x] Create dedicated fullscreen KI-Chat page at /chat route
+- [x] Implement WhatsApp-style conversation UI with message bubbles
+- [x] Add chat history display with user messages and AI responses
+- [x] Add "Neu" button to start new conversation
+- [x] Remove Surah list from KI-Chat page (keep only in Koran section)
+- [x] Update bottom navigation to route to separate pages (Koran → /quran, KI-Chat → /chat)
+
+### Future Features (NOT NOW)
+- [ ] Question limit system (5 questions per day for free users) - POSTPONED
+- [ ] Pro-Version with payment (Stripe or Apple/Google In-App Purchase) - POSTPONED
+- [ ] Native iOS/Android app development - FUTURE GOAL
+
+### Quick UI Adjustments
+- [ ] Move "Ayat des Tages" from top to bottom of homepage
+
+## Quran Wortsuche Feature (December 2025 - Part 13)
+
+### Word Search Functionality
+- [ ] Integrate Quran.com Search API for full-text search
+- [ ] Update search input to accept keywords (not just Surah names/numbers)
+- [ ] Create SearchResults page component
+- [ ] Display search statistics (total verses found, number of Surahs)
+- [ ] Show list of all verses containing the search term
+- [ ] Add verse preview in search results
+- [ ] Implement direct navigation to specific verse on click
+- [ ] Support multi-language search (German, English, Turkish, Arabic)
+- [ ] Add loading state during search
+- [ ] Handle empty search results gracefully
+
+### Chat Page Fix
+- [ ] Debug and fix Chat page blank screen issue
+- [ ] Ensure Chat page loads correctly at /chat route
+- [ ] Test chat functionality with GPT-4o-mini

@@ -9,6 +9,8 @@ import { TranslationLanguageProvider } from "./contexts/TranslationLanguageConte
 import { BottomNavigation } from "./components/BottomNavigation";
 import NewHome from "./pages/NewHome";
 import Chat from "./pages/Chat";
+import Quran from "./pages/Quran";
+import SearchResults from "./pages/SearchResults";
 import Duas from "./pages/Duas";
 import DuaDetail from "./pages/DuaDetail";
 import PrayerTimes from "./pages/PrayerTimes";
@@ -29,7 +31,8 @@ function Router() {
     <Switch>
       <Route path="/" component={NewHome} />
       <Route path="/chat" component={Chat} />
-      <Route path="/quran" component={Chat} />
+      <Route path="/quran" component={Quran} />
+      <Route path="/search/:query" component={SearchResults} />
       <Route path="/surah/:number" component={SurahReader} />
       <Route path="/duas" component={Duas} />
       <Route path="/duas/:categoryId" component={DuaDetail} />

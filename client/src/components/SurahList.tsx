@@ -6,11 +6,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Surah } from "@/lib/types";
 import { fetchAllSurahs } from "@/lib/api";
-import { Loader2, Play, Pause, Heart } from "lucide-react";
+import { Loader2, Play, Pause, Heart, Search } from "lucide-react";
 import { getSurahAudioUrls, SurahAudioPlayer } from "@/lib/audio";
 import { toast } from "sonner";
 import { CircularProgress } from "@/components/CircularProgress";
 import { getSurahProgress } from "@/lib/readingProgress";
+import { useLocation } from "wouter";
 
 interface SurahListProps {
   onSelectSurah: (surah: Surah) => void;
@@ -25,6 +26,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   const [searchQuery, setSearchQuery] = useState("");
   const [playingSurahNumber, setPlayingSurahNumber] = useState<number | null>(null);
   const audioPlayerRef = useRef<SurahAudioPlayer | null>(null);
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     const loadSurahs = async () => {
@@ -103,6 +105,33 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
     };
   }, []);
 
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      // Check if search query is a number (Surah number search)
+      const surahNumber = parseInt(searchQuery);
+      if (!isNaN(surahNumber) && surahNumber >= 1 && surahNumber <= 114) {
+        // Navigate to specific Surah
+        const surah = surahs.find(s => s.number === surahNumber);
+        if (surah) {
+          onSelectSurah(surah);
+          return;
+        }
+      }
+      
+      // Check if it's a Surah name
+      const matchingSurah = surahs.find(s => 
+        s.englishName.toLowerCase() === searchQuery.toLowerCase()
+      );
+      if (matchingSurah) {
+        onSelectSurah(matchingSurah);
+        return;
+      }
+      
+      // Otherwise, treat as word search
+      navigate(`/search/${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   const filteredSurahs = surahs.filter(
     (surah) =>
       surah.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -128,24 +157,13 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
         <div className="relative">
           <input
             type="text"
-            placeholder="Surah nach Name oder Nummer suchen..."
+            placeholder="Surah oder Wort suchen (Enter drücken)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
             className="w-full px-4 py-2 pl-10 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
-          <svg
-            className="absolute left-3 top-2.5 w-5 h-5 text-slate-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
+          <Search className="absolute left-3 top-2.5 w-5 h-5 text-slate-400" />
         </div>
       </div>
 
