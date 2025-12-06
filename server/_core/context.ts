@@ -11,14 +11,17 @@ export type TrpcContext = {
 export async function createContext(
   opts: CreateExpressContextOptions
 ): Promise<TrpcContext> {
-  let user: User | null = null;
+  // Authentication disabled - app works without user accounts
+  const user: User | null = null;
 
-  try {
-    user = await sdk.authenticateRequest(opts.req);
-  } catch (error) {
-    // Authentication is optional for public procedures.
-    user = null;
-  }
+  // Note: OAuth authentication is completely disabled.
+  // All features use localStorage instead of database.
+  // To re-enable authentication, uncomment the following:
+  // try {
+  //   user = await sdk.authenticateRequest(opts.req);
+  // } catch (error) {
+  //   user = null;
+  // }
 
   return {
     req: opts.req,
