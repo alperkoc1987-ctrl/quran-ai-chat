@@ -249,7 +249,7 @@ export default function Quiz() {
       </div>
 
       {/* Question */}
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <div className="container mx-auto px-4 py-8 pb-24 max-w-3xl">
         <Card className="p-6 md:p-8">
           {/* Category Badge */}
           <div className="inline-block px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm font-medium mb-6">

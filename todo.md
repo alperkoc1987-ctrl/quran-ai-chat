@@ -486,3 +486,10 @@
 - [x] Restore quiz animations that are missing - Added try-catch and accessibility options
 - [ ] Test audio playback on production - Needs user testing
 - [ ] Test quiz animations on production - Needs user testing
+
+
+## Quiz Layout & Audio Issues (Dec 6, 2024 - 18:15)
+- [ ] Fix quiz layout overflow - next button is cut off at bottom
+- [ ] Ensure entire quiz content is visible without scrolling
+- [ ] Fix audio playback still not working despite error handling improvements
+- [ ] Test audio with different browsers and provide fallback solution

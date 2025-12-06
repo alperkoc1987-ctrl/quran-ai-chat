@@ -118,7 +118,10 @@ export class SurahAudioPlayer {
    * Play the audio from the current index
    */
   async play() {
+    console.log('[SurahAudioPlayer] play() called, currentIndex:', this.currentIndex, 'total:', this.audioElements.length);
+    
     if (this.currentIndex >= this.audioElements.length) {
+      console.log('[SurahAudioPlayer] Resetting to start');
       this.currentIndex = 0;
     }
 
@@ -131,27 +134,45 @@ export class SurahAudioPlayer {
    */
   private async playCurrentAudio() {
     if (!this.isPlaying || this.currentIndex >= this.audioElements.length) {
+      console.log('[SurahAudioPlayer] Playback stopped or ended');
       this.isPlaying = false;
       this.onEndCallback?.();
       return;
     }
 
     const audio = this.audioElements[this.currentIndex];
+    const audioUrl = audio.src;
+    console.log('[SurahAudioPlayer] Playing audio:', audioUrl, 'index:', this.currentIndex);
     
     // Set up event listeners
     audio.onended = () => {
+      console.log('[SurahAudioPlayer] Audio ended, moving to next');
       this.currentIndex++;
       this.onProgressCallback?.(this.currentIndex, this.audioElements.length);
       this.playCurrentAudio();
     };
 
+    audio.onerror = (e) => {
+      console.error('[SurahAudioPlayer] Audio error event:', e, 'URL:', audioUrl);
+    };
+
     try {
-      await audio.play();
+      console.log('[SurahAudioPlayer] Calling audio.play()');
+      const playPromise = audio.play();
+      console.log('[SurahAudioPlayer] Play promise:', playPromise);
+      await playPromise;
+      console.log('[SurahAudioPlayer] Audio playing successfully');
       this.onProgressCallback?.(this.currentIndex, this.audioElements.length);
-    } catch (error) {
-      console.error("Error playing audio:", error);
+    } catch (error: any) {
+      console.error('[SurahAudioPlayer] Error playing audio:', error);
+      console.error('[SurahAudioPlayer] Error name:', error.name);
+      console.error('[SurahAudioPlayer] Error message:', error.message);
+      console.error('[SurahAudioPlayer] Audio URL:', audioUrl);
+      console.error('[SurahAudioPlayer] Audio readyState:', audio.readyState);
+      console.error('[SurahAudioPlayer] Audio networkState:', audio.networkState);
       this.isPlaying = false;
       this.onEndCallback?.();
+      throw error; // Re-throw to let caller handle it
     }
   }
 
