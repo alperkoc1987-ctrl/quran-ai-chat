@@ -39,42 +39,69 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const [, setLocation] = useLocation();
 
-  // Handle speech synthesis
-  const handleSpeak = () => {
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
+  // Handle speech synthesis with OpenAI TTS
+  const handleSpeak = async () => {
+    if (isSpeaking && audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
       setIsSpeaking(false);
+      setAudioElement(null);
     } else {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
+      try {
+        setIsSpeaking(true);
+        
+        // Call backend TTS API
+        const response = await fetch("/api/tts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: message.text }),
+        });
 
-      const utterance = new SpeechSynthesisUtterance(message.text);
-      utterance.lang = "de-DE"; // Set language to German
-      utterance.rate = 1.0; // Normal speed
-      
-      utterance.onend = () => {
+        if (!response.ok) {
+          throw new Error("TTS generation failed");
+        }
+
+        // Create audio from response
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        
+        audio.onended = () => {
+          setIsSpeaking(false);
+          setAudioElement(null);
+          URL.revokeObjectURL(audioUrl);
+        };
+
+        audio.onerror = () => {
+          setIsSpeaking(false);
+          setAudioElement(null);
+          URL.revokeObjectURL(audioUrl);
+        };
+
+        setAudioElement(audio);
+        await audio.play();
+      } catch (error) {
+        console.error("TTS error:", error);
         setIsSpeaking(false);
-      };
-
-      utterance.onerror = () => {
-        setIsSpeaking(false);
-      };
-
-      window.speechSynthesis.speak(utterance);
-      setIsSpeaking(true);
+        setAudioElement(null);
+      }
     }
   };
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (isSpeaking) {
-        window.speechSynthesis.cancel();
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
       }
     };
-  }, [isSpeaking]);
+  }, [audioElement]);
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>

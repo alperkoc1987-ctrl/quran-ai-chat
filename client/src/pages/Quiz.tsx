@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Trophy, ArrowLeft, CheckCircle2, XCircle, Sparkles } from "lucide-react";
 import { useLocation } from "wouter";
-import { getRandomQuestions, QuizQuestion } from "@/data/quizQuestions";
+import { getRandomQuestions, QuizQuestion, markQuestionAsAnswered, getAnsweredCount } from "@/data/quizQuestions";
 import confetti from "canvas-confetti";
 
 export default function Quiz() {
@@ -47,6 +47,9 @@ export default function Quiz() {
 
     setShowResult(true);
     setAnsweredQuestions(answeredQuestions + 1);
+
+    // Mark question as answered to prevent repetition
+    markQuestionAsAnswered(currentQuestion.id);
 
     // Save quiz stats to localStorage
     const quizStats = JSON.parse(localStorage.getItem('quizStats') || '{"totalQuestions": 0, "correctAnswers": 0}');

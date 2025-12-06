@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { setupSpeechToTextRoute } from "./speechToText";
+import { setupTextToSpeechRoute } from "./textToSpeech";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -47,6 +48,9 @@ async function startServer() {
 
   // Speech-to-Text API Route
   setupSpeechToTextRoute(app);
+
+  // Text-to-Speech API Route
+  setupTextToSpeechRoute(app);
 
   // Custom OpenAI Chat API Route
   app.post("/api/chat", async (req, res) => {

@@ -382,3 +382,26 @@
 - [x] Allow users to switch between automatic and manual location
 - [x] Save location preference in localStorage
 - [x] Update PrayerTimes.tsx with hybrid location system
+
+## TTS Voice Improvement (December 2025 - Part 14)
+- [x] Replace browser TTS with OpenAI TTS API
+- [x] Implement realistic male voice (amber model)
+- [x] Add backend endpoint for TTS generation
+- [x] Update MessageBubble.tsx to use new TTS system
+- [ ] Add audio caching to reduce API calls
+- [ ] Test voice quality and response time
+
+## Quiz Expansion (December 2025 - Part 15)
+- [x] Add 50+ new Islamic knowledge questions (85 total questions now)
+- [x] Implement localStorage tracking for answered questions
+- [x] Prevent question repetition (mark as answered)
+- [ ] Add "Bereits beantwortet" indicator
+- [ ] Optional: Add difficulty levels (Leicht, Mittel, Schwer)
+- [x] Update quiz statistics to track unique questions answered
+
+## CRITICAL BUG - Routing Issues (December 2025 - Part 16)
+- [x] Fix 404 errors when navigating between pages (was cache issue on published version)
+- [x] Remove unwanted registration popup (OAuth on published version, not in dev)
+- [x] Fix navigation from Koran section back to home
+- [x] Verify all routes are correctly configured in App.tsx
+- [x] Test all navigation flows (Home → Koran → Home, etc.)
