@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Bookmark } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { isBookmarked, toggleBookmark } from '@/lib/bookmarks';
 
@@ -39,8 +39,8 @@ export function BookmarkButton({
       className={className}
       title={bookmarked ? "Lesezeichen entfernen" : "Lesezeichen hinzufügen"}
     >
-      <Bookmark
-        className={`w-4 h-4 ${bookmarked ? 'fill-teal-600 text-teal-600' : 'text-slate-400'}`}
+      <Heart
+        className={`w-4 h-4 ${bookmarked ? 'fill-red-500 text-red-500' : 'text-slate-400'}`}
       />
     </Button>
   );

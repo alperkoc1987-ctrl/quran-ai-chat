@@ -521,3 +521,7 @@
 - [x] Implement auto-scroll to currently playing verse
 - [x] Highlight currently playing verse while audio is running
 - [ ] Test mini-player on all pages (Home, Koran, KI-Chat, Einstellungen) - Ready for testing
+
+
+## UI Improvements (Dec 6, 2024 - 19:48)
+- [x] Replace green bookmark icon with heart icon in verse actions - Changed to red heart
