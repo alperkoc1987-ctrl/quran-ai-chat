@@ -99,6 +99,24 @@ export const duaCategories: DuaCategory[] = [
     name: "Stärke",
     icon: "zap",
     description: "Bittgebete um innere Kraft"
+  },
+  {
+    id: "travel",
+    name: "Reisen",
+    icon: "plane",
+    description: "Bittgebete für sichere Reisen"
+  },
+  {
+    id: "exams",
+    name: "Prüfungen & Lernen",
+    icon: "graduation-cap",
+    description: "Bittgebete für Erfolg in Prüfungen und beim Lernen"
+  },
+  {
+    id: "anxiety",
+    name: "Angst & Sorgen",
+    icon: "heart-pulse",
+    description: "Bittgebete bei Angst, Stress und Sorgen"
   }
 ];
 
@@ -278,6 +296,190 @@ export const duas: Dua[] = [
     translation: "Mein Herr, lass mich an einem gesegneten Ort niedergehen, und Du bist der Beste, der niedergehen lässt.",
     source: "Quran 23:29",
     category: "righteous-company"
+  },
+  // Travel
+  {
+    id: "travel-1",
+    title: "Dua beim Verlassen des Hauses",
+    arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+    transliteration: "Bismillah, tawakkaltu 'ala Allah, wa la hawla wa la quwwata illa billah",
+    translation: "Im Namen Allahs, ich vertraue auf Allah, und es gibt keine Macht und keine Kraft außer durch Allah.",
+    source: "Abu Dawud 5095",
+    category: "travel"
+  },
+  {
+    id: "travel-2",
+    title: "Dua beim Besteigen eines Fahrzeugs",
+    arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنقَلِبُونَ",
+    transliteration: "Subhana alladhi sakhkhara lana hadha wa ma kunna lahu muqrinin, wa inna ila rabbina lamunqalibun",
+    translation: "Gepriesen sei Der, Der uns dies dienstbar gemacht hat, und wir wären nicht imstande gewesen, es zu bezähmen. Und wahrlich, zu unserem Herrn kehren wir zurück.",
+    source: "Quran 43:13-14",
+    category: "travel"
+  },
+  {
+    id: "travel-3",
+    title: "Dua für sichere Reise",
+    arabic: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَٰذَا الْبِرَّ وَالتَّقْوَىٰ وَمِنَ الْعَمَلِ مَا تَرْضَىٰ",
+    transliteration: "Allahumma inna nas'aluka fi safarina hadha al-birra wa at-taqwa, wa mina al-'amali ma tarda",
+    translation: "O Allah, wir bitten Dich auf dieser Reise um Rechtschaffenheit und Gottesfurcht, und um Taten, mit denen Du zufrieden bist.",
+    source: "Muslim 1342",
+    category: "travel"
+  },
+  {
+    id: "travel-4",
+    title: "Dua bei Rückkehr von der Reise",
+    arabic: "آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ",
+    transliteration: "Ayibuna ta'ibuna 'abiduna lirabbina hamidun",
+    translation: "Wir kehren zurück, bereuen, dienen unserem Herrn und preisen Ihn.",
+    source: "Sahih al-Bukhari 1797",
+    category: "travel"
+  },
+  {
+    id: "travel-5",
+    title: "Dua für Schutz auf Reisen",
+    arabic: "اللَّهُمَّ أَنْتَ الصَّاحِبُ فِي السَّفَرِ وَالْخَلِيفَةُ فِي الْأَهْلِ",
+    transliteration: "Allahumma anta as-sahibu fi as-safar, wa al-khalifatu fi al-ahl",
+    translation: "O Allah, Du bist der Begleiter auf der Reise und der Beschützer der Familie.",
+    source: "Muslim 1342",
+    category: "travel"
+  },
+  // Exams & Learning
+  {
+    id: "exams-1",
+    title: "Dua für Wissen und Verständnis",
+    arabic: "رَبِّ زِدْنِي عِلْمًا",
+    transliteration: "Rabbi zidni 'ilma",
+    translation: "Mein Herr, mehre mein Wissen.",
+    source: "Quran 20:114",
+    category: "exams"
+  },
+  {
+    id: "exams-2",
+    title: "Dua vor einer Prüfung",
+    arabic: "اللَّهُمَّ لَا سَهْلَ إِلَّا مَا جَعَلْتَهُ سَهْلًا وَأَنْتَ تَجْعَلُ الْحَزَنَ إِذَا شِئْتَ سَهْلًا",
+    transliteration: "Allahumma la sahla illa ma ja'altahu sahla, wa anta taj'alu al-hazana idha shi'ta sahla",
+    translation: "O Allah, nichts ist leicht außer dem, was Du leicht machst, und Du machst das Schwierige leicht, wenn Du willst.",
+    source: "Ibn Hibban 2427",
+    category: "exams"
+  },
+  {
+    id: "exams-3",
+    title: "Dua für gutes Gedächtnis",
+    arabic: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي",
+    transliteration: "Allahumma infa'ni bima 'allamtani wa 'allimni ma yanfa'uni",
+    translation: "O Allah, lass mich von dem profitieren, was Du mich gelehrt hast, und lehre mich, was mir nützt.",
+    source: "Ibn Majah 251",
+    category: "exams"
+  },
+  {
+    id: "exams-4",
+    title: "Dua für Konzentration beim Lernen",
+    arabic: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي يَفْقَهُوا قَوْلِي",
+    transliteration: "Rabbi ishrah li sadri wa yassir li amri wahlul 'uqdatan min lisani yafqahu qawli",
+    translation: "Mein Herr, weite mir meine Brust, erleichtere mir meine Angelegenheit und löse den Knoten meiner Zunge, damit sie meine Rede verstehen.",
+    source: "Quran 20:25-28",
+    category: "exams"
+  },
+  {
+    id: "exams-5",
+    title: "Dua nach der Prüfung",
+    arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عِلْمٍ لَا يَنْفَعُ",
+    transliteration: "Allahumma inni a'udhu bika min 'ilmin la yanfa'",
+    translation: "O Allah, ich suche Zuflucht bei Dir vor Wissen, das nicht nützt.",
+    source: "Muslim 2722",
+    category: "exams"
+  },
+  // Anxiety & Worry
+  {
+    id: "anxiety-1",
+    title: "Dua bei Angst und Sorgen",
+    arabic: "اللَّهُمَّ إِنِّي عَبْدُكَ ابْنُ عَبْدِكَ ابْنُ أَمَتِكَ نَاصِيَتِي بِيَدِكَ مَاضٍ فِيَّ حُكْمُكَ عَدْلٌ فِيَّ قَضَاؤُكَ أَسْأَلُكَ بِكُلِّ اسْمٍ هُوَ لَكَ أَنْ تَجْعَلَ الْقُرْآنَ رَبِيعَ قَلْبِي",
+    transliteration: "Allahumma inni 'abduka ibnu 'abdika ibnu amatika, nasiyati biyadika, madin fiyya hukmuka, 'adlun fiyya qada'uka, as'aluka bikulli ismin huwa laka an taj'ala al-Qur'ana rabi'a qalbi",
+    translation: "O Allah, ich bin Dein Diener, Sohn Deines Dieners, Sohn Deiner Dienerin. Mein Schicksal ist in Deiner Hand, Dein Urteil über mich ist wirksam, Deine Entscheidung über mich ist gerecht. Ich bitte Dich bei jedem Namen, der Dir gehört, dass Du den Koran zum Frühling meines Herzens machst.",
+    source: "Ahmad 3712",
+    category: "anxiety"
+  },
+  {
+    id: "anxiety-2",
+    title: "Dua gegen Stress",
+    arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ",
+    transliteration: "Allahumma inni a'udhu bika mina al-hammi wa al-hazan wa al-'ajzi wa al-kasal",
+    translation: "O Allah, ich suche Zuflucht bei Dir vor Sorge, Trauer, Schwäche und Trägheit.",
+    source: "Sahih al-Bukhari 6369",
+    category: "anxiety"
+  },
+  {
+    id: "anxiety-3",
+    title: "Dua für innere Ruhe",
+    arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+    transliteration: "Ala bidhikri Allahi tatma'innu al-qulub",
+    translation: "Wahrlich, im Gedenken Allahs finden die Herzen Ruhe.",
+    source: "Quran 13:28",
+    category: "anxiety"
+  },
+  {
+    id: "anxiety-4",
+    title: "Dua bei Bedrängnis",
+    arabic: "لَا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ",
+    transliteration: "La ilaha illa anta subhanaka inni kuntu mina az-zalimin",
+    translation: "Es gibt keinen Gott außer Dir, gepriesen seist Du, ich war wahrlich einer der Ungerechten.",
+    source: "Quran 21:87 (Dua Yunus)",
+    category: "anxiety"
+  },
+  {
+    id: "anxiety-5",
+    title: "Dua für Vertrauen auf Allah",
+    arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+    transliteration: "Hasbuna Allahu wa ni'ma al-wakil",
+    translation: "Allah genügt uns, und Er ist der beste Sachwalter.",
+    source: "Quran 3:173",
+    category: "anxiety"
+  },
+  // Additional duas for existing categories
+  {
+    id: "healing-3",
+    title: "Dua für vollständige Heilung",
+    arabic: "اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَأْسَ وَاشْفِ أَنْتَ الشَّافِي",
+    transliteration: "Allahumma Rabba an-nas, adhhib al-ba'sa washfi anta ash-Shafi",
+    translation: "O Allah, Herr der Menschen, nimm die Krankheit hinweg und heile, Du bist der Heiler.",
+    source: "Sahih al-Bukhari 5743",
+    category: "healing"
+  },
+  {
+    id: "protection-2",
+    title: "Dua für Schutz vor allem Übel",
+    arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+    transliteration: "A'udhu bikalimat Allahi at-tammati min sharri ma khalaq",
+    translation: "Ich suche Zuflucht bei den vollkommenen Worten Allahs vor dem Übel dessen, was Er erschaffen hat.",
+    source: "Muslim 2708",
+    category: "protection"
+  },
+  {
+    id: "patience-2",
+    title: "Dua um Geduld in schweren Zeiten",
+    arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ",
+    transliteration: "Rabbana afrigh 'alayna sabran wa tawaffana muslimin",
+    translation: "Unser Herr, gib uns reichlich Geduld und lass uns als Muslime sterben.",
+    source: "Quran 7:126",
+    category: "patience"
+  },
+  {
+    id: "guidance-2",
+    title: "Dua um Rechtleitung zum geraden Weg",
+    arabic: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+    transliteration: "Ihdina as-sirata al-mustaqim",
+    translation: "Führe uns den geraden Weg.",
+    source: "Quran 1:6",
+    category: "guidance"
+  },
+  {
+    id: "repentance-2",
+    title: "Dua um Vergebung und Reue",
+    arabic: "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",
+    transliteration: "Rabbana zalamna anfusana wa in lam taghfir lana wa tarhamna lanakun anna mina al-khasirin",
+    translation: "Unser Herr, wir haben uns selbst Unrecht getan, und wenn Du uns nicht vergibst und Dich unser erbarmst, werden wir gewiss zu den Verlierern gehören.",
+    source: "Quran 7:23",
+    category: "repentance"
   }
 ];
 

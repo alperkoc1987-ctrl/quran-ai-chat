@@ -463,3 +463,18 @@
 - [x] Integrate with existing time offset system from PrayerSettings
 - [x] Save adjustments to localStorage
 - [ ] Test manual time adjustment flow
+
+## Content Expansion (Dec 6, 2024 - 16:15)
+
+### Prophet Stories
+- [ ] Expand Yusuf (as) story with more details
+- [ ] Expand Musa (as) story with more details
+- [ ] Add Yunus (as) story (Prophet in the whale)
+- [ ] Add Ayyub (as) story (Patience in trials)
+- [ ] Add Dawud (as) story (King and Prophet)
+
+### Duas
+- [ ] Add Travel dua category with 5 duas
+- [ ] Add Exams/Tests dua category with 5 duas
+- [ ] Add Anxiety/Worry dua category with 5 duas
+- [ ] Add 3-5 more duas to existing categories
