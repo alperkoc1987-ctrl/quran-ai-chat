@@ -420,3 +420,12 @@
 - [x] Switched from Manus proxy to real OpenAI API (api.openai.com)
 - [x] Verified chat functionality working with OpenAI API key
 - [x] All features now working: Chat, TTS, Navigation, Quiz, Prayer Times
+
+## Railway Deployment Preparation (December 2025)
+- [ ] Remove all Manus-specific dependencies (OAuth, SDK, runtime plugins)
+- [ ] Create Railway configuration file (railway.json)
+- [ ] Update package.json build scripts for Railway
+- [ ] Create comprehensive deployment documentation
+- [ ] Document all required environment variables
+- [ ] Test Railway configuration locally
+- [ ] Create step-by-step deployment guide
