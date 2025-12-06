@@ -618,3 +618,14 @@
 - [x] Ensure mini-player shows Surah info and controls when playing from list
 - [x] Verify mini-player persists when navigating between pages
 - [x] Test play/pause functionality from Surah list
+
+
+## Home Page Design Update (Dec 6, 2024 - 22:00)
+- [x] Change background to darker mint green with gradient (from light to dark)
+- [x] Change card backgrounds from white to lighter mint green
+- [x] Keep icon circle backgrounds colorful (green, pink, blue, orange)
+- [x] Add pulsing tap hint for Dhikr counter ("Tippen zum Zählen")
+- [x] Make tap hint multi-language (German, English, Arabic)
+- [x] Position hint top-right next to Dhikr text
+- [x] Hint disappears after first tap or 5 seconds
+- [x] Subtle fade in/out animation for first 3 seconds

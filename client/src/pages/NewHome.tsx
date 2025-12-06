@@ -240,7 +240,7 @@ export default function NewHome() {
   ];
 
   return (
-    <div className={`min-h-screen ${themeConfig.colors.background}`}>
+    <div className="min-h-screen bg-gradient-to-b from-emerald-100 to-teal-200">
       {/* Header */}
       <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
         <div className="container mx-auto px-4 py-4">
@@ -340,7 +340,7 @@ export default function NewHome() {
             const Icon = category.icon;
             return (
               <Link key={category.id} href={category.link}>
-                <Card className={`group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border ${themeConfig.colors.border} ${themeConfig.colors.card} ${themeConfig.colors.cardHover} h-full`}>
+                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-50 h-full">
                   <div className="p-4 flex flex-col items-center text-center h-full">
                     <div className={`w-14 h-14 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 mb-3`}>
                       <Icon className="w-7 h-7 text-white" />

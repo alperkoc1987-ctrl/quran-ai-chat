@@ -3,9 +3,9 @@
  * Dhikr page with categories and authentic Adhkar following Ahlul Sunnah
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { ArrowLeft, Sunrise, Sunset, HandHeart, Moon, Droplet, Sparkles } from "lucide-react";
+import { ArrowLeft, Sunrise, Sunset, HandHeart, Moon, Droplet, Sparkles, Hand } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DhikrCounter } from "@/components/DhikrCounter";
@@ -26,6 +26,20 @@ export default function Dhikr() {
   const { themeConfig } = useReadingTheme();
   const [selectedCategory, setSelectedCategory] = useState<DhikrCategory | null>(null);
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr | null>(null);
+  const [showTapHint, setShowTapHint] = useState(true);
+
+  // Hide tap hint after 5 seconds or on first tap
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTapHint(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [selectedCategory]);
+
+  const handleDhikrClick = (dhikr: Dhikr) => {
+    setShowTapHint(false);
+    setSelectedDhikr(dhikr);
+  };
 
   // If a specific Dhikr is selected, show the counter
   if (selectedDhikr) {
@@ -90,9 +104,17 @@ export default function Dhikr() {
           {adhkar.map((dhikr) => (
             <Card
               key={dhikr.id}
-              className={`p-4 cursor-pointer hover:shadow-lg transition-shadow ${themeConfig.colors.card} border ${themeConfig.colors.border}`}
-              onClick={() => setSelectedDhikr(dhikr)}
+              className={`p-4 cursor-pointer hover:shadow-lg transition-shadow ${themeConfig.colors.card} border ${themeConfig.colors.border} relative`}
+              onClick={() => handleDhikrClick(dhikr)}
             >
+              {/* Pulsing Tap Hint */}
+              {showTapHint && (
+                <div className="absolute top-2 right-2 flex items-center gap-1 text-teal-600 dark:text-teal-400 animate-pulse">
+                  <Hand className="w-4 h-4" />
+                  <span className="text-xs font-medium hidden sm:inline">Tippen zum Zählen</span>
+                  <span className="text-xs font-medium sm:hidden">Tippen</span>
+                </div>
+              )}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="text-2xl font-arabic mb-2 leading-relaxed">
