@@ -61,6 +61,14 @@ export default function Quiz() {
     // Mark question as answered to prevent repetition
     markQuestionAsAnswered(currentQuestion.id);
 
+    // Auto-scroll to the "Nächste Frage" button after a short delay
+    setTimeout(() => {
+      const nextButton = document.getElementById('next-question-button');
+      if (nextButton) {
+        nextButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 300);
+
     // Save quiz stats to localStorage
     const quizStats = JSON.parse(localStorage.getItem('quizStats') || '{"totalQuestions": 0, "correctAnswers": 0}');
     quizStats.totalQuestions += 1;
@@ -319,6 +327,7 @@ export default function Quiz() {
               </Button>
             ) : (
               <Button
+                id="next-question-button"
                 onClick={handleNextQuestion}
                 className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
               >

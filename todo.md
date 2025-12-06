@@ -525,3 +525,23 @@
 
 ## UI Improvements (Dec 6, 2024 - 19:48)
 - [x] Replace green bookmark icon with heart icon in verse actions - Changed to red heart
+
+
+## Visual Theme System (Dec 6, 2024 - 19:50)
+- [ ] Create ReadingThemeContext for theme state management
+- [ ] Design 4 themes: Modern (current), Classic (blue+gold), Sepia (beige+brown), Dark (black+green)
+- [ ] Build theme selector component with visual previews
+- [ ] Add theme selector to Settings page
+- [ ] Apply themes to SurahReader page
+- [ ] Persist theme selection in localStorage
+- [ ] Test all themes for readability and accessibility
+
+
+## Statistics Bug Fix (Dec 6, 2024 - 19:53)
+- [x] Add recordVerseRead() calls in SurahReader to track verses
+- [x] Fix statistics not updating when reading Quran
+- [ ] Test statistics update after reading verses - Ready for testing
+
+## Quiz UX Improvement (Dec 6, 2024 - 19:58)
+- [x] Add auto-scroll to "Nächste Frage" button after selecting answer
+- [x] Improve quiz user experience - Auto-scrolls after 300ms

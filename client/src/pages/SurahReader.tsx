@@ -27,6 +27,7 @@ import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import { getTranslationEdition } from "@/lib/translationEditions";
 import { toast } from "sonner";
 import { saveReadingProgress } from "@/lib/readingProgress";
+import { recordVerseRead } from "@/lib/statistics";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { VerseNoteDialog } from "@/components/VerseNoteDialog";
 
@@ -120,6 +121,9 @@ export default function SurahReader() {
 
       // Save progress
       saveReadingProgress(surahInfo.number, currentVerse, surahInfo.englishName);
+      
+      // Record verse read for statistics
+      recordVerseRead(surahInfo.number);
     };
 
     // Add scroll listener to window

@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransliterationProvider } from "./contexts/TransliterationContext";
 import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
 import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
+import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
 import NewHome from "./pages/NewHome";
@@ -69,14 +70,16 @@ function App() {
       >
         <TransliterationProvider>
           <TranslationLanguageProvider>
-            <AudioPlayerProvider>
-              <TooltipProvider>
+            <ReadingThemeProvider>
+              <AudioPlayerProvider>
+                <TooltipProvider>
                 <Toaster />
                 <Router />
                 <MiniAudioPlayer />
                 <BottomNavigation />
               </TooltipProvider>
             </AudioPlayerProvider>
+            </ReadingThemeProvider>
           </TranslationLanguageProvider>
         </TransliterationProvider>
       </ThemeProvider>
