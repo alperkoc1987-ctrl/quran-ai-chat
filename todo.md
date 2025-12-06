@@ -604,3 +604,10 @@
 - [x] Add automatic scroll to top when navigating to any page
 - [x] Applies to all pages: Home, Koran, KI-Chat, Dhikr, Settings, etc.
 - [x] Created ScrollToTop component with instant scroll behavior
+
+
+## TTS Loading Spinner (Dec 6, 2024 - 21:20)
+- [x] Add loading state to MessageBubble component
+- [x] Show spinner animation while TTS audio is being generated
+- [x] Replace speaker icon with loading spinner during generation
+- [x] Improve UX feedback for TTS button

@@ -6,7 +6,7 @@
 import { ChatMessage, SourceType, SourceReference } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink } from "lucide-react";
+import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
@@ -41,6 +41,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isLoadingTTS, setIsLoadingTTS] = useState(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const [, setLocation] = useLocation();
 
@@ -53,6 +54,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
       setAudioElement(null);
     } else {
       try {
+        setIsLoadingTTS(true);
         setIsSpeaking(true);
         
         // Call backend TTS API
@@ -87,9 +89,11 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
 
         setAudioElement(audio);
         await audio.play();
+        setIsLoadingTTS(false);
       } catch (error) {
         console.error("TTS error:", error);
         setIsSpeaking(false);
+        setIsLoadingTTS(false);
         setAudioElement(null);
       }
     }
@@ -125,10 +129,13 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
                 variant="ghost"
                 size="icon"
                 onClick={handleSpeak}
-                className="h-8 w-8 text-gray-500 hover:text-teal-600"
-                title={isSpeaking ? "Vorlesen stoppen" : "Vorlesen"}
+                disabled={isLoadingTTS}
+                className="h-8 w-8 text-gray-500 hover:text-teal-600 disabled:opacity-50"
+                title={isLoadingTTS ? "Wird geladen..." : isSpeaking ? "Vorlesen stoppen" : "Vorlesen"}
               >
-                {isSpeaking ? (
+                {isLoadingTTS ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : isSpeaking ? (
                   <StopCircle className="w-5 h-5" />
                 ) : (
                   <Volume2 className="w-5 h-5" />
@@ -142,9 +149,14 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
             <div className="md:hidden mt-2 flex justify-end border-t border-gray-200 pt-2">
                <button
                 onClick={handleSpeak}
-                className="flex items-center gap-1 text-xs text-gray-500 hover:text-teal-600"
+                disabled={isLoadingTTS}
+                className="flex items-center gap-1 text-xs text-gray-500 hover:text-teal-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSpeaking ? (
+                {isLoadingTTS ? (
+                  <>
+                    <Loader2 className="w-3 h-3 animate-spin" /> Lädt...
+                  </>
+                ) : isSpeaking ? (
                   <>
                     <StopCircle className="w-3 h-3" /> Stopp
                   </>
