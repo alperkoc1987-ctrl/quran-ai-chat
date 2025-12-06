@@ -23,8 +23,8 @@ import {
 import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { useTranslationLanguage } from "@/contexts/TranslationLanguageContext";
+import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import { getTranslationEdition } from "@/lib/translationEditions";
-import { SurahAudioPlayer, getSurahAudioUrls } from "@/lib/audio";
 import { toast } from "sonner";
 import { saveReadingProgress } from "@/lib/readingProgress";
 import { BookmarkButton } from "@/components/BookmarkButton";
@@ -43,6 +43,7 @@ export default function SurahReader() {
 
   const { showTransliteration } = useTransliteration();
   const { language: translationLanguage } = useTranslationLanguage();
+  const audioPlayer = useAudioPlayer();
   const [surahData, setSurahData] = useState<SurahWithAyahs | null>(null);
   const [translationData, setTranslationData] = useState<SurahWithAyahs | null>(null);
   const [transliterationData, setTransliterationData] = useState<SurahWithAyahs | null>(null);
@@ -52,11 +53,6 @@ export default function SurahReader() {
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
-  // Audio player state
-  const audioPlayerRef = useRef<SurahAudioPlayer | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentVerseIndex, setCurrentVerseIndex] = useState(0);
-  const [playingVerseNumber, setPlayingVerseNumber] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Load Surah data
@@ -157,106 +153,97 @@ export default function SurahReader() {
     }, 300);
   }, [surahData, surahInfo, targetVerseNumber, shouldHighlight]);
 
-  // Initialize audio player when surah data is loaded
+  // Auto-scroll to currently playing verse
   useEffect(() => {
-    if (!surahInfo) return;
+    if (!audioPlayer.state.isPlaying || !surahInfo) return;
+    if (audioPlayer.state.surahNumber !== surahInfo.number) return;
 
-    // Create audio URLs for all verses
-    const audioUrls = getSurahAudioUrls(surahInfo.number, surahInfo.numberOfAyahs);
+    const currentVerse = audioPlayer.state.currentVerseIndex + 1;
+    const element = document.getElementById(`verse-${currentVerse}`);
     
-    // Create audio player
-    const player = new SurahAudioPlayer(audioUrls);
-    
-    // Set up progress callback
-    player.onProgress((current, total) => {
-      setCurrentVerseIndex(current);
-      setPlayingVerseNumber(current + 1);
-    });
-    
-    // Set up end callback
-    player.onEnd(() => {
-      setIsPlaying(false);
-      setPlayingVerseNumber(null);
-    });
-    
-    audioPlayerRef.current = player;
-
-    // Cleanup on unmount
-    return () => {
-      player.destroy();
-    };
-  }, [surahInfo]);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setHighlightedVerse(currentVerse);
+      
+      // Remove highlight after 2 seconds
+      const timeout = setTimeout(() => {
+        setHighlightedVerse(null);
+      }, 2000);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [audioPlayer.state.currentVerseIndex, audioPlayer.state.isPlaying, audioPlayer.state.surahNumber, surahInfo]);
 
    // Toggle play/pause for entire Surah
   const toggleSurahPlayback = async () => {
-    if (!audioPlayerRef.current) {
-      toast.error("Audio-Player nicht bereit", {
-        description: "Bitte warten Sie, bis die Surah geladen ist."
-      });
+    if (!surahInfo) {
+      toast.error("Surah-Daten nicht geladen");
       return;
     }
 
-    if (isPlaying) {
-      audioPlayerRef.current.pause();
-      setIsPlaying(false);
+    // Check if this surah is already playing
+    const isThisSurahPlaying = audioPlayer.state.surahNumber === surahInfo.number && audioPlayer.state.isPlaying;
+
+    if (isThisSurahPlaying) {
+      audioPlayer.pause();
       toast.info("Wiedergabe pausiert");
-    } else {
+    } else if (audioPlayer.state.surahNumber === surahInfo.number && !audioPlayer.state.isPlaying) {
+      // Resume this surah
       try {
-        // Request audio playback - browser will handle autoplay policy
-        await audioPlayerRef.current.play();
-        setIsPlaying(true);
+        await audioPlayer.resume();
+        toast.success("Wiedergabe fortgesetzt");
+      } catch (error: any) {
+        console.error("Audio playback error:", error);
+        handleAudioError(error);
+      }
+    } else {
+      // Start playing this surah from the beginning
+      try {
+        await audioPlayer.playSurah(surahInfo.number, surahInfo.englishName, surahInfo.numberOfAyahs);
         toast.success("Wiedergabe gestartet", {
           description: "Die Surah wird jetzt vorgelesen."
         });
       } catch (error: any) {
         console.error("Audio playback error:", error);
-        setIsPlaying(false);
-        setPlayingVerseNumber(null);
-        
-        // Handle specific browser autoplay errors
-        if (error.name === 'NotAllowedError' || error.message?.includes('play')) {
-          toast.error("Wiedergabe blockiert", {
-            description: "Bitte tippen Sie nochmal auf Play, um die Wiedergabe zu starten. Ihr Browser blockiert automatisches Abspielen.",
-            duration: 5000
-          });
-        } else if (error.message?.includes('timeout') || error.message?.includes('load')) {
-          toast.error("Ladefehler", {
-            description: "Die Audio-Datei konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
-            duration: 5000
-          });
-        } else if (error.message?.includes('network')) {
-          toast.error("Netzwerkfehler", {
-            description: "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung.",
-            duration: 5000
-          });
-        } else {
-          toast.error("Wiedergabe fehlgeschlagen", {
-            description: `Ein Fehler ist aufgetreten: ${error.message || 'Unbekannter Fehler'}. Bitte versuchen Sie es erneut.`,
-            duration: 5000
-          });
-        }
+        handleAudioError(error);
       }
+    }
+  };
+
+  const handleAudioError = (error: any) => {
+    if (error.name === 'NotAllowedError' || error.message?.includes('play')) {
+      toast.error("Wiedergabe blockiert", {
+        description: "Bitte tippen Sie nochmal auf Play, um die Wiedergabe zu starten. Ihr Browser blockiert automatisches Abspielen.",
+        duration: 5000
+      });
+    } else if (error.message?.includes('timeout') || error.message?.includes('load')) {
+      toast.error("Ladefehler", {
+        description: "Die Audio-Datei konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+        duration: 5000
+      });
+    } else if (error.message?.includes('network')) {
+      toast.error("Netzwerkfehler", {
+        description: "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung.",
+        duration: 5000
+      });
+    } else {
+      toast.error("Wiedergabe fehlgeschlagen", {
+        description: `Ein Fehler ist aufgetreten: ${error.message || 'Unbekannter Fehler'}. Bitte versuchen Sie es erneut.`,
+        duration: 5000
+      });
     }
   };
 
   // Play a specific verse
   const playVerse = async (verseNumber: number) => {
-    if (!audioPlayerRef.current) {
-      toast.error("Audio-Player nicht bereit");
+    if (!surahInfo) {
+      toast.error("Surah-Daten nicht geladen");
       return;
     }
 
-    // Stop current playback
-    audioPlayerRef.current.stop();
-    
-    // Jump to the verse (0-indexed)
-    audioPlayerRef.current.jumpTo(verseNumber - 1);
-    
-    // Start playing
     try {
-      await audioPlayerRef.current.play();
-      setIsPlaying(true);
-      setPlayingVerseNumber(verseNumber);
+      // Start playing this surah from the specified verse
+      await audioPlayer.playSurah(surahInfo.number, surahInfo.englishName, surahInfo.numberOfAyahs, verseNumber - 1);
       toast.success(`Vers ${verseNumber} wird abgespielt`);
     } catch (error) {
       console.error("Audio playback error:", error);
@@ -395,7 +382,7 @@ export default function SurahReader() {
                 className="bg-white/20 hover:bg-white/30 text-white border-white/30"
                 size="sm"
               >
-                {isPlaying ? (
+                {(audioPlayer.state.surahNumber === surahInfo?.number && audioPlayer.state.isPlaying) ? (
                   <>
                     <Pause className="w-4 h-4 mr-2" />
                     Pause
@@ -439,7 +426,7 @@ export default function SurahReader() {
           const verseNumber = ayah.numberInSurah;
           const translation = translationData?.ayahs[index];
           const transliteration = transliterationData?.ayahs[index];
-          const isCurrentlyPlaying = playingVerseNumber === verseNumber;
+          const isCurrentlyPlaying = audioPlayer.state.surahNumber === surahInfo?.number && audioPlayer.state.currentVerseIndex === index;
 
           return (
             <div
@@ -484,7 +471,7 @@ export default function SurahReader() {
                     onClick={() => playVerse(verseNumber)}
                     title="Vers abspielen"
                   >
-                    {isCurrentlyPlaying && isPlaying ? (
+                    {isCurrentlyPlaying && audioPlayer.state.isPlaying ? (
                       <Pause className="w-4 h-4" />
                     ) : (
                       <Play className="w-4 h-4" />

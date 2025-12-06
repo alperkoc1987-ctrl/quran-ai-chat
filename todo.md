@@ -510,3 +510,14 @@
 - [x] Improve error handling with better user feedback - Added specific error messages
 - [x] Add timeout for long loading times - 10 second timeout per verse
 - [ ] Test with Surah 2 (Al-Baqarah) - 286 verses - Ready for testing
+
+
+## Advanced Quran Audio Features (Dec 6, 2024 - 19:13)
+- [x] Implement verse repetition feature (2x, 3x, 5x options)
+- [x] Create global audio player context for app-wide state management
+- [x] Build persistent mini-player component (fixed at bottom like Spotify)
+- [x] Add mini-player controls: Play/Pause, Next/Previous, Surah info
+- [x] Enable background playback (continues when navigating away from Quran section)
+- [x] Implement auto-scroll to currently playing verse
+- [x] Highlight currently playing verse while audio is running
+- [ ] Test mini-player on all pages (Home, Koran, KI-Chat, Einstellungen) - Ready for testing

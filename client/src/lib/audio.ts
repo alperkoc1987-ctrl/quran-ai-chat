@@ -112,6 +112,8 @@ export class SurahAudioPlayer {
   private onProgressCallback?: (current: number, total: number) => void;
   private onEndCallback?: () => void;
   private loadTimeout = 10000; // 10 seconds timeout for loading
+  private repeatCount = 1; // How many times to repeat each verse (1 = no repeat, 2 = play twice, etc.)
+  private currentRepeatIteration = 0; // Current repeat iteration for the current verse
 
   constructor(audioUrls: string[]) {
     console.log('[SurahAudioPlayer] Created with', audioUrls.length, 'verses');
@@ -205,10 +207,21 @@ export class SurahAudioPlayer {
       
       // Set up event listeners
       this.currentAudio.onended = () => {
-        console.log('[SurahAudioPlayer] Audio ended, moving to next');
-        this.currentIndex++;
-        this.onProgressCallback?.(this.currentIndex, this.audioUrls.length);
-        this.playCurrentAudio();
+        console.log('[SurahAudioPlayer] Audio ended');
+        
+        // Check if we need to repeat this verse
+        this.currentRepeatIteration++;
+        if (this.currentRepeatIteration < this.repeatCount) {
+          console.log(`[SurahAudioPlayer] Repeating verse ${this.currentIndex + 1}, iteration ${this.currentRepeatIteration + 1}/${this.repeatCount}`);
+          this.playCurrentAudio(); // Replay the same verse
+        } else {
+          // Move to next verse
+          console.log('[SurahAudioPlayer] Moving to next verse');
+          this.currentRepeatIteration = 0;
+          this.currentIndex++;
+          this.onProgressCallback?.(this.currentIndex, this.audioUrls.length);
+          this.playCurrentAudio();
+        }
       };
 
       this.currentAudio.onerror = (e) => {
@@ -295,6 +308,22 @@ export class SurahAudioPlayer {
    */
   onEnd(callback: () => void) {
     this.onEndCallback = callback;
+  }
+
+  /**
+   * Set how many times each verse should repeat
+   * @param count - Repeat count (1 = no repeat, 2 = play twice, etc.)
+   */
+  setRepeatCount(count: number) {
+    this.repeatCount = Math.max(1, Math.min(count, 10)); // Limit to 1-10 repeats
+    console.log('[SurahAudioPlayer] Repeat count set to:', this.repeatCount);
+  }
+
+  /**
+   * Get current repeat count
+   */
+  getRepeatCount() {
+    return this.repeatCount;
   }
 
   /**

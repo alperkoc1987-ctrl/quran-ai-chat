@@ -6,7 +6,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { TransliterationProvider } from "./contexts/TransliterationContext";
 import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
+import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
 import { BottomNavigation } from "./components/BottomNavigation";
+import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
 import NewHome from "./pages/NewHome";
 
 import Quran from "./pages/Quran";
@@ -67,11 +69,14 @@ function App() {
       >
         <TransliterationProvider>
           <TranslationLanguageProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Router />
-              <BottomNavigation />
-            </TooltipProvider>
+            <AudioPlayerProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Router />
+                <MiniAudioPlayer />
+                <BottomNavigation />
+              </TooltipProvider>
+            </AudioPlayerProvider>
           </TranslationLanguageProvider>
         </TransliterationProvider>
       </ThemeProvider>
