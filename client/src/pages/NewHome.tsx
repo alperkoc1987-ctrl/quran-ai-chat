@@ -10,8 +10,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResumeReadingCard } from "@/components/ResumeReadingCard";
 import { AyatOfTheDay } from "@/components/AyatOfTheDay";
 import { PushToTalkButton } from "@/components/PushToTalkButton";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 export default function NewHome() {
+  const { themeConfig } = useReadingTheme();
   const [chatExpanded, setChatExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -230,9 +232,9 @@ export default function NewHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 dark:from-slate-900 dark:to-slate-800">
+    <div className={`min-h-screen ${themeConfig.colors.background}`}>
       {/* Header */}
-      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -240,8 +242,8 @@ export default function NewHome() {
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-900 dark:text-white">Koran & Hadith KI-Chat</h1>
-                <p className="text-xs text-slate-600 dark:text-slate-400">Ihr islamischer Begleiter</p>
+                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Koran & Hadith KI-Chat</h1>
+                <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Ihr islamischer Begleiter</p>
               </div>
             </div>
           </div>
@@ -255,7 +257,7 @@ export default function NewHome() {
 
       {/* KI-Assistent Section */}
       <div className="container mx-auto px-4 mt-4">
-        <Card className="overflow-hidden border border-slate-200 dark:border-slate-700">
+        <Card className={`overflow-hidden border ${themeConfig.colors.border}`}>
           <button
             onClick={() => setChatExpanded(!chatExpanded)}
             className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all"
@@ -273,7 +275,7 @@ export default function NewHome() {
           </button>
 
           {chatExpanded && (
-            <div className="bg-white dark:bg-slate-800">
+            <div className={themeConfig.colors.card}>
               {/* Messages */}
               <ScrollArea className="h-96 px-4 py-4" ref={scrollRef}>
                 <div className="space-y-3">
@@ -291,8 +293,8 @@ export default function NewHome() {
               </ScrollArea>
 
               {/* Input */}
-              <div className="border-t border-slate-200 dark:border-slate-700 p-4">
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+              <div className={`border-t ${themeConfig.colors.border} p-4`}>
+                <p className={`text-xs ${themeConfig.colors.textMuted} mb-2`}>
                   Fragen Sie nach Versen, Duas oder islamischen Themen
                 </p>
                 <div className="flex gap-2">
@@ -330,15 +332,15 @@ export default function NewHome() {
             const Icon = category.icon;
             return (
               <Link key={category.id} href={category.link}>
-                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-slate-200 dark:border-slate-700 h-full">
+                <Card className={`group hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border ${themeConfig.colors.border} ${themeConfig.colors.card} ${themeConfig.colors.cardHover} h-full`}>
                   <div className="p-4 flex flex-col items-center text-center h-full">
                     <div className={`w-14 h-14 bg-gradient-to-br ${category.gradient} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-300 mb-3`}>
                       <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all">
+                    <h3 className={`text-base font-bold ${themeConfig.colors.text} mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-emerald-500 group-hover:to-teal-600 transition-all`}>
                       {category.title}
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
+                    <p className={`text-xs ${themeConfig.colors.textSecondary} line-clamp-2`}>
                       {category.description}
                     </p>
                   </div>                </Card>
@@ -354,7 +356,7 @@ export default function NewHome() {
 
         {/* Quick Info Section */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
             Diese KI-Antworten dienen nur zu Informationszwecken. Bitte konsultieren Sie einen islamischen Gelehrten für wichtige religiöse Fragen.
           </p>
         </div>

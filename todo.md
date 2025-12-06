@@ -549,3 +549,14 @@
 
 ## TTS Voice Change (Dec 6, 2024 - 20:15)
 - [x] Change TTS voice from alloy to echo (male, deep, warm voice)
+
+
+## App-Wide Theme Application (Dec 6, 2024 - 20:20)
+- [x] Apply reading themes to Home page (NewHome)
+- [x] Apply reading themes to KI-Chat page
+- [x] Apply reading themes to Quiz page
+- [x] Apply reading themes to Settings page
+- [x] Apply reading themes to Statistics page
+- [x] Apply reading themes to Quran page
+- [x] Ensure consistent theming across all main pages
+- [ ] Test theme switching on all pages - Ready for testing

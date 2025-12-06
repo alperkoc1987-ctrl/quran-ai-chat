@@ -12,8 +12,10 @@ import {
   formatTime,
   type ReadingSession,
 } from "@/lib/statistics";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 export function Statistics() {
+  const { themeConfig } = useReadingTheme();
   const [, setLocation] = useLocation();
   const [stats, setStats] = useState(getStatistics());
   const [versesToday, setVersesToday] = useState(0);
@@ -39,7 +41,7 @@ export function Statistics() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+    <div className={`min-h-screen ${themeConfig.colors.background}`}>
       {/* Header */}
       <div className="bg-teal-600 dark:bg-teal-700 text-white p-4 shadow-md">
         <div className="container mx-auto flex items-center gap-4">
@@ -60,18 +62,18 @@ export function Statistics() {
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Total Progress */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+          <div className={`${themeConfig.colors.card} rounded-xl p-6 shadow-md border ${themeConfig.colors.border}`}>
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-teal-100 dark:bg-teal-900/30 rounded-lg">
                 <Target className="w-6 h-6 text-teal-600 dark:text-teal-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Gesamtfortschritt</h3>
+              <h3 className={`font-semibold ${themeConfig.colors.text}`}>Gesamtfortschritt</h3>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-teal-600 dark:text-teal-400">
                 {totalProgress.toFixed(1)}%
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
                 {stats.totalVersesRead} von 6.236 Versen gelesen
               </div>
               {/* Progress Bar */}
@@ -105,18 +107,18 @@ export function Statistics() {
           </div>
 
           {/* Current Streak */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+          <div className={`${themeConfig.colors.card} rounded-xl p-6 shadow-md border ${themeConfig.colors.border}`}>
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
                 <Flame className="w-6 h-6 text-orange-600 dark:text-orange-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Aktuelle Serie</h3>
+              <h3 className={`font-semibold ${themeConfig.colors.text}`}>Aktuelle Serie</h3>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
                 {stats.currentStreak}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
                 Tage in Folge
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
@@ -146,18 +148,18 @@ export function Statistics() {
           </div>
 
           {/* Quiz Stats */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+          <div className={`${themeConfig.colors.card} rounded-xl p-6 shadow-md border ${themeConfig.colors.border}`}>
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                 <Brain className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Quiz-Punkte</h3>
+              <h3 className={`font-semibold ${themeConfig.colors.text}`}>Quiz-Punkte</h3>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                 {quizStats.correctAnswers}/{quizStats.totalQuestions}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
                 Richtige Antworten
               </div>
               {quizStats.totalQuestions > 0 && (
@@ -190,18 +192,18 @@ export function Statistics() {
           </div>
 
           {/* Total Time */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+          <div className={`${themeConfig.colors.card} rounded-xl p-6 shadow-md border ${themeConfig.colors.border}`}>
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                 <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Gesamtzeit</h3>
+              <h3 className={`font-semibold ${themeConfig.colors.text}`}>Gesamtzeit</h3>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                 {formatTime(stats.totalTimeSpent)}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
                 Insgesamt gelesen
               </div>
             </div>
@@ -250,7 +252,7 @@ export function Statistics() {
                         month: "short",
                       })}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
                       {session.surahs.length} Suren
                     </div>
                   </div>
@@ -258,7 +260,7 @@ export function Statistics() {
                     <div className="text-lg font-semibold text-teal-600 dark:text-teal-400">
                       {session.versesRead} Verse
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className={`text-sm ${themeConfig.colors.textSecondary}`}>
                       {formatTime(session.timeSpent)}
                     </div>
                   </div>

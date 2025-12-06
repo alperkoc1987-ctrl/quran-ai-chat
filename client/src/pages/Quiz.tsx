@@ -5,6 +5,7 @@ import { BookOpen, Trophy, ArrowLeft, CheckCircle2, XCircle, Sparkles } from "lu
 import { useLocation } from "wouter";
 import { getRandomQuestions, QuizQuestion, markQuestionAsAnswered, getAnsweredCount } from "@/data/quizQuestions";
 import confetti from "canvas-confetti";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 // Ensure confetti is properly initialized
 if (typeof window !== 'undefined' && !window.confetti) {
@@ -12,6 +13,7 @@ if (typeof window !== 'undefined' && !window.confetti) {
 }
 
 export default function Quiz() {
+  const { themeConfig } = useReadingTheme();
   const [, navigate] = useLocation();
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -113,10 +115,10 @@ export default function Quiz() {
 
   if (questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+      <div className={`min-h-screen ${themeConfig.colors.background} flex items-center justify-center`}>
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-600 dark:text-slate-400">Quiz wird geladen...</p>
+          <p className={themeConfig.colors.textSecondary}>Quiz wird geladen...</p>
         </div>
       </div>
     );
@@ -127,9 +129,9 @@ export default function Quiz() {
     const passed = percentage >= 70;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className={`min-h-screen ${themeConfig.colors.background}`}>
         {/* Header */}
-        <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+        <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-3">
               <Button
@@ -145,8 +147,8 @@ export default function Quiz() {
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-slate-900 dark:text-white">Quiz Abgeschlossen!</h1>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">Dein Ergebnis</p>
+                  <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Quiz Abgeschlossen!</h1>
+                  <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Dein Ergebnis</p>
                 </div>
               </div>
             </div>

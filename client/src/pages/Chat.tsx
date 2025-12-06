@@ -6,8 +6,10 @@ import { useChat } from "@/hooks/useChat";
 import { MessageBubble } from "@/components/MessageBubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PushToTalkButton } from "@/components/PushToTalkButton";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 export default function Chat() {
+  const { themeConfig } = useReadingTheme();
   const [inputValue, setInputValue] = useState("");
   const { messages, isLoading, sendMessage, clearMessages } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -42,12 +44,12 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 dark:from-slate-900 dark:to-slate-800">
+    <div className={`flex flex-col h-screen ${themeConfig.colors.background}`}>
       {/* Header */}
-      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center justify-between">
+      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} px-4 py-3 flex items-center justify-between`}>
         <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">KI-Chat</h1>
-          <p className="text-xs text-slate-600 dark:text-slate-400">Stellen Sie Fragen zum Koran und Hadith</p>
+          <h1 className={`text-lg font-bold ${themeConfig.colors.text}`}>KI-Chat</h1>
+          <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Stellen Sie Fragen zum Koran und Hadith</p>
         </div>
         <Button
           variant="ghost"
@@ -90,7 +92,7 @@ export default function Chat() {
       </ScrollArea>
 
       {/* Input */}
-      <div className="border-t border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm p-4">
+      <div className={`border-t ${themeConfig.colors.border} ${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm p-4`}>
         <div className="max-w-4xl mx-auto flex gap-2 items-center">
           <Input
             value={inputValue}

@@ -9,6 +9,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { useTranslationLanguage, type TranslationLanguage } from "@/contexts/TranslationLanguageContext";
 import { ReadingThemeSelector } from "@/components/ReadingThemeSelector";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
 import {
@@ -21,6 +22,7 @@ import {
 } from "@/lib/notifications";
 
 export default function Settings() {
+  const { themeConfig } = useReadingTheme();
   const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { showTransliteration, setShowTransliteration } = useTransliteration();
@@ -98,7 +100,7 @@ export default function Settings() {
       {/* Settings Content */}
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         {/* Dark Mode Setting */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {theme === "dark" ? (
@@ -107,10 +109,10 @@ export default function Settings() {
                 <Sun className="w-6 h-6 text-teal-600" />
               )}
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
                   Dunkler Modus
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                   Aktiviere den dunklen Modus für bessere Lesbarkeit bei Nacht
                 </p>
               </div>
@@ -131,15 +133,15 @@ export default function Settings() {
         </div>
 
         {/* Transliteration Setting */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
                   Transliteration
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                   Zeige lateinische Umschrift unter arabischem Text
                 </p>
               </div>
@@ -160,7 +162,7 @@ export default function Settings() {
         </div>
 
         {/* Translation Language Setting */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center gap-4 mb-4">
             <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
@@ -226,7 +228,7 @@ export default function Settings() {
         </div>
 
         {/* Reading Theme Selection */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center gap-4 mb-4">
             <Palette className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
@@ -242,7 +244,7 @@ export default function Settings() {
         </div>
 
         {/* Reciter Selection */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center gap-4 mb-4">
             <Music className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
@@ -273,7 +275,7 @@ export default function Settings() {
                       <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                         {reciter.name}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                         {reciter.description}
                       </p>
                     </div>
@@ -302,7 +304,7 @@ export default function Settings() {
         </div>
 
         {/* Notification Settings */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center gap-4 mb-4">
             <Bell className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
@@ -407,7 +409,7 @@ export default function Settings() {
         </div>
 
         {/* Qibla Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <button
             onClick={() => setLocation("/qibla")}
             className="w-full flex items-center justify-between group hover:bg-teal-50 dark:hover:bg-slate-700 p-4 rounded-lg transition-colors"
@@ -415,10 +417,10 @@ export default function Settings() {
             <div className="flex items-center gap-4">
               <Compass className="w-6 h-6 text-teal-600 dark:text-teal-400" />
               <div className="text-left">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
                   Qibla
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                   Gebetsrichtung finden
                 </p>
               </div>
@@ -430,7 +432,7 @@ export default function Settings() {
         </div>
 
         {/* About Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center gap-4 mb-4">
             <Info className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
@@ -456,7 +458,7 @@ export default function Settings() {
         </div>
 
         {/* Privacy Section */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center gap-4 mb-4">
             <Shield className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
