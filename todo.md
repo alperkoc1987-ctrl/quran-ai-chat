@@ -319,3 +319,9 @@
 - [ ] Debug and fix Chat page blank screen issue
 - [ ] Ensure Chat page loads correctly at /chat route
 - [ ] Test chat functionality with GPT-4o-mini
+
+## KI-Chat UI Improvements (December 2025 - Part 14)
+- [x] Make KI-Chat section collapsed by default (user must tap to open)
+- [x] Round KI-Chat icon corners (not square, use rounded-xl or rounded-2xl)
+- [x] Shorten AI responses - make them concise and to-the-point (update system prompt)
+- [x] Fix verse link navigation - direct navigation without popup (avoid black bar issue)

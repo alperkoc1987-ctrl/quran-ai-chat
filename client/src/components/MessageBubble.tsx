@@ -39,6 +39,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [, setLocation] = useLocation();
 
   // Handle speech synthesis
   const handleSpeak = () => {
@@ -136,10 +137,19 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
               Quellen
             </div>
 
-            {message.sources.map((source) => (
+            {message.sources.map((source) => {
+              const handleSourceClick = () => {
+                if (source.type === SourceType.Quran && source.surahNumber) {
+                  setLocation(`/surah/${source.surahNumber}${source.ayahNumber ? `#verse-${source.ayahNumber}` : ''}`);
+                } else {
+                  setSelectedSource(source);
+                }
+              };
+              
+              return (
               <Card
                 key={source.id}
-                onClick={() => setSelectedSource(source)}
+                onClick={handleSourceClick}
                 className="p-3 bg-amber-50 border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
               >
                 <div className="flex items-start gap-2">
@@ -166,7 +176,8 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
                   </div>
                 </div>
               </Card>
-            ))}
+              );
+            })}
           </div>
         )}
 
