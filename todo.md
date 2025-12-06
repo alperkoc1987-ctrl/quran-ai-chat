@@ -636,3 +636,11 @@
 - [x] Make background theme-aware (only Modern theme gets mint green)
 - [x] Other themes (Classic, Sepia, Dark) use their own background colors
 - [x] Test all themes to ensure no color conflicts
+
+
+## UI Fixes (Dec 6, 2024 - 23:00)
+- [x] Fix KI-Chat background to match theme (currently white, should be theme-aware)
+- [x] Remove white border line under header banner
+- [x] Implement verse highlighting when opening from KI-Chat link
+- [x] Add auto-scroll to specific verse when navigating from KI-Chat
+- [x] Add bottom padding to Surah reader so last verses are not covered by mini-player/navigation

@@ -46,7 +46,7 @@ export default function Chat() {
   return (
     <div className={`flex flex-col h-screen ${themeConfig.colors.background}`}>
       {/* Header */}
-      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} px-4 py-3 flex items-center justify-between`}>
+      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm px-4 py-3 flex items-center justify-between`}>
         <div>
           <h1 className={`text-lg font-bold ${themeConfig.colors.text}`}>KI-Chat</h1>
           <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Stellen Sie Fragen zum Koran und Hadith</p>

@@ -247,7 +247,7 @@ export default function NewHome() {
   return (
     <div className={backgroundClass}>
       {/* Header */}
-      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
+      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm sticky top-0 z-50`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

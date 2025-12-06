@@ -406,7 +406,7 @@ export default function SurahReader() {
       </div>
 
       {/* Verses */}
-      <div className="container max-w-4xl mx-auto px-4 pb-8 space-y-6">
+      <div className="container max-w-4xl mx-auto px-4 pb-32 space-y-6">
         {/* Bismillah */}
         {surahInfo.number !== 1 && surahInfo.number !== 9 && (
           <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border border-slate-200 dark:border-slate-700">
