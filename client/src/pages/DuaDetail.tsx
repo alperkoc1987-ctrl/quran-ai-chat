@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { getDuasByCategory, getCategoryById } from "@shared/duasData";
+import { getDuasByCategory, getCategoryById } from "@shared/duasData.ts";
 import { Link, useParams } from "wouter";
 import { ArrowLeft, BookOpen } from "lucide-react";
 

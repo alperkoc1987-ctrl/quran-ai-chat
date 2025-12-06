@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { duaCategories } from "@shared/duasData";
+import { duaCategories } from "@shared/duasData.ts";
 import { Link } from "wouter";
 import { ArrowLeft, Baby, Heart, Compass as CompassIcon, HeartPulse, Infinity, HeartHandshake, HandHeart, Users, Hourglass, Shield, Hand, UsersRound, Moon, Zap } from "lucide-react";
 
