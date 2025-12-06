@@ -24,6 +24,7 @@ import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { useTranslationLanguage } from "@/contexts/TranslationLanguageContext";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { getTranslationEdition } from "@/lib/translationEditions";
 import { toast } from "sonner";
 import { saveReadingProgress } from "@/lib/readingProgress";
@@ -45,6 +46,7 @@ export default function SurahReader() {
   const { showTransliteration } = useTransliteration();
   const { language: translationLanguage } = useTranslationLanguage();
   const audioPlayer = useAudioPlayer();
+  const { themeConfig } = useReadingTheme();
   const [surahData, setSurahData] = useState<SurahWithAyahs | null>(null);
   const [translationData, setTranslationData] = useState<SurahWithAyahs | null>(null);
   const [transliterationData, setTransliterationData] = useState<SurahWithAyahs | null>(null);
@@ -335,7 +337,7 @@ export default function SurahReader() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className={`min-h-screen ${themeConfig.colors.background}`}>
       {/* Header */}
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-sm sticky top-0 z-10">
         <div className="container max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -437,36 +439,36 @@ export default function SurahReader() {
               key={ayah.number}
               id={`verse-${verseNumber}`}
               data-verse-number={verseNumber}
-              className={`bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border transition-all duration-500 ${
+              className={`${themeConfig.colors.card} rounded-lg p-6 shadow-sm border transition-all duration-500 ${
                 highlightedVerse === verseNumber 
                   ? "border-amber-500 ring-4 ring-amber-300 dark:ring-amber-600 bg-amber-50 dark:bg-amber-950/20"
                   : isCurrentlyPlaying 
-                    ? "border-teal-500 ring-2 ring-teal-200 dark:ring-teal-800" 
-                    : "border-slate-200 dark:border-slate-700"
+                    ? `${themeConfig.colors.accent.replace('bg-', 'border-')} ring-2` 
+                    : themeConfig.colors.border
               }`}
             >
               {/* Arabic Text */}
-              <p className="text-right text-2xl md:text-3xl font-arabic leading-loose text-slate-800 dark:text-slate-100 mb-4">
+              <p className={`text-right text-2xl md:text-3xl font-arabic leading-loose ${themeConfig.colors.arabic} mb-4`}>
                 {ayah.text}
               </p>
 
               {/* Transliteration */}
               {showTransliteration && transliteration && (
-                <p className="text-teal-600 italic text-sm mb-3">
+                <p className={`${themeConfig.colors.transliteration} italic text-sm mb-3`}>
                   {transliteration.text}
                 </p>
               )}
 
               {/* German Translation */}
               {translation && (
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                <p className={`${themeConfig.colors.translation} leading-relaxed`}>
                   {translation.text}
                 </p>
               )}
 
               {/* Action Buttons */}
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
-                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{verseNumber}</span>
+                <span className={`text-sm font-medium ${themeConfig.colors.verseNumber}`}>{verseNumber}</span>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="ghost"

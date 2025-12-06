@@ -3,11 +3,12 @@
  * Settings page with dark mode, transliteration, and reciter selection
  */
 
-import { ArrowLeft, Moon, Sun, Languages, Music, Bell, Compass, Info, Shield } from "lucide-react";
+import { ArrowLeft, Moon, Sun, Languages, Music, Bell, Compass, Info, Shield, Palette } from "lucide-react";
 import { useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { useTranslationLanguage, type TranslationLanguage } from "@/contexts/TranslationLanguageContext";
+import { ReadingThemeSelector } from "@/components/ReadingThemeSelector";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
 import {
@@ -222,6 +223,22 @@ export default function Settings() {
               <div className="text-xs text-gray-600 dark:text-gray-400">Nur Arabisch</div>
             </button>
           </div>
+        </div>
+
+        {/* Reading Theme Selection */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-teal-100 dark:border-slate-700">
+          <div className="flex items-center gap-4 mb-4">
+            <Palette className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Lese-Ansicht
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Wähle ein Theme für eine angenehme Leseerfahrung
+              </p>
+            </div>
+          </div>
+          <ReadingThemeSelector />
         </div>
 
         {/* Reciter Selection */}
