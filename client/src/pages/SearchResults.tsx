@@ -177,7 +177,7 @@ export default function SearchResults() {
                       {verses.map((verse) => (
                         <Link
                           key={verse.number}
-                          href={`/surah/${surah.number}?verse=${verse.numberInSurah}`}
+                          href={`/surah/${surah.number}?verse=${verse.numberInSurah}&highlight=true`}
                         >
                           <div className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
                             <div className="flex items-start gap-3">

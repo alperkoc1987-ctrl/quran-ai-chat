@@ -307,7 +307,7 @@ export default function Bookmarks() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => navigate(`/surah/${bookmark.surahNumber}`)}
+                          onClick={() => navigate(`/surah/${bookmark.surahNumber}?verse=${bookmark.verseNumber}&highlight=true`)}
                           className="text-teal-600 dark:text-teal-400"
                           title="Zur Surah"
                         >

@@ -8,7 +8,7 @@ import { TransliterationProvider } from "./contexts/TransliterationContext";
 import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import NewHome from "./pages/NewHome";
-import Chat from "./pages/Chat";
+
 import Quran from "./pages/Quran";
 import SearchResults from "./pages/SearchResults";
 import Duas from "./pages/Duas";
@@ -30,7 +30,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={NewHome} />
-      <Route path="/chat" component={Chat} />
+
       <Route path="/quran" component={Quran} />
       <Route path="/search/:query" component={SearchResults} />
       <Route path="/surah/:number" component={SurahReader} />

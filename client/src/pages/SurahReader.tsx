@@ -32,8 +32,14 @@ import { VerseNoteDialog } from "@/components/VerseNoteDialog";
 
 export default function SurahReader() {
   const [, params] = useRoute("/surah/:number");
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
   const surahNumber = params?.number ? parseInt(params.number) : null;
+  
+  // Parse URL parameters for verse highlighting
+  const urlParams = new URLSearchParams(location.split('?')[1] || '');
+  const targetVerseNumber = urlParams.get('verse') ? parseInt(urlParams.get('verse')!) : null;
+  const shouldHighlight = urlParams.get('highlight') === 'true';
+  const [highlightedVerse, setHighlightedVerse] = useState<number | null>(null);
 
   const { showTransliteration } = useTransliteration();
   const { language: translationLanguage } = useTranslationLanguage();
@@ -128,29 +134,28 @@ export default function SurahReader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [surahInfo, surahData]);
 
-  // Scroll to verse if hash is present in URL
+    // Scroll to verse if URL parameters specify a target verse
   useEffect(() => {
-    if (!surahData || !surahInfo) return;
+    if (!surahData || !surahInfo || !targetVerseNumber) return;
 
-    // Check if there's a hash in the URL (e.g., #verse-48)
-    const hash = window.location.hash;
-    if (hash) {
-      // Small delay to ensure DOM is fully rendered
-      setTimeout(() => {
-        const element = document.querySelector(hash);
-        if (element) {
-          // Scroll to element with smooth behavior
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          
-          // Add temporary highlight effect
-          element.classList.add('ring-4', 'ring-amber-400', 'ring-offset-2');
+    // Small delay to ensure DOM is fully rendered
+    setTimeout(() => {
+      const element = document.getElementById(`verse-${targetVerseNumber}`);
+      if (element) {
+        // Scroll to element with smooth behavior
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Add highlight effect if requested
+        if (shouldHighlight) {
+          setHighlightedVerse(targetVerseNumber);
+          // Remove highlight after 3 seconds
           setTimeout(() => {
-            element.classList.remove('ring-4', 'ring-amber-400', 'ring-offset-2');
-          }, 2000);
+            setHighlightedVerse(null);
+          }, 3000);
         }
-      }, 300);
-    }
-  }, [surahData, surahInfo]);
+      }
+    }, 300);
+  }, [surahData, surahInfo, targetVerseNumber, shouldHighlight]);
 
   // Initialize audio player when surah data is loaded
   useEffect(() => {
@@ -419,7 +424,11 @@ export default function SurahReader() {
               id={`verse-${verseNumber}`}
               data-verse-number={verseNumber}
               className={`bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border transition-all duration-500 ${
-                isCurrentlyPlaying ? "border-teal-500 ring-2 ring-teal-200 dark:ring-teal-800" : "border-slate-200 dark:border-slate-700"
+                highlightedVerse === verseNumber 
+                  ? "border-amber-500 ring-4 ring-amber-300 dark:ring-amber-600 bg-amber-50 dark:bg-amber-950/20"
+                  : isCurrentlyPlaying 
+                    ? "border-teal-500 ring-2 ring-teal-200 dark:ring-teal-800" 
+                    : "border-slate-200 dark:border-slate-700"
               }`}
             >
               {/* Arabic Text */}

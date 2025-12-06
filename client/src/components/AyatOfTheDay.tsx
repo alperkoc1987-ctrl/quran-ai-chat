@@ -8,7 +8,7 @@ export function AyatOfTheDay() {
   const [, navigate] = useLocation();
 
   const handleNavigateToVerse = () => {
-    navigate(`/surah/${ayat.surahNumber}`);
+    navigate(`/surah/${ayat.surahNumber}?verse=${ayat.verseNumber}&highlight=true`);
   };
 
   return (

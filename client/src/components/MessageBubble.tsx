@@ -21,7 +21,7 @@ function SurahNavigationButton({ surahNumber, ayahNumber, onNavigate }: { surahN
   
   const handleNavigate = () => {
     onNavigate();
-    setLocation(`/surah/${surahNumber}${ayahNumber ? `#verse-${ayahNumber}` : ''}`);
+    setLocation(`/surah/${surahNumber}${ayahNumber ? `?verse=${ayahNumber}&highlight=true` : ''}`);
   };
   
   return (
@@ -140,7 +140,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
             {message.sources.map((source) => {
               const handleSourceClick = () => {
                 if (source.type === SourceType.Quran && source.surahNumber) {
-                  setLocation(`/surah/${source.surahNumber}${source.ayahNumber ? `#verse-${source.ayahNumber}` : ''}`);
+                  setLocation(`/surah/${source.surahNumber}${source.ayahNumber ? `?verse=${source.ayahNumber}&highlight=true` : ''}`);
                 } else {
                   setSelectedSource(source);
                 }
