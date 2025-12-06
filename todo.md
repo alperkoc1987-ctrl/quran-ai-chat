@@ -412,3 +412,20 @@
 - [x] Allow app to work without user login
 - [x] Verify bookmarks and statistics still work (localStorage-based)
 - [x] Test all features without authentication
+
+## Audio Caching for TTS (December 2025 - Part 18)
+- [x] Create audio cache utility with localStorage
+- [x] Implement cache key generation (hash of text content)
+- [x] Store generated audio as Base64 in localStorage
+- [x] Add cache size limit (5-10 MB, ~20-30 audios)
+- [x] Implement LRU (Least Recently Used) cache eviction
+- [x] Update MessageBubble to check cache before API call
+- [x] Add cache statistics (hit rate, saved API calls)
+- [ ] Test caching with repeated questions
+
+## Homepage Freeze Bug (December 2025 - Part 19)
+- [x] Fix homepage showing only KI-Chat without content
+- [x] Fix homepage becoming unresponsive after navigation
+- [x] Verify Home button in bottom navigation works correctly
+- [x] Test navigation flow: Koran → Back → Home
+- [x] Ensure all homepage content loads properly
