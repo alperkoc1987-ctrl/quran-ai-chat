@@ -12,13 +12,8 @@ const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
   try {
-    // Get API key from localStorage if available (for client-side usage)
-    let apiKey = localStorage.getItem("openai_api_key");
-    
-    // Sanitize API key: remove whitespace and quotes if user accidentally pasted them
-    if (apiKey) {
-      apiKey = apiKey.trim().replace(/['"]/g, "");
-    }
+    // For Vercel deployment: API key is handled by backend environment variables
+    // No need to pass API key from frontend
     
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: "POST",
@@ -27,7 +22,7 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
       },
       body: JSON.stringify({
         ...request,
-        apiKey, // Pass sanitized API key
+        // apiKey removed - backend will use OPENAI_API_KEY from environment
         messages: [
           { 
             role: "system", 
