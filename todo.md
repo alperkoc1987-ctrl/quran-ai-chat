@@ -648,5 +648,11 @@
 
 ## Remaining UI Issues (Dec 6, 2024 - 23:30)
 - [x] KI-Chat background still white (not theme-aware as expected)
-- [ ] Verse navigation from KI-Chat links goes to Surah start, not specific verse
-- [ ] Debug why verse highlighting/auto-scroll not working from KI-Chat
+- [x] Verse navigation from KI-Chat links goes to Surah start, not specific verse
+- [x] Debug why verse highlighting/auto-scroll not working from KI-Chat
+
+
+## Ayat des Tages Navigation Fix (Dec 6, 2024 - 23:40)
+- [x] Fix "Vers lesen" button to navigate to specific verse with highlighting
+- [x] Add verse parameter to URL when clicking on Ayat des Tages
+- Note: Already working correctly! Code uses proper URL format with verse & highlight params

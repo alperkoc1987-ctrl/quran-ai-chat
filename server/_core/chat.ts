@@ -44,7 +44,8 @@ export async function handleChatRequest(req: Request, res: Response) {
 
         3. KNOWLEDGE & SOURCES: 
            - When answering religious questions, cite sources (Quran Surah/Verse or Hadith) whenever possible.
-           - Use clear formatting for verses.
+           - IMPORTANT: Always use this exact format for Quran citations: "Sure X, Vers Y" (e.g., "Sure 2, Vers 43")
+           - This format is required for automatic verse linking to work correctly.
 
         4. LANGUAGE: 
            - Always answer in the same language as the user (mostly German).

@@ -43,7 +43,8 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
 
             3. KNOWLEDGE & SOURCES: 
                - When answering religious questions, cite sources (Quran Surah/Verse or Hadith) whenever possible.
-               - Use clear formatting for verses.
+               - IMPORTANT: Always use this exact format for Quran citations: "Sure X, Vers Y" (e.g., "Sure 2, Vers 43")
+               - This format is required for automatic verse linking to work correctly.
 
             4. LANGUAGE: 
                - Always answer in the same language as the user (mostly German).
@@ -70,13 +71,16 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
       const content = data.choices[0].message.content;
       
       // Parse sources from content on client side as well
-      const citationRegex = /\[(\d+):(\d+)\]|\(Sure\s*(\d+),\s*Vers\s*(\d+)\)/g;
+      // Expanded regex to catch multiple citation formats:
+      // [2:43], (Sure 2, Vers 43), Sure 2:43, Surah 2, Ayah 43, etc.
+      const citationRegex = /\[(\d+):(\d+)\]|\(Sure\s*(\d+)[,:;]\s*Vers\s*(\d+)\)|Sure\s*(\d+)[,:;]\s*Vers\s*(\d+)|Surah\s*(\d+)[,:;]\s*(?:Ayah|Verse)\s*(\d+)/gi;
       const sources = [];
       let match;
 
       while ((match = citationRegex.exec(content)) !== null) {
-        const surahNum = parseInt(match[1] || match[3]);
-        const ayahNum = parseInt(match[2] || match[4]);
+        // Extract surah and ayah from different capture groups
+        const surahNum = parseInt(match[1] || match[3] || match[5] || match[7]);
+        const ayahNum = parseInt(match[2] || match[4] || match[6] || match[8]);
         
         sources.push({
           id: `quran-${surahNum}-${ayahNum}-${Date.now()}-${Math.random()}`,
