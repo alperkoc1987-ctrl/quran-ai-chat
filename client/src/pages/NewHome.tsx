@@ -288,7 +288,7 @@ export default function NewHome() {
           </button>
 
           {chatExpanded && (
-            <div className={themeConfig.colors.card}>
+            <div className={themeConfig.id === 'modern' ? 'bg-gradient-to-b from-teal-100 to-emerald-50' : themeConfig.colors.card}>
               {/* Messages */}
               <ScrollArea className="h-96 px-4 py-4" ref={scrollRef}>
                 <div className="space-y-3">
