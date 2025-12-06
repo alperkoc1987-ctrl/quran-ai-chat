@@ -376,9 +376,9 @@
 - [ ] Add smooth scroll and highlight animation for target verse
 
 ## Prayer Times City Detection Enhancement (December 2025 - Part 13)
-- [ ] Implement automatic city detection using reverse geocoding
-- [ ] Display actual city name instead of timezone (e.g., "Mainz, Deutschland" instead of "Europe/Berlin")
-- [ ] Add manual city selection option with search/autocomplete
-- [ ] Allow users to switch between automatic and manual location
-- [ ] Save location preference in localStorage
-- [ ] Update PrayerTimes.tsx with hybrid location system
+- [x] Implement automatic city detection using reverse geocoding
+- [x] Display actual city name instead of timezone (e.g., "Mainz, Deutschland" instead of "Europe/Berlin")
+- [x] Add manual city selection option with search/autocomplete
+- [x] Allow users to switch between automatic and manual location
+- [x] Save location preference in localStorage
+- [x] Update PrayerTimes.tsx with hybrid location system
