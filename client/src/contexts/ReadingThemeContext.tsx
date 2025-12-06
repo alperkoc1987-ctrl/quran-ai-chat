@@ -57,13 +57,13 @@ export const READING_THEMES: Record<ReadingTheme, ThemeConfig> = {
   modern: {
     id: "modern",
     name: "Modern Hell",
-    description: "Klares Weiß mit Türkis-Akzenten",
+    description: "Mintgrün mit sanftem Verlauf",
     colors: {
       // Backgrounds
-      background: "bg-gradient-to-br from-slate-50 to-slate-100",
-      backgroundSecondary: "bg-white",
-      card: "bg-white",
-      cardHover: "hover:bg-slate-50",
+      background: "bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50",
+      backgroundSecondary: "bg-emerald-50/50",
+      card: "bg-white/90 backdrop-blur-sm",
+      cardHover: "hover:bg-white",
       
       // Text
       text: "text-slate-900",

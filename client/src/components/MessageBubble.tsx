@@ -10,6 +10,7 @@ import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink } from "lucide-re
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -36,6 +37,7 @@ function SurahNavigationButton({ surahNumber, ayahNumber, onNavigate }: { surahN
 }
 
 export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
+  const { themeConfig } = useReadingTheme();
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -111,7 +113,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
           className={`rounded-lg px-4 py-3 relative group ${
             isUser
               ? "bg-blue-600 text-white rounded-br-none"
-              : "bg-gray-100 text-gray-900 rounded-bl-none"
+              : `${themeConfig.colors.card} ${themeConfig.colors.text} rounded-bl-none border ${themeConfig.colors.border}`
           }`}
         >
           <p className="text-sm md:text-base leading-relaxed">{message.text}</p>
