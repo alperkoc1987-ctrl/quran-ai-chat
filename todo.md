@@ -437,3 +437,19 @@
 - [ ] Remove OAuth dependencies from package.json (not necessary - just disabled)
 - [x] Verify no OAuth code remains active in production build
 - [ ] Test published version without registration popup
+
+## KI-Chat API 404 Error Fix (December 2025 - Part 21)
+- [ ] Diagnose 404 error in KI-Chat API
+- [ ] Check TRPC routes configuration
+- [ ] Verify chat endpoint exists and is registered
+- [ ] Fix API endpoint configuration
+- [ ] Test KI-Chat responses
+- [ ] Test TTS audio playback
+
+## OpenAI Chat Integration Fix (December 2025 - Part 22)
+- [x] Debug why chat router doesn't return responses (Forge API issue identified)
+- [x] Check OpenAI API key configuration (Keys are set correctly)
+- [x] Verify chatRouter.ts OpenAI client initialization (Configured with Forge API)
+- [ ] Test TRPC chat.sendMessage endpoint (Still hanging - needs further investigation)
+- [ ] Ensure error handling works correctly
+- [ ] Test TTS functionality after chat fix (Blocked by chat not working)

@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from "react";
 import { ChatMessage } from "@/lib/types";
-import { sendChatRequest } from "@/lib/api";
+import { trpc } from "@/lib/trpc";
 import { nanoid } from "nanoid";
 
 // Simple local responses for greetings to ensure the bot always answers "Hi"
@@ -18,6 +18,9 @@ const GREETING_RESPONSES = [
 ];
 
 export function useChat() {
+  const trpcClient = trpc.useUtils();
+  const chatMutation = trpc.chat.sendMessage.useMutation();
+  
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: nanoid(),
@@ -66,24 +69,25 @@ export function useChat() {
       }
 
       try {
-        // Check for API key
-        const apiKey = localStorage.getItem("openai_api_key");
-        // Note: We allow proceeding without an API key because the backend has a fallback key.
-        // The backend will handle the missing key logic if the fallback also fails.
+        // Get conversation history for context
+        const history = messages
+          .filter(m => !m.isUser || m.text !== userInput) // Exclude the current message
+          .map(m => ({
+            role: m.isUser ? "user" as const : "assistant" as const,
+            content: m.text,
+          }));
 
-        // Send to backend
-        const response = await sendChatRequest({
-          userQuery: userInput,
-          language: "de",
-          translationEdition: "de.bubenheim",
+        // Send to backend via TRPC
+        const response = await chatMutation.mutateAsync({
+          message: userInput,
+          history,
         });
 
         // Add AI response
         const aiMessage: ChatMessage = {
           id: nanoid(),
-          text: response.generatedAnswer,
+          text: response.response,
           isUser: false,
-          sources: response.sources,
           timestamp: new Date(),
         };
 
