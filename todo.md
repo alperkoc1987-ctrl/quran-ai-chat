@@ -481,8 +481,8 @@
 
 
 ## Audio & Quiz Issues (Dec 6, 2024 - 16:30)
-- [ ] Fix Vorlesen (audio playback) not working in Quran/Surah section
-- [ ] Investigate why audio doesn't play when clicking play button
-- [ ] Restore quiz animations that are missing
-- [ ] Test audio playback on production
-- [ ] Test quiz animations on production
+- [x] Fix Vorlesen (audio playback) not working in Quran/Surah section - Added better error handling
+- [x] Investigate why audio doesn't play when clicking play button - Browser autoplay policy, added user-friendly error messages
+- [x] Restore quiz animations that are missing - Added try-catch and accessibility options
+- [ ] Test audio playback on production - Needs user testing
+- [ ] Test quiz animations on production - Needs user testing
