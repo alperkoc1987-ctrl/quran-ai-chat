@@ -478,3 +478,11 @@
 - [x] Add Exams/Tests dua category with 5 duas
 - [x] Add Anxiety/Worry dua category with 5 duas
 - [x] Add 3-5 more duas to existing categories - Added 5 duas
+
+
+## Audio & Quiz Issues (Dec 6, 2024 - 16:30)
+- [ ] Fix Vorlesen (audio playback) not working in Quran/Surah section
+- [ ] Investigate why audio doesn't play when clicking play button
+- [ ] Restore quiz animations that are missing
+- [ ] Test audio playback on production
+- [ ] Test quiz animations on production

@@ -6,6 +6,11 @@ import { useLocation } from "wouter";
 import { getRandomQuestions, QuizQuestion, markQuestionAsAnswered, getAnsweredCount } from "@/data/quizQuestions";
 import confetti from "canvas-confetti";
 
+// Ensure confetti is properly initialized
+if (typeof window !== 'undefined' && !window.confetti) {
+  (window as any).confetti = confetti;
+}
+
 export default function Quiz() {
   const [, navigate] = useLocation();
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -37,12 +42,17 @@ export default function Quiz() {
     if (isCorrect) {
       setScore(score + 1);
       // Trigger confetti animation for correct answer
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#10b981', '#14b8a6', '#06b6d4']
-      });
+      try {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#10b981', '#14b8a6', '#06b6d4'],
+          disableForReducedMotion: true
+        });
+      } catch (error) {
+        console.error('Confetti error:', error);
+      }
     }
 
     setShowResult(true);
@@ -68,12 +78,17 @@ export default function Quiz() {
     } else {
       setQuizCompleted(true);
       // Big celebration for completing the quiz
-      confetti({
-        particleCount: 200,
-        spread: 100,
-        origin: { y: 0.5 },
-        colors: ['#10b981', '#14b8a6', '#06b6d4', '#8b5cf6', '#ec4899']
-      });
+      try {
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.5 },
+          colors: ['#10b981', '#14b8a6', '#06b6d4', '#8b5cf6', '#ec4899'],
+          disableForReducedMotion: true
+        });
+      } catch (error) {
+        console.error('Confetti error:', error);
+      }
     }
   };
 

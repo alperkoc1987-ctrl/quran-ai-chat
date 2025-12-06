@@ -187,7 +187,7 @@ export default function SurahReader() {
     };
   }, [surahInfo]);
 
-  // Toggle play/pause for entire Surah
+   // Toggle play/pause for entire Surah
   const toggleSurahPlayback = async () => {
     if (!audioPlayerRef.current) {
       toast.error("Audio-Player nicht bereit", {
@@ -202,16 +202,29 @@ export default function SurahReader() {
       toast.info("Wiedergabe pausiert");
     } else {
       try {
+        // Request audio playback - browser will handle autoplay policy
         await audioPlayerRef.current.play();
         setIsPlaying(true);
         toast.success("Wiedergabe gestartet", {
-          description: `${surahInfo?.englishName} wird abgespielt`
+          description: "Die Surah wird jetzt vorgelesen."
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error("Audio playback error:", error);
-        toast.error("Wiedergabe fehlgeschlagen", {
-          description: "Bitte versuchen Sie es erneut."
-        });
+        
+        // Handle specific browser autoplay errors
+        if (error.name === 'NotAllowedError' || error.message?.includes('play')) {
+          toast.error("Wiedergabe blockiert", {
+            description: "Bitte tippen Sie nochmal auf Play, um die Wiedergabe zu starten. Ihr Browser blockiert automatisches Abspielen."
+          });
+        } else if (error.message?.includes('network') || error.message?.includes('load')) {
+          toast.error("Netzwerkfehler", {
+            description: "Die Audio-Datei konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung."
+          });
+        } else {
+          toast.error("Wiedergabe fehlgeschlagen", {
+            description: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+          });
+        }
       }
     }
   };
