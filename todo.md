@@ -581,3 +581,9 @@
 - [x] Update card backgrounds to semi-transparent white with backdrop blur
 - [x] Fix KI-Chat MessageBubble to respect theme colors
 - [ ] Test all pages with new mint green theme - Ready for testing
+
+
+## AI Chat Prompt Fixes (Dec 6, 2024 - 21:10)
+- [x] Change AI chat from formal "Sie" to informal "Du" (explicitly stated in prompt)
+- [x] Remove "Salamu Aleykum" from every response (explicitly forbidden in prompt)
+- [x] Update system prompt to be more natural and conversational
