@@ -155,22 +155,30 @@ export async function fetchSurahWithAyahs(surahNumber: number, edition: string =
 
 export async function fetchSurahComplete(surahNumber: number, translationEdition: string = "de.bubenheim", includeTransliteration: boolean = false): Promise<any> {
   try {
-    // Fetch both Arabic and translation
-    const [arabicResponse, translationResponse] = await Promise.all([
+    // Fetch Arabic, translation, and optionally transliteration
+    const fetchPromises = [
       fetch(`${QURAN_API_URL}/surah/${surahNumber}/quran-simple-enhanced`),
       fetch(`${QURAN_API_URL}/surah/${surahNumber}/${translationEdition}`)
-    ]);
+    ];
     
-    if (!arabicResponse.ok || !translationResponse.ok) {
+    if (includeTransliteration) {
+      fetchPromises.push(fetch(`${QURAN_API_URL}/surah/${surahNumber}/en.transliteration`));
+    }
+    
+    const responses = await Promise.all(fetchPromises);
+    
+    if (!responses[0].ok || !responses[1].ok) {
       throw new Error(`Failed to fetch Surah`);
     }
     
-    const arabicData = await arabicResponse.json();
-    const translationData = await translationResponse.json();
+    const arabicData = await responses[0].json();
+    const translationData = await responses[1].json();
+    const transliterationData = includeTransliteration && responses[2]?.ok ? await responses[2].json() : null;
     
     return {
       arabic: arabicData.data,
-      translation: translationData.data
+      translation: translationData.data,
+      transliteration: transliterationData?.data || null
     };
   } catch (error) {
     console.error("Failed to fetch complete Surah:", error);
