@@ -57,8 +57,8 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
 
   return (
     <Card className="p-6 bg-slate-800 border-slate-700">
-      {/* Dhikr Text - Scrollable for long text */}
-      <div className="text-center mb-6 max-h-[30vh] overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+      {/* Dhikr Text - Full display for long text */}
+      <div className="text-center mb-6 px-2">
         <div className="text-lg md:text-xl font-arabic mb-2 leading-relaxed text-white drop-shadow-lg">
           {dhikr.arabic}
         </div>

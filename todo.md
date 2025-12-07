@@ -62,3 +62,21 @@
 - [x] Ensure full Arabic text is still visible in the counter view below
 - [ ] Test with long Dhikr texts (Ayat al-Kursi, morning/evening Adhkar)
 - [ ] Commit and push to GitHub
+
+## Quiz Auto-Scroll Fix (December 2025)
+- [x] Add automatic scroll to top when clicking "Nächste Frage" button
+- [x] Ensure smooth scroll behavior for better UX
+- [ ] Test on mobile devices
+- [ ] Commit and push to GitHub
+
+## Dhikr Transliteration Display Fix (December 2025)
+- [ ] Fix transliteration text truncation in DhikrCounter component
+- [ ] Ensure full transliteration text is visible (scrollable or multi-line)
+- [ ] Test with long texts like Ayat al-Kursi
+- [ ] Commit and push to GitHub
+
+## Dhikr Transliteration Display Fix (December 2025)
+- [x] Remove height restriction on transliteration text in DhikrCounter
+- [x] Allow full transliteration text to display across multiple lines
+- [ ] Test with long texts like Ayat al-Kursi
+- [ ] Commit and push to GitHub

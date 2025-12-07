@@ -85,6 +85,9 @@ export default function Quiz() {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
       setShowResult(false);
+      
+      // Scroll to top to show the new question
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       setQuizCompleted(true);
       // Big celebration for completing the quiz
