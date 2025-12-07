@@ -119,13 +119,10 @@ export default function Dhikr() {
               )}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="text-2xl font-arabic mb-2 leading-relaxed text-white drop-shadow-lg">
-                    {dhikr.arabic}
+                  <div className="text-xl font-semibold mb-2 text-white drop-shadow-lg">
+                    {dhikr.title || dhikr.transliteration}
                   </div>
-                  <div className="text-sm italic mb-1 text-cyan-400">
-                    {dhikr.transliteration}
-                  </div>
-                  <div className="text-sm text-slate-300">
+                  <div className="text-sm text-slate-300 line-clamp-2">
                     {dhikr.translation}
                   </div>
                 </div>
