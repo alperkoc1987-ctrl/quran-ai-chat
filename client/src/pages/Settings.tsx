@@ -166,10 +166,10 @@ export default function Settings() {
           <div className="flex items-center gap-4 mb-4">
             <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Übersetzungssprache
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-300">
                 Wähle die Sprache für Koran-Übersetzungen
               </p>
             </div>
@@ -232,10 +232,10 @@ export default function Settings() {
           <div className="flex items-center gap-4 mb-4">
             <Palette className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Lese-Ansicht
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-300">
                 Wähle ein Theme für eine angenehme Leseerfahrung
               </p>
             </div>
@@ -248,10 +248,10 @@ export default function Settings() {
           <div className="flex items-center gap-4 mb-4">
             <Music className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Rezitator auswählen
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-300">
                 Wähle deinen bevorzugten Koran-Rezitator
               </p>
             </div>
@@ -308,10 +308,10 @@ export default function Settings() {
           <div className="flex items-center gap-4 mb-4">
             <Bell className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Benachrichtigungen
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-300">
                 Erhalte Erinnerungen für Gebetszeiten und tägliche Verse
               </p>
             </div>
@@ -436,10 +436,10 @@ export default function Settings() {
           <div className="flex items-center gap-4 mb-4">
             <Info className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Über uns
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-300">
                 Informationen über die App
               </p>
             </div>
@@ -462,10 +462,10 @@ export default function Settings() {
           <div className="flex items-center gap-4 mb-4">
             <Shield className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-lg font-semibold text-white">
                 Datenschutz
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-slate-300">
                 Ihre Privatsphäre ist uns wichtig
               </p>
             </div>

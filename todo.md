@@ -134,3 +134,12 @@
 - [ ] Test continuous playback in background (PWA) - user testing required
 - [ ] Test toast visibility on mobile - user testing required
 - [ ] Commit and push to GitHub
+
+## Settings & Qibla UX Improvements - December 7, 2025 (Evening)
+- [x] Fix Settings page text contrast (titles too dark, hard to read)
+- [x] Improve Settings section headings visibility (all white text)
+- [x] Modernize Qibla page design (darker background, elegant compass)
+- [x] Add compass activation button for iOS permission request
+- [x] Redesign compass with teal accents and modern dark theme
+- [ ] Test compass functionality on iOS Chrome/Safari (user testing required)
+- [ ] Commit and push to GitHub
