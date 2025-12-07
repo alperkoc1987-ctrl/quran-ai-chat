@@ -756,3 +756,15 @@
 - [x] Update verseNumber from amber-400 to teal-400
 - [x] Update borders from amber to slate
 - [x] Apply changes to: Dhikr, Settings, and all pages using Classic theme
+
+## Transliteration Color Consistency (December 2025)
+- [x] Change verse transliteration from light teal (text-teal-400) to darker teal (text-teal-600)
+- [x] Find exact color used in Bismillah transliteration
+- [x] Apply darker teal to all verses in Classic theme
+- [x] Update AI prompt to include transliteration when recommending Duas
+
+## Dhikr Page Fixes (December 2025)
+- [x] Fix Dhikr card Arabic text color (changed to text-white)
+- [x] Reduce Ayat al-Kursi overlay text size (changed from text-3xl to text-2xl md:text-3xl)
+- [x] Make Dhikr counter overlay scrollable (added max-h-[50vh] overflow-y-auto)
+- [x] Improve text readability with better color contrast

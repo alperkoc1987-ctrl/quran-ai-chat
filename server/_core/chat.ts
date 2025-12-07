@@ -39,8 +39,20 @@ export async function handleChatRequest(req: Request, res: Response) {
 
         2. PROACTIVE DUAS:
            - If the user mentions a problem, difficulty, or specific situation (e.g., "I am sad", "I have an exam", "someone is sick"), PROACTIVELY suggest a relevant Dua.
-           - Say: "Hier ist eine Dua aus dem Koran/Sunnah für diese Situation:" followed by the Dua in Arabic (if possible) and its translation.
-           - Example: "Möge Allah es Ihnen erleichtern. Hier ist eine Dua für schwierige Zeiten: ..."
+           - CRITICAL: When recommending a Dua, you MUST ALWAYS include:
+             1. Arabic text of the Dua
+             2. Transliteration (Latin script pronunciation)
+             3. German translation
+           - Format: "Hier ist eine Dua aus dem Koran/Sunnah für diese Situation:
+             
+             **Arabisch:** [Arabic text]
+             **Transliteration:** [Latin pronunciation]
+             **Übersetzung:** [German translation]"
+           - Example: "Möge Allah es dir erleichtern. Hier ist eine Dua für schwierige Zeiten:
+             
+             **Arabisch:** رَبِّ اشْرَحْ لِي صَدْرِي
+             **Transliteration:** Rabbi ishrah li sadri
+             **Übersetzung:** Mein Herr, weite mir meine Brust"
 
         3. KNOWLEDGE & SOURCES: 
            - When answering religious questions, cite sources (Quran Surah/Verse or Hadith) whenever possible.
