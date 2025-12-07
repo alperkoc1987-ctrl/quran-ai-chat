@@ -693,3 +693,18 @@
 ## Ayat des Tages Navigation Fix (December 2025)
 - [x] Restore Ayat des Tages navigation to jump to specific verse with highlighting
 - [x] Change from `/surah/X` back to `/surah/X?verse=Y&highlight=true`
+
+## Theme Changes - Classic as Default (December 2025)
+- [ ] Change default theme from "modern" to "classic"
+- [ ] Apply classic dark blue gradient background to all pages
+- [ ] Fix microphone icon visibility in dark mode (too dark, needs lighter color)
+- [ ] Fix gold text readability in dark mode (needs brighter/lighter color)
+- [ ] Ensure consistent classic theme across: Home, Koran Reader, Duas, Prayer Times, Qibla, Settings, etc.
+
+## Theme Changes - Classic as Default (December 2025)
+- [x] Change default theme from "modern" to "classic"
+- [x] Fix microphone icon visibility in dark mode (too dark, needs lighter color)
+- [x] Fix gold text readability in dark mode (needs brighter/lighter color)
+- [x] Change verse highlight from yellow border to mint green border (match audio player color)
+- [x] Switch AI model from gpt-4o-mini to gemini-2.5-flash (50% cost savings)
+- [x] Keep Koran Reader design as-is (already good)

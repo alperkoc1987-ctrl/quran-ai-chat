@@ -117,7 +117,7 @@ export const READING_THEMES: Record<ReadingTheme, ThemeConfig> = {
       
       // Quran-specific
       arabic: "text-amber-100",
-      transliteration: "text-amber-300",
+      transliteration: "text-amber-200",
       translation: "text-amber-50",
       verseNumber: "text-amber-400",
       
@@ -255,7 +255,7 @@ export function ReadingThemeProvider({ children }: { children: ReactNode }) {
         return saved as ReadingTheme;
       }
     }
-    return "modern"; // Default theme
+    return "classic"; // Default theme
   });
 
   const setTheme = (newTheme: ReadingTheme) => {

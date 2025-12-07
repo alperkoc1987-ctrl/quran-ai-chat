@@ -54,9 +54,9 @@ export async function handleChatRequest(req: Request, res: Response) {
       { role: "user", content: userQuery },
     ];
 
-    // Call OpenAI API
+    // Call Manus Forge API (supports multiple models including Gemini)
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gemini-2.5-flash",
       messages: chatMessages as any,
       max_tokens: 3000,
       temperature: 0.7,

@@ -457,7 +457,7 @@ export default function SurahReader() {
               data-verse-number={verseNumber}
               className={`${themeConfig.colors.card} rounded-lg p-6 shadow-sm border transition-all duration-500 ${
                 highlightedVerse === verseNumber 
-                  ? "border-amber-500 ring-4 ring-amber-300 dark:ring-amber-600 bg-amber-50 dark:bg-amber-950/20"
+                  ? "border-teal-500 ring-4 ring-teal-400/50 dark:ring-teal-500/50"
                   : isCurrentlyPlaying 
                     ? `${themeConfig.colors.accent.replace('bg-', 'border-')} ring-2` 
                     : themeConfig.colors.border

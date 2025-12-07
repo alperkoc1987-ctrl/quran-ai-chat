@@ -205,7 +205,7 @@ export function PushToTalkButton({ onTranscript, className }: PushToTalkButtonPr
         type="button"
         variant="ghost"
         size="icon"
-        className={`relative ${className} ${isRecording ? "bg-red-100 text-red-600 hover:bg-red-200" : ""}`}
+        className={`relative ${className} ${isRecording ? "bg-red-100 text-red-600 hover:bg-red-200" : "text-slate-600 dark:text-slate-300"}`}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
