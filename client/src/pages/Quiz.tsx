@@ -103,17 +103,17 @@ export default function Quiz() {
   };
 
   const handleRestartQuiz = () => {
-    const quizQuestions = getRandomQuestions(10);
-    setQuestions(quizQuestions);
+    const newQuestions = getRandomQuestions(10);
+    setQuestions(newQuestions);
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setShowResult(false);
     setScore(0);
-    setAnsweredQuestions(0);
     setQuizCompleted(false);
   };
 
-  if (questions.length === 0) {
+  // Loading state
+  if (!currentQuestion) {
     return (
       <div className={`min-h-screen ${themeConfig.colors.background} flex items-center justify-center`}>
         <div className="text-center">
@@ -124,12 +124,13 @@ export default function Quiz() {
     );
   }
 
+  // Quiz completed screen
   if (quizCompleted) {
     const percentage = Math.round((score / questions.length) * 100);
     const passed = percentage >= 70;
 
     return (
-      <div className={`min-h-screen ${themeConfig.colors.background}`}>
+      <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
         {/* Header */}
         <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
           <div className="container mx-auto px-4 py-4">
@@ -138,12 +139,12 @@ export default function Quiz() {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/")}
-                className="text-slate-600 dark:text-slate-400"
+                className={themeConfig.colors.textSecondary}
               >
                 <ArrowLeft className="w-5 h-5" />
               </Button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                <div className={`w-10 h-10 ${themeConfig.colors.accent} rounded-xl flex items-center justify-center`}>
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -157,43 +158,43 @@ export default function Quiz() {
 
         {/* Results */}
         <div className="container mx-auto px-4 py-8 max-w-2xl">
-          <Card className="p-8 text-center">
-            <div className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center ${passed ? 'bg-green-100 dark:bg-green-900/30' : 'bg-orange-100 dark:bg-orange-900/30'}`}>
+          <Card className={`p-8 text-center ${themeConfig.colors.card}`}>
+            <div className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center ${passed ? 'bg-green-500/20' : 'bg-orange-500/20'}`}>
               {passed ? (
-                <Trophy className="w-12 h-12 text-green-600 dark:text-green-400" />
+                <Trophy className="w-12 h-12 text-green-500" />
               ) : (
-                <Sparkles className="w-12 h-12 text-orange-600 dark:text-orange-400" />
+                <Sparkles className="w-12 h-12 text-orange-500" />
               )}
             </div>
 
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className={`text-3xl font-bold ${themeConfig.colors.text} mb-2`}>
               {passed ? "Ausgezeichnet!" : "Gut gemacht!"}
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <p className={`${themeConfig.colors.textSecondary} mb-6`}>
               {passed 
                 ? "Du hast das Quiz erfolgreich bestanden!" 
                 : "Übe weiter, um dein Wissen zu vertiefen!"}
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                <div className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-1">
+              <div className={`${themeConfig.colors.backgroundSecondary} rounded-lg p-4`}>
+                <div className="text-3xl font-bold text-teal-500 mb-1">
                   {score}/{questions.length}
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Richtige Antworten</div>
+                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>Richtige Antworten</div>
               </div>
-              <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">
+              <div className={`${themeConfig.colors.backgroundSecondary} rounded-lg p-4`}>
+                <div className="text-3xl font-bold text-teal-500 mb-1">
                   {percentage}%
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Erfolgsquote</div>
+                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>Erfolgsquote</div>
               </div>
             </div>
 
             <div className="flex gap-3">
               <Button
                 onClick={handleRestartQuiz}
-                className="flex-1 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700"
+                className={`flex-1 ${themeConfig.colors.buttonPrimary} ${themeConfig.colors.buttonPrimaryHover} ${themeConfig.colors.buttonPrimaryText}`}
               >
                 Neues Quiz starten
               </Button>
@@ -212,9 +213,9 @@ export default function Quiz() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
       {/* Header */}
-      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -222,26 +223,26 @@ export default function Quiz() {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/")}
-                className="text-slate-600 dark:text-slate-400"
+                className={themeConfig.colors.textSecondary}
               >
                 <ArrowLeft className="w-5 h-5" />
               </Button>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                <div className={`w-10 h-10 ${themeConfig.colors.accent} rounded-xl flex items-center justify-center`}>
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-slate-900 dark:text-white">Islamisches Quiz</h1>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">Teste dein Wissen</p>
+                  <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Islamisches Quiz</h1>
+                  <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Teste dein Wissen</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <div className="text-sm font-medium text-slate-900 dark:text-white">
+                <div className={`text-sm font-medium ${themeConfig.colors.text}`}>
                   Frage {currentQuestionIndex + 1}/{questions.length}
                 </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400">
+                <div className={`text-xs ${themeConfig.colors.textSecondary}`}>
                   Punkte: {score}
                 </div>
               </div>
@@ -251,23 +252,23 @@ export default function Quiz() {
       </header>
 
       {/* Progress Bar */}
-      <div className="bg-slate-200 dark:bg-slate-700 h-2">
+      <div className={`${themeConfig.colors.card} h-2 opacity-30`}>
         <div
-          className="bg-gradient-to-r from-teal-500 to-emerald-600 h-full transition-all duration-300"
+          className={`${themeConfig.colors.buttonPrimary} h-full transition-all duration-300`}
           style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
         ></div>
       </div>
 
       {/* Question */}
       <div className="container mx-auto px-4 py-8 pb-24 max-w-3xl">
-        <Card className="p-6 md:p-8">
+        <Card className={`p-6 md:p-8 ${themeConfig.colors.card}`}>
           {/* Category Badge */}
-          <div className="inline-block px-3 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 rounded-full text-sm font-medium mb-6">
+          <div className={`inline-block px-3 py-1 ${themeConfig.colors.accent} text-white rounded-full text-sm font-medium mb-6 opacity-80`}>
             {currentQuestion.category}
           </div>
 
           {/* Question Text */}
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-8">
+          <h2 className={`text-2xl md:text-3xl font-bold ${themeConfig.colors.text} mb-8`}>
             {currentQuestion.question}
           </h2>
 
@@ -286,18 +287,18 @@ export default function Quiz() {
                   disabled={showResult}
                   className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                     showCorrectAnswer
-                      ? "border-green-500 bg-green-50 dark:bg-green-900/20"
+                      ? "border-green-500 bg-green-500/20"
                       : showWrongAnswer
-                      ? "border-red-500 bg-red-50 dark:bg-red-900/20"
+                      ? "border-red-500 bg-red-500/20"
                       : isSelected
-                      ? "border-teal-500 bg-teal-50 dark:bg-teal-900/20"
-                      : "border-slate-200 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700"
+                      ? `border-teal-500 bg-teal-500/20`
+                      : `${themeConfig.colors.border} hover:border-teal-500`
                   } ${showResult ? "cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-900 dark:text-white font-medium">{option}</span>
-                    {showCorrectAnswer && <CheckCircle2 className="w-6 h-6 text-green-600" />}
-                    {showWrongAnswer && <XCircle className="w-6 h-6 text-red-600" />}
+                    <span className={`${themeConfig.colors.text} font-medium`}>{option}</span>
+                    {showCorrectAnswer && <CheckCircle2 className="w-6 h-6 text-green-500" />}
+                    {showWrongAnswer && <XCircle className="w-6 h-6 text-red-500" />}
                   </div>
                 </button>
               );
@@ -305,15 +306,10 @@ export default function Quiz() {
           </div>
 
           {/* Explanation */}
-          {showResult && (
-            <div className={`p-4 rounded-lg mb-6 ${
-              selectedAnswer === currentQuestion.correctAnswer
-                ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
-                : "bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800"
-            }`}>
-              <p className="text-sm text-slate-700 dark:text-slate-300">
-                <strong>Erklärung:</strong> {currentQuestion.explanation}
-              </p>
+          {showResult && currentQuestion.explanation && (
+            <div className={`${themeConfig.colors.backgroundSecondary} rounded-lg p-4 mb-6`}>
+              <h3 className={`font-semibold ${themeConfig.colors.text} mb-2`}>Erklärung:</h3>
+              <p className={themeConfig.colors.textSecondary}>{currentQuestion.explanation}</p>
             </div>
           )}
 
@@ -323,7 +319,7 @@ export default function Quiz() {
               <Button
                 onClick={handleSubmitAnswer}
                 disabled={selectedAnswer === null}
-                className="flex-1 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700"
+                className={`w-full ${themeConfig.colors.buttonPrimary} ${themeConfig.colors.buttonPrimaryHover} ${themeConfig.colors.buttonPrimaryText}`}
               >
                 Antwort bestätigen
               </Button>
@@ -331,7 +327,7 @@ export default function Quiz() {
               <Button
                 id="next-question-button"
                 onClick={handleNextQuestion}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+                className={`w-full ${themeConfig.colors.buttonPrimary} ${themeConfig.colors.buttonPrimaryHover} ${themeConfig.colors.buttonPrimaryText}`}
               >
                 {currentQuestionIndex < questions.length - 1 ? "Nächste Frage" : "Quiz beenden"}
               </Button>

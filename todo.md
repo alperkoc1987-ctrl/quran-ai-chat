@@ -36,3 +36,11 @@
 - [x] Ensure counter area ("0 von 1") is always visible
 - [ ] Test on mobile devices
 - [ ] Commit and push to GitHub
+
+## Theme Color Fixes (December 2025)
+- [x] Apply Classic theme colors to Duas page (dark blue background)
+- [x] Apply Classic theme colors to Quiz page (dark blue background)
+- [x] Keep light theme unchanged (white/light gray backgrounds)
+- [x] Verify text readability in all pages (white/light text on dark backgrounds)
+- [ ] Test both Classic and light themes
+- [ ] Commit and push to GitHub
