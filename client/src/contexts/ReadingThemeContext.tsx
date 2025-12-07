@@ -102,7 +102,7 @@ export const READING_THEMES: Record<ReadingTheme, ThemeConfig> = {
   classic: {
     id: "classic",
     name: "Klassisch",
-    description: "Dunkelblau mit goldenen Akzenten",
+    description: "Dunkelblau mit teal/grünen Akzenten",
     colors: {
       // Backgrounds
       background: "bg-gradient-to-br from-[#0a1929] to-[#001e3c]",
@@ -111,35 +111,35 @@ export const READING_THEMES: Record<ReadingTheme, ThemeConfig> = {
       cardHover: "hover:bg-[#1a3a5c]",
       
       // Text
-      text: "text-amber-50",
-      textSecondary: "text-amber-100",
-      textMuted: "text-amber-200/60",
+      text: "text-white",
+      textSecondary: "text-slate-300",
+      textMuted: "text-slate-400",
       
       // Quran-specific
       arabic: "text-white",
       transliteration: "text-teal-400",
       translation: "text-slate-200",
-      verseNumber: "text-amber-400",
+      verseNumber: "text-teal-400",
       
       // UI Elements
-      primary: "bg-amber-500",
-      primaryHover: "hover:bg-amber-600",
-      accent: "bg-amber-600",
-      accentHover: "hover:bg-amber-700",
-      border: "border-amber-900/30",
-      borderLight: "border-amber-900/20",
+      primary: "bg-teal-500",
+      primaryHover: "hover:bg-teal-600",
+      accent: "bg-teal-600",
+      accentHover: "hover:bg-teal-700",
+      border: "border-slate-700",
+      borderLight: "border-slate-800",
       
       // Interactive
-      buttonPrimary: "bg-gradient-to-r from-amber-500 to-amber-600",
-      buttonPrimaryHover: "hover:from-amber-600 hover:to-amber-700",
-      buttonPrimaryText: "text-[#0a1929]",
-      buttonSecondary: "bg-[#132f4c] border-2 border-amber-500",
+      buttonPrimary: "bg-gradient-to-r from-teal-500 to-emerald-600",
+      buttonPrimaryHover: "hover:from-teal-600 hover:to-emerald-700",
+      buttonPrimaryText: "text-white",
+      buttonSecondary: "bg-[#132f4c] border-2 border-teal-500",
       buttonSecondaryHover: "hover:bg-[#1a3a5c]",
-      buttonSecondaryText: "text-amber-400",
+      buttonSecondaryText: "text-teal-400",
       
       // Special
       success: "text-emerald-400",
-      warning: "text-amber-400",
+      warning: "text-yellow-400",
       error: "text-red-400",
       info: "text-blue-400",
     },

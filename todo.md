@@ -746,3 +746,13 @@
 - [x] Change all verse transliteration from amber/yellow to teal/green (match Bismillah style)
 - [x] Keep translation text as white/light gray
 - [x] Apply consistent color scheme across all verses in SurahReader
+
+## Classic Theme Complete Color Overhaul (December 2025)
+- [x] Remove ALL yellow/gold (amber) colors from Classic theme
+- [x] Change all text colors to white/teal/gray scheme
+- [x] Update textSecondary from amber-100 to slate-300
+- [x] Update textMuted from amber-200/60 to slate-400
+- [x] Update button colors from amber to teal/emerald
+- [x] Update verseNumber from amber-400 to teal-400
+- [x] Update borders from amber to slate
+- [x] Apply changes to: Dhikr, Settings, and all pages using Classic theme
