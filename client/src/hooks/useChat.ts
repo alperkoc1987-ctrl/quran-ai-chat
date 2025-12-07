@@ -74,7 +74,12 @@ export function useChat() {
         // Build conversation history for context
         // Convert ChatMessage[] to OpenAI message format
         const conversationHistory = messages
-          .filter(msg => !msg.text.startsWith("Assalamu alaikum! Ich bin Ihr KI-Assistent")) // Skip initial greeting
+          .filter(msg => 
+            msg.text && // Filter out null/undefined/empty text
+            msg.text.trim() && // Filter out whitespace-only messages
+            !msg.text.startsWith("Assalamu alaikum! Ich bin Ihr KI-Assistent") && // Skip initial greeting
+            !msg.text.startsWith("❌ FEHLER:") // Skip error messages
+          )
           .map(msg => ({
             role: msg.isUser ? "user" : "assistant",
             content: msg.text

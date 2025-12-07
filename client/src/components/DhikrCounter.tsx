@@ -58,14 +58,14 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
   return (
     <Card className="p-6">
       {/* Dhikr Text */}
-      <div className="text-center mb-6 max-h-[50vh] overflow-y-auto">
-        <div className="text-2xl md:text-3xl font-arabic mb-3 leading-loose text-white">
+      <div className="text-center mb-6 max-h-[40vh] overflow-y-auto px-2">
+        <div className="text-lg md:text-xl font-arabic mb-2 leading-relaxed text-white">
           {dhikr.arabic}
         </div>
-        <div className="text-base md:text-lg text-teal-600 dark:text-teal-400 mb-2 italic">
+        <div className="text-sm md:text-base text-teal-600 dark:text-teal-400 mb-2 italic">
           {dhikr.transliteration}
         </div>
-        <div className="text-sm text-slate-300 dark:text-slate-400">
+        <div className="text-xs md:text-sm text-slate-300 dark:text-slate-400">
           {dhikr.translation}
         </div>
       </div>

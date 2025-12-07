@@ -785,3 +785,13 @@
 - [x] Change reward label to teal (was green)
 - [x] Change reward text to light gray for readability
 - [x] Match exact colors from Quran verse cards
+
+## CRITICAL BUGS (December 2025)
+- [x] Fix KI-Chat error: "Invalid value for 'content': expected a string, got null"
+- [x] Filter out messages with null/empty content in conversation history
+- [x] Reduce Ayat al-Kursi overlay text size (text-lg instead of text-2xl)
+- [x] Limit Ayat al-Kursi modal height to max-h-[40vh] (was 50vh)
+- [x] Reduce transliteration size (text-sm instead of text-base)
+- [x] Reduce translation size (text-xs instead of text-sm)
+- [x] Add horizontal padding for better readability
+- [ ] Fix Lesezeichen page not opening (JavaScript error)
