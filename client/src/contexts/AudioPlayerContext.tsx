@@ -79,6 +79,10 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         ...prev,
         isPlaying: false,
       }));
+      // Update Media Session
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'paused';
+      }
     });
 
     audioPlayerRef.current = player;
@@ -101,6 +105,41 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     // Start playing
     try {
       await player.play();
+      
+      // Set up Media Session API for background playback and lock screen controls
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: surahName,
+          artist: 'Quran Rezitation',
+          album: `Sure ${surahNumber}`,
+          artwork: [
+            { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+            { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+          ]
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => {
+          console.log('[Media Session] Play action');
+          resume();
+        });
+
+        navigator.mediaSession.setActionHandler('pause', () => {
+          console.log('[Media Session] Pause action');
+          pause();
+        });
+
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          console.log('[Media Session] Previous track action');
+          previousVerse();
+        });
+
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          console.log('[Media Session] Next track action');
+          nextVerse();
+        });
+
+        navigator.mediaSession.playbackState = 'playing';
+      }
     } catch (error) {
       console.error('[AudioPlayerContext] Error playing audio:', error);
       setState((prev) => ({ ...prev, isPlaying: false }));
@@ -113,6 +152,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     if (audioPlayerRef.current) {
       audioPlayerRef.current.pause();
       setState((prev) => ({ ...prev, isPlaying: false }));
+      
+      // Update Media Session
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'paused';
+      }
     }
   };
 
@@ -122,6 +166,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
       try {
         await audioPlayerRef.current.play();
         setState((prev) => ({ ...prev, isPlaying: true }));
+        
+        // Update Media Session
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = 'playing';
+        }
       } catch (error) {
         console.error('[AudioPlayerContext] Error resuming audio:', error);
         throw error;
@@ -142,6 +191,12 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
       totalVerses: 0,
       repeatCount: state.repeatCount,
     });
+    
+    // Clear Media Session
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = 'none';
+      navigator.mediaSession.metadata = null;
+    }
   };
 
   const nextVerse = () => {

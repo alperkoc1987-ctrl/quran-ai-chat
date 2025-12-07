@@ -15,7 +15,8 @@ export interface Dhikr {
   source: string; // Hadith reference
   reward: string; // Fadl/Benefit
   audioUrl?: string;
-  shortName?: string; // Short display name for header (e.g., "Ayat al-Kursi")
+  title?: string; // Display title for list and header (e.g., "Ayat al-Kursi", "Letzte 2 Verse Al-Baqarah")
+  shortName?: string; // Deprecated: use title instead
 }
 
 export type DhikrCategory = 
@@ -38,7 +39,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Ayat al-Kursi nach jedem Pflichtgebet rezitiert, dem steht nichts im Wege zum Paradies außer dem Tod.",
     source: "An-Nasa'i in Al-Kubra (9928), authentifiziert von Al-Albani",
     reward: "Schutz bis zum nächsten Gebet, Eintritt ins Paradies",
-    shortName: "Ayat al-Kursi",
+    title: "Ayat al-Kursi",
   },
   {
     id: "morning_subhanallah_100",
@@ -50,6 +51,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer 100 Mal am Tag sagt: 'Subhan Allahi wa bihamdihi', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
     source: "Sahih Bukhari 6405, Sahih Muslim 2691",
     reward: "Vergebung aller Sünden, selbst wenn sie wie Meeresschaum sind",
+    title: "Tasbih 100x",
   },
   {
     id: "morning_subhanallah_azim",
@@ -61,6 +63,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Zwei Worte, die leicht auf der Zunge sind, schwer in der Waage und geliebt vom Barmherzigen: Subhan Allahil-Azim wa bihamdihi, Subhan Allahil-Azim.",
     source: "Sahih Bukhari 6406, Sahih Muslim 2694",
     reward: "Schwer in der Waage am Tag des Gerichts, geliebt von Allah",
+    title: "Tasbih Al-Azim 100x",
   },
   {
     id: "morning_la_ilaha_illallah",
@@ -72,6 +75,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer dies 100 Mal am Tag sagt, erhält die Belohnung, als hätte er 100 Sklaven befreit, und 100 gute Taten werden für ihn aufgeschrieben, und 100 schlechte Taten werden von ihm gelöscht, und es ist ein Schutz vor dem Satan für diesen Tag.",
     source: "Sahih Bukhari 3293, Sahih Muslim 2691",
     reward: "Belohnung wie 100 befreite Sklaven, 100 Hasanat, Schutz vor Satan",
+    title: "Tahlil 100x",
   },
   
   // Evening Adhkar
@@ -85,7 +89,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Ayat al-Kursi vor dem Schlafengehen rezitiert, wird von Allah beschützt und der Satan wird sich ihm nicht nähern bis zum Morgen.",
     source: "Sahih Bukhari 2311",
     reward: "Schutz vor Satan die ganze Nacht",
-    shortName: "Ayat al-Kursi",
+    title: "Ayat al-Kursi",
   },
   {
     id: "evening_last_two_ayat_baqarah",
@@ -97,7 +101,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer die letzten beiden Verse von Surat Al-Baqarah in der Nacht rezitiert, dem genügen sie (als Schutz).",
     source: "Sahih Bukhari 5009, Sahih Muslim 807",
     reward: "Ausreichender Schutz für die Nacht",
-    shortName: "Letzte 2 Verse Al-Baqarah",
+    title: "Letzte 2 Verse Al-Baqarah",
   },
   
   // After Prayer
@@ -111,6 +115,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
     source: "Sahih Muslim 597",
     reward: "Vergebung der Sünden",
+    title: "Tasbih 33x",
   },
   {
     id: "after_prayer_alhamdulillah_33",
@@ -122,6 +127,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
     source: "Sahih Muslim 597",
     reward: "Vergebung der Sünden",
+    title: "Tahmid 33x",
   },
   {
     id: "after_prayer_allahu_akbar_33",
@@ -133,6 +139,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
     source: "Sahih Muslim 597",
     reward: "Vergebung der Sünden",
+    title: "Takbir 33x",
   },
   
   // Before Sleep
@@ -146,7 +153,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Ayat al-Kursi vor dem Schlafengehen rezitiert, wird von Allah beschützt und der Satan wird sich ihm nicht nähern bis zum Morgen.",
     source: "Sahih Bukhari 2311",
     reward: "Schutz vor Satan die ganze Nacht",
-    shortName: "Ayat al-Kursi",
+    title: "Ayat al-Kursi",
   },
   {
     id: "before_sleep_surah_ikhlas",
@@ -158,6 +165,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Der Prophet (ﷺ) pflegte vor dem Schlafengehen seine Hände zusammenzulegen, in sie zu blasen und Surat Al-Ikhlas, Al-Falaq und An-Nas zu rezitieren, dann strich er damit über seinen Körper, beginnend mit seinem Kopf und Gesicht und dem vorderen Teil seines Körpers. Er tat dies drei Mal.",
     source: "Sahih Bukhari 5017",
     reward: "Vollständiger Schutz vor allem Übel",
+    title: "Sura Al-Ikhlas 3x",
   },
   {
     id: "before_sleep_surah_falaq",
@@ -169,6 +177,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Der Prophet (ﷺ) pflegte vor dem Schlafengehen seine Hände zusammenzulegen, in sie zu blasen und Surat Al-Ikhlas, Al-Falaq und An-Nas zu rezitieren, dann strich er damit über seinen Körper, beginnend mit seinem Kopf und Gesicht und dem vorderen Teil seines Körpers. Er tat dies drei Mal.",
     source: "Sahih Bukhari 5017",
     reward: "Vollständiger Schutz vor allem Übel",
+    title: "Sura Al-Falaq 3x",
   },
   {
     id: "before_sleep_surah_nas",
@@ -180,6 +189,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Der Prophet (ﷺ) pflegte vor dem Schlafengehen seine Hände zusammenzulegen, in sie zu blasen und Surat Al-Ikhlas, Al-Falaq und An-Nas zu rezitieren, dann strich er damit über seinen Körper, beginnend mit seinem Kopf und Gesicht und dem vorderen Teil seines Körpers. Er tat dies drei Mal.",
     source: "Sahih Bukhari 5017",
     reward: "Vollständiger Schutz vor allem Übel",
+    title: "Sura An-Nas 3x",
   },
   {
     id: "before_sleep_bismika_allahumma",
@@ -191,6 +201,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wenn du dich zu Bett legst, sag: 'Bismika Allahumma amutu wa ahya'. Und wenn du aufwachst, sag: 'Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur'.",
     source: "Sahih Bukhari 6324",
     reward: "Erinnerung an Allah beim Schlafen und Aufwachen",
+    title: "Dua vor dem Schlaf",
   },
   
   // After Wudu
@@ -204,7 +215,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Wudu vollzieht und es gut macht, dann sagt: 'Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluh', dem werden die acht Tore des Paradieses geöffnet, und er kann durch welches er will eintreten.",
     source: "Sahih Muslim 234",
     reward: "Die acht Tore des Paradieses werden geöffnet",
-    shortName: "Shahada nach Wudu",
+    title: "Shahada nach Wudu",
   },
   
   // General Dhikr
@@ -218,6 +229,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Der Prophet (ﷺ) sagte: 'Bei Allah, ich bitte Allah mehr als 70 Mal am Tag um Vergebung und wende mich Ihm in Reue zu.'",
     source: "Sahih Bukhari 6307",
     reward: "Vergebung der Sünden, Reinigung des Herzens",
+    title: "Istighfar 100x",
   },
   {
     id: "general_salawat",
@@ -229,6 +241,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer einmal Salawat auf mich spricht, dem wird Allah zehn Mal Segen gewähren, zehn Sünden werden von ihm gelöscht und er wird um zehn Stufen erhöht.",
     source: "Sahih Muslim 384",
     reward: "10-facher Segen von Allah, Vergebung, Erhöhung der Stufen",
+    title: "Salawat auf den Propheten",
   },
   {
     id: "general_la_hawla",
@@ -240,6 +253,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "La hawla wa la quwwata illa billah ist ein Schatz aus den Schätzen des Paradieses.",
     source: "Sahih Bukhari 4205, Sahih Muslim 2704",
     reward: "Ein Schatz aus den Schätzen des Paradieses",
+    title: "La Hawla wa La Quwwata",
   },
   {
     id: "general_hasbunallah",
@@ -251,6 +265,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Dies waren die Worte, die Ibrahim (عليه السلام) sagte, als er ins Feuer geworfen wurde, und Muhammad (ﷺ) sagte sie, als ihm gesagt wurde: 'Die Menschen haben sich gegen euch versammelt, also fürchtet sie.' Aber es verstärkte nur ihren Glauben und sie sagten: 'Hasbunallahu wa ni'mal-wakil'.",
     source: "Sahih Bukhari 4563",
     reward: "Schutz vor Feinden, Stärkung des Glaubens",
+    title: "Hasbunallah",
   },
 ];
 

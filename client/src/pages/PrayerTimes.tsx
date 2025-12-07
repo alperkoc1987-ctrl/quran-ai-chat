@@ -118,7 +118,7 @@ export default function PrayerTimes() {
           }
         }
 
-        setPrayerTimes({
+        const prayerTimesData = {
           Fajr: timings.Fajr,
           Dhuhr: timings.Dhuhr,
           Asr: timings.Asr,
@@ -127,7 +127,23 @@ export default function PrayerTimes() {
           date,
           city: finalCity || "Unbekannt",
           country: finalCountry || ""
-        });
+        };
+        
+        setPrayerTimes(prayerTimesData);
+        
+        // Save to localStorage for chat function access
+        localStorage.setItem('prayerTimes', JSON.stringify({
+          timings: {
+            Fajr: timings.Fajr,
+            Dhuhr: timings.Dhuhr,
+            Asr: timings.Asr,
+            Maghrib: timings.Maghrib,
+            Isha: timings.Isha
+          },
+          date: { readable: date },
+          city: finalCity || "Unbekannt",
+          country: finalCountry || ""
+        }));
 
         setCurrentLocation({ lat: latitude, lon: longitude });
       } else {

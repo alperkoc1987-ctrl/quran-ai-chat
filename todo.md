@@ -94,8 +94,24 @@
 - [ ] Test with various Dhikr texts
 - [ ] Commit and push to GitHub
 
-## Remaining Dhikr Header Fixes (December 2025)
-- [ ] Verify Dhikr.tsx uses shortName for header display
-- [ ] Add shortName to all remaining long Dhikr entries (morning/evening Adhkar)
-- [ ] Test all long Dhikr headers (Ayat al-Kursi, Letzte 2 Verse Al-Baqarah, Shahada)
+## Dhikr Title Display Fix (December 2025)
+- [x] Add title field to Dhikr interface
+- [x] Add titles to morning, evening, after prayer, before sleep Dhikr entries
+- [x] Add titles to remaining Dhikr entries (after wudu, general)
+- [ ] Update Dhikr list to display title instead of long arabic text
+- [x] Update Dhikr.tsx header to use title field
+- [ ] Test all Dhikr entries (morning, evening, after prayer, before sleep)
+- [ ] Commit and push to GitHub
+
+## Prayer Times Chat Function Fix (December 2025)
+- [x] Find correct localStorage key for prayer times
+- [x] Update PrayerTimes.tsx to save times to localStorage
+- [ ] Test KI chat with prayer times questions
+- [ ] Commit and push to GitHub
+
+## Background Audio Playback (December 2025)
+- [x] Implement Media Session API for background playback
+- [x] Add lock screen controls (Play/Pause/Skip/Previous/Next)
+- [x] Display Surah name and progress in notification
+- [ ] Test on iOS Safari and Android Chrome
 - [ ] Commit and push to GitHub
