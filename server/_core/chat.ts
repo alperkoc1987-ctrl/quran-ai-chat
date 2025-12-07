@@ -88,6 +88,19 @@ export async function handleChatRequest(req: Request, res: Response) {
       chatMessages = [systemMessage, { role: "user", content: userQuery }];
     }
 
+    // DEBUG: Log messages before sending to OpenAI
+    console.log('[CHAT DEBUG] Messages to OpenAI:', JSON.stringify(chatMessages, null, 2));
+
+    // Final validation: ensure NO message has null/undefined content
+    const hasInvalidContent = chatMessages.some((msg: any) => 
+      !msg.content || typeof msg.content !== 'string' || msg.content.trim() === ''
+    );
+    
+    if (hasInvalidContent) {
+      console.error('[CHAT ERROR] Invalid message detected:', chatMessages);
+      throw new Error('Invalid message content detected before OpenAI API call');
+    }
+
     // Call Manus Forge API (supports multiple models including Gemini)
     const completion = await openai.chat.completions.create({
       model: "gemini-2.5-flash",

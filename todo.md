@@ -805,3 +805,10 @@
 - [x] Error messages have different format than normal AI responses
 - [x] Added `isError` flag to ChatMessage interface
 - [x] Updated filter to exclude error messages from conversation history
+
+## Backend KI-Chat Debugging (December 2025)
+- [x] Add console.log to backend chat.ts to see exact messages sent to OpenAI
+- [x] Add defensive null checks before OpenAI API call
+- [x] Validate every message in chatMessages array has valid content
+- [x] Add final validation before OpenAI API call
+- [x] Tested in dev server - works without errors
