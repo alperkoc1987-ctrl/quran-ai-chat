@@ -812,3 +812,9 @@
 - [x] Validate every message in chatMessages array has valid content
 - [x] Add final validation before OpenAI API call
 - [x] Tested in dev server - works without errors
+
+## CRITICAL USER PRIORITIES (December 2025)
+- [ ] Fix Lesezeichen/Bookmarks page - MUST open without crash
+- [ ] Fix KI-Chat - MUST respond without error codes
+- [ ] Test BOTH features thoroughly in dev server before deploying
+- [ ] Verify fixes work on production after deployment

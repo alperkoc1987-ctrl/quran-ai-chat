@@ -88,8 +88,7 @@ export async function handleChatRequest(req: Request, res: Response) {
       chatMessages = [systemMessage, { role: "user", content: userQuery }];
     }
 
-    // DEBUG: Log messages before sending to OpenAI
-    console.log('[CHAT DEBUG] Messages to OpenAI:', JSON.stringify(chatMessages, null, 2));
+
 
     // Final validation: ensure NO message has null/undefined content
     const hasInvalidContent = chatMessages.some((msg: any) => 
