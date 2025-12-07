@@ -689,3 +689,7 @@
 - [x] Fix white Card background around KI-Chat button - should be transparent or match page background
 - [ ] Debug verse navigation from KI-Chat links - links still not jumping to specific verses
 - [ ] Test verse navigation thoroughly with different Surah/verse combinations
+
+## Ayat des Tages Navigation Fix (December 2025)
+- [x] Restore Ayat des Tages navigation to jump to specific verse with highlighting
+- [x] Change from `/surah/X` back to `/surah/X?verse=Y&highlight=true`
