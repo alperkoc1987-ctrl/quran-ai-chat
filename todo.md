@@ -125,3 +125,12 @@
 - [ ] Test PWA installation on mobile devices (user testing required)
 - [ ] Test background audio playback when app is in background (user testing required)
 - [ ] Commit and push to GitHub
+
+## Toast Position Fix - December 7, 2025
+- [x] Change toast position from top-center to bottom-center
+- [x] Ensure toast doesn't overlap with bottom navigation
+- [x] Fix missing Dua category icons (Kinder, Hingabe, Führung)
+- [x] Fix audio auto-play - continues to next verse automatically (preloading system)
+- [ ] Test continuous playback in background (PWA) - user testing required
+- [ ] Test toast visibility on mobile - user testing required
+- [ ] Commit and push to GitHub

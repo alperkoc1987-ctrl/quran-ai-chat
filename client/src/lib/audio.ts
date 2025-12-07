@@ -107,6 +107,7 @@ export function preloadAudio(url: string): Promise<HTMLAudioElement> {
 export class SurahAudioPlayer {
   private audioUrls: string[] = [];
   private currentAudio: HTMLAudioElement | null = null;
+  private nextAudio: HTMLAudioElement | null = null; // Preloaded next verse
   private currentIndex = 0;
   private isPlaying = false;
   private onProgressCallback?: (current: number, total: number) => void;
@@ -133,6 +134,24 @@ export class SurahAudioPlayer {
 
     this.isPlaying = true;
     await this.playCurrentAudio();
+  }
+
+  /**
+   * Preload the next verse to enable seamless playback
+   */
+  private async preloadNextVerse() {
+    const nextIndex = this.currentIndex + 1;
+    if (nextIndex < this.audioUrls.length && this.currentRepeatIteration === this.repeatCount - 1) {
+      const nextUrl = this.audioUrls[nextIndex];
+      console.log('[SurahAudioPlayer] Preloading next verse:', nextUrl);
+      try {
+        this.nextAudio = await this.loadAudioWithTimeout(nextUrl);
+        console.log('[SurahAudioPlayer] Next verse preloaded successfully');
+      } catch (error) {
+        console.error('[SurahAudioPlayer] Failed to preload next verse:', error);
+        this.nextAudio = null;
+      }
+    }
   }
 
   /**
@@ -199,11 +218,17 @@ export class SurahAudioPlayer {
     console.log('[SurahAudioPlayer] Loading audio:', audioUrl, 'index:', this.currentIndex);
 
     try {
-      // Clean up previous audio
-      this.cleanup();
-
-      // Lazy load current audio
-      this.currentAudio = await this.loadAudioWithTimeout(audioUrl);
+      // Use preloaded audio if available, otherwise load
+      if (this.nextAudio && this.currentRepeatIteration === 0) {
+        console.log('[SurahAudioPlayer] Using preloaded audio');
+        this.currentAudio = this.nextAudio;
+        this.nextAudio = null;
+      } else {
+        // Clean up previous audio
+        this.cleanup();
+        // Lazy load current audio
+        this.currentAudio = await this.loadAudioWithTimeout(audioUrl);
+      }
       
       // Set up event listeners
       this.currentAudio.onended = () => {
@@ -237,6 +262,9 @@ export class SurahAudioPlayer {
       console.log('[SurahAudioPlayer] Audio playing successfully');
       this.onProgressCallback?.(this.currentIndex, this.audioUrls.length);
       
+      // Preload next verse for seamless playback
+      this.preloadNextVerse();
+      
     } catch (error: any) {
       console.error('[SurahAudioPlayer] Error in playCurrentAudio:', error);
       console.error('[SurahAudioPlayer] Error name:', error.name);
@@ -261,6 +289,7 @@ export class SurahAudioPlayer {
       this.currentAudio.onerror = null;
       this.currentAudio = null;
     }
+    // Don't clean up nextAudio here - we want to keep it preloaded
   }
 
   /**
@@ -343,6 +372,12 @@ export class SurahAudioPlayer {
   destroy() {
     console.log('[SurahAudioPlayer] Destroying');
     this.stop();
+    // Clean up preloaded audio
+    if (this.nextAudio) {
+      this.nextAudio.pause();
+      this.nextAudio.src = '';
+      this.nextAudio = null;
+    }
     this.audioUrls = [];
   }
 }

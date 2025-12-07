@@ -53,8 +53,8 @@ export default function Duas() {
                 <Card className={`group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border-2 ${themeConfig.colors.border} ${themeConfig.colors.cardHover} ${themeConfig.colors.card}`}>
                   <div className="p-5">
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 ${themeConfig.colors.accent} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 opacity-20`}>
-                        <Icon className={`w-7 h-7 ${themeConfig.colors.accent.replace('bg-', 'text-')}`} />
+                      <div className={`w-14 h-14 bg-teal-500/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                        <Icon className="w-7 h-7 text-teal-600 dark:text-teal-400" />
                       </div>
                       <div className="flex-1">
                         <h3 className={`text-lg font-semibold ${themeConfig.colors.text} mb-1`}>
