@@ -708,3 +708,11 @@
 - [x] Change verse highlight from yellow border to mint green border (match audio player color)
 - [x] Switch AI model from gpt-4o-mini to gemini-2.5-flash (50% cost savings)
 - [x] Keep Koran Reader design as-is (already good)
+
+## Classic Theme & Text Visibility Fixes (December 2025)
+- [ ] Fix KI-Chat input field text visibility (dark text on dark background)
+- [ ] Apply classic theme to Duas page (currently light background)
+- [ ] Apply classic theme to Settings page (currently light background + unreadable text)
+- [ ] Fix aya links not working
+- [ ] Fix first verse in Koran showing white instead of correct color
+- [ ] Ensure all pages use classic dark blue theme consistently

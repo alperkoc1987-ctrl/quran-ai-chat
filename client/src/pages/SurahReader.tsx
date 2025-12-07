@@ -136,44 +136,36 @@ export default function SurahReader() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [surahInfo, surahData]);
 
-    // Scroll to verse if URL parameters specify a target verse
+  // Scroll to verse if URL parameters specify a target verse
   useEffect(() => {
-    console.log('[SurahReader] Verse scroll effect triggered');
-    console.log('[SurahReader] targetVerseNumber:', targetVerseNumber);
-    console.log('[SurahReader] shouldHighlight:', shouldHighlight);
-    console.log('[SurahReader] surahData:', !!surahData);
-    console.log('[SurahReader] surahInfo:', !!surahInfo);
-    
-    if (!surahData || !surahInfo || !targetVerseNumber) {
-      console.log('[SurahReader] Skipping verse scroll - missing data');
+    // Only run when we have data AND we're not loading anymore
+    if (isLoading || !surahData || !surahInfo || !targetVerseNumber) {
       return;
     }
 
-    // Small delay to ensure DOM is fully rendered
-    setTimeout(() => {
+    console.log('[SurahReader] Data loaded, attempting verse scroll to:', targetVerseNumber);
+
+    // Wait for DOM to be fully rendered
+    const scrollTimer = setTimeout(() => {
       const element = document.getElementById(`verse-${targetVerseNumber}`);
-      console.log('[SurahReader] Looking for element:', `verse-${targetVerseNumber}`);
-      console.log('[SurahReader] Element found:', !!element);
+      console.log('[SurahReader] Looking for element:', `verse-${targetVerseNumber}`, 'found:', !!element);
       
       if (element) {
         console.log('[SurahReader] Scrolling to verse:', targetVerseNumber);
-        // Scroll to element with smooth behavior
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Add highlight effect if requested
         if (shouldHighlight) {
           console.log('[SurahReader] Highlighting verse:', targetVerseNumber);
           setHighlightedVerse(targetVerseNumber);
-          // Remove highlight after 3 seconds
-          setTimeout(() => {
-            setHighlightedVerse(null);
-          }, 3000);
+          setTimeout(() => setHighlightedVerse(null), 3000);
         }
       } else {
         console.error('[SurahReader] Verse element not found:', `verse-${targetVerseNumber}`);
       }
-    }, 300);
-  }, [surahData, surahInfo, targetVerseNumber, shouldHighlight]);
+    }, 800); // Longer delay to ensure all verses are rendered
+
+    return () => clearTimeout(scrollTimer);
+  }, [isLoading]); // Only trigger when loading state changes
 
   // Auto-scroll to currently playing verse
   useEffect(() => {
