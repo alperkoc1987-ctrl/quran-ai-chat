@@ -417,8 +417,8 @@ export default function SurahReader() {
       <div className="container max-w-4xl mx-auto px-4 pb-32 space-y-6">
         {/* Bismillah */}
         {surahInfo.number !== 1 && surahInfo.number !== 9 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-            <p className="text-center text-3xl font-arabic text-slate-800 dark:text-slate-100 mb-3">
+          <div className="bg-slate-800 rounded-lg p-6 shadow-sm border border-slate-700">
+            <p className="text-center text-3xl font-arabic text-slate-100 mb-3">
               ﷽ بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
             </p>
             {showTransliteration && transliterationData?.ayahs[0] && (
@@ -426,11 +426,11 @@ export default function SurahReader() {
                 Bismillaahir Rahmaanir Raheem
               </p>
             )}
-            <p className="text-center text-slate-600 dark:text-slate-300 text-sm">
+            <p className="text-center text-slate-300 text-sm">
               Im Namen Allahs, des Allerbarmers, des Barmherzigen.
             </p>
             <div className="flex justify-center items-center gap-2 mt-4">
-              <span className="text-xs text-slate-400 dark:text-slate-500">1</span>
+              <span className="text-xs text-slate-400">1</span>
             </div>
           </div>
         )}

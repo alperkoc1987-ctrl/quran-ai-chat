@@ -710,9 +710,9 @@
 - [x] Keep Koran Reader design as-is (already good)
 
 ## Classic Theme & Text Visibility Fixes (December 2025)
-- [ ] Fix KI-Chat input field text visibility (dark text on dark background)
-- [ ] Apply classic theme to Duas page (currently light background)
-- [ ] Apply classic theme to Settings page (currently light background + unreadable text)
-- [ ] Fix aya links not working
-- [ ] Fix first verse in Koran showing white instead of correct color
-- [ ] Ensure all pages use classic dark blue theme consistently
+- [x] Fix KI-Chat input field text visibility (dark text on dark background)
+- [x] Apply classic theme to Duas page (currently light background)
+- [x] Apply classic theme to Settings page (currently light background + unreadable text)
+- [x] Fix aya links not working (fixed useEffect timing in SurahReader)
+- [x] Fix first verse in Koran showing white instead of correct color
+- [x] Ensure all pages use classic dark blue theme consistently

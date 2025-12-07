@@ -317,7 +317,7 @@ export default function NewHome() {
                     onKeyDown={handleKeyPress}
                     placeholder="Stellen Sie eine Frage..."
                     disabled={isLoading}
-                    className="flex-1"
+                    className="flex-1 text-white placeholder:text-slate-400"
                   />
                   <PushToTalkButton
                     onTranscript={(text) => setInputValue(text)}

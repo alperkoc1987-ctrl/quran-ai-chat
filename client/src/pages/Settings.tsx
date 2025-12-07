@@ -81,17 +81,17 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-blue-950">
       {/* Header */}
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-teal-200 dark:border-slate-700 sticky top-0 z-10">
+      <div className="bg-slate-900/80 backdrop-blur-sm border-b border-slate-700 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
           <button
             onClick={() => setLocation("/")}
-            className="p-2 hover:bg-teal-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-6 h-6 text-teal-700 dark:text-teal-400" />
+            <ArrowLeft className="w-6 h-6 text-slate-300" />
           </button>
-          <h1 className="text-2xl font-bold text-teal-800 dark:text-teal-300">
+          <h1 className="text-2xl font-bold text-white">
             Einstellungen
           </h1>
         </div>
