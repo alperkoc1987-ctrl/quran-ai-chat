@@ -684,3 +684,8 @@
 - [x] Add rounded corners to purple KI-Chat header button
 - [x] Change icon background from green back to white/transparent
 - [x] Fix Ayat des Tages navigation - should go to Surah start, not specific verse
+
+## KI-Chat Card Background & Verse Navigation Fixes (December 2025)
+- [x] Fix white Card background around KI-Chat button - should be transparent or match page background
+- [ ] Debug verse navigation from KI-Chat links - links still not jumping to specific verses
+- [ ] Test verse navigation thoroughly with different Surah/verse combinations
