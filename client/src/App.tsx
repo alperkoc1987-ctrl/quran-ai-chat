@@ -4,61 +4,17 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { TransliterationProvider } from "./contexts/TransliterationContext";
-import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
-import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
-import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
-import { BottomNavigation } from "./components/BottomNavigation";
-import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
-import { ScrollToTop } from "./components/ScrollToTop";
-import NewHome from "./pages/NewHome";
+import Home from "./pages/Home";
 
-import Quran from "./pages/Quran";
-import SearchResults from "./pages/SearchResults";
-import Duas from "./pages/Duas";
-import DuaDetail from "./pages/DuaDetail";
-import PrayerTimes from "./pages/PrayerTimes";
-import Qibla from "./pages/Qibla";
-import SurahReader from "./pages/SurahReader";
-import IslamicStories from "./pages/IslamicStories";
-
-import Settings from "./pages/Settings";
-import Bookmarks from "./pages/Bookmarks";
-import PrayerSettings from "./pages/PrayerSettings";
-
-import { Statistics } from "./pages/Statistics";
-import Quiz from "./pages/Quiz"; // Quiz feature added
-import Dhikr from "./pages/Dhikr"; // Dhikr feature added
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
-    <>
-      <ScrollToTop />
-      <Switch>
-      <Route path="/" component={NewHome} />
-
-      <Route path="/quran" component={Quran} />
-      <Route path="/search/:query" component={SearchResults} />
-      <Route path="/surah/:number" component={SurahReader} />
-      <Route path="/duas" component={Duas} />
-      <Route path="/duas/:categoryId" component={DuaDetail} />
-      <Route path="/prayer-times" component={PrayerTimes} />
-      <Route path="/qibla" component={Qibla} />
-      <Route path="/stories" component={IslamicStories} />
-
-      <Route path="/settings" component={Settings} />
-      <Route path="/prayer-settings" component={PrayerSettings} />
-      <Route path="/bookmarks" component={Bookmarks} />
-
-      <Route path="/statistics" component={Statistics} />
-      <Route path="/quiz" component={Quiz} />
-      <Route path="/dhikr" component={Dhikr} />
-      <Route path="/404" component={NotFound} />
+    <Switch>
+      <Route path={"/"} component={Home} />
+      <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
-    </>
   );
 }
 
@@ -72,22 +28,12 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider
         defaultTheme="light"
-        switchable={true}
+        // switchable
       >
-        <TransliterationProvider>
-          <TranslationLanguageProvider>
-            <ReadingThemeProvider>
-              <AudioPlayerProvider>
-                <TooltipProvider>
-                <Toaster />
-                <Router />
-                <MiniAudioPlayer />
-                <BottomNavigation />
-              </TooltipProvider>
-            </AudioPlayerProvider>
-            </ReadingThemeProvider>
-          </TranslationLanguageProvider>
-        </TransliterationProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
