@@ -165,7 +165,7 @@ export default function SurahReader() {
     }, 800); // Longer delay to ensure all verses are rendered
 
     return () => clearTimeout(scrollTimer);
-  }, [isLoading]); // Only trigger when loading state changes
+  }, [isLoading, surahData, surahInfo, targetVerseNumber, shouldHighlight]); // Trigger when data or target changes
 
   // Auto-scroll to currently playing verse
   useEffect(() => {

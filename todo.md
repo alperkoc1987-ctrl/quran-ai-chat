@@ -80,3 +80,16 @@
 - [x] Allow full transliteration text to display across multiple lines
 - [ ] Test with long texts like Ayat al-Kursi
 - [ ] Commit and push to GitHub
+
+## Verse Navigation Fix (December 2025)
+- [x] Fix Ayat des Tages "Vers lesen" to jump to specific verse (not surah start)
+- [x] Fix KI-Chat verse references to jump to specific verse
+- [x] Add verse highlighting when navigating from external links
+- [ ] Test with various verses (e.g., Al-Hujurat 49:13)
+- [ ] Commit and push to GitHub
+
+## Dhikr Header Overflow & Toast Readability Fix (December 2025)
+- [x] Add shortName to all long Dhikr entries (Shahada, long Duas)
+- [x] Fix toast notification colors for better readability (dark text on light bg or vice versa)
+- [ ] Test with various Dhikr texts
+- [ ] Commit and push to GitHub

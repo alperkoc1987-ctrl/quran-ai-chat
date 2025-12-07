@@ -97,6 +97,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer die letzten beiden Verse von Surat Al-Baqarah in der Nacht rezitiert, dem genügen sie (als Schutz).",
     source: "Sahih Bukhari 5009, Sahih Muslim 807",
     reward: "Ausreichender Schutz für die Nacht",
+    shortName: "Letzte 2 Verse Al-Baqarah",
   },
   
   // After Prayer
@@ -203,6 +204,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Wudu vollzieht und es gut macht, dann sagt: 'Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluh', dem werden die acht Tore des Paradieses geöffnet, und er kann durch welches er will eintreten.",
     source: "Sahih Muslim 234",
     reward: "Die acht Tore des Paradieses werden geöffnet",
+    shortName: "Shahada nach Wudu",
   },
   
   // General Dhikr
