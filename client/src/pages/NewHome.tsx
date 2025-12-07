@@ -273,11 +273,11 @@ export default function NewHome() {
         <Card className={`overflow-hidden border ${themeConfig.colors.border} rounded-3xl`}>
           <button
             onClick={() => setChatExpanded(!chatExpanded)}
-            className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all"
+            className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-600 text-white hover:from-purple-600 hover:to-pink-700 transition-all rounded-3xl"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
-                <MessageSquare className="w-5 h-5" />
+              <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                <MessageSquare className="w-5 h-5 text-purple-600" />
               </div>
               <div className="text-left">
                 <h3 className="font-semibold text-sm">KI-Assistent</h3>
@@ -288,7 +288,7 @@ export default function NewHome() {
           </button>
 
           {chatExpanded && (
-            <div className={themeConfig.id === 'modern' ? 'bg-gradient-to-b from-teal-100 to-emerald-50' : themeConfig.colors.card}>
+            <div className={themeConfig.id === 'modern' ? 'bg-gradient-to-b from-teal-200 to-emerald-50' : themeConfig.colors.card}>
               {/* Messages */}
               <ScrollArea className="h-96 px-4 py-4" ref={scrollRef}>
                 <div className="space-y-3">

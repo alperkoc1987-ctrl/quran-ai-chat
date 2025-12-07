@@ -678,3 +678,9 @@
 - [x] Keep only icon + title in category cards
 - [x] Update bottom navigation: Remove KI-Chat, add Duas and Dhikr
 - [x] Final order: Home, Koran, Duas, Dhikr, Einstellungen
+
+## KI-Chat Design Fixes (December 2025)
+- [x] Fix KI-Chat expanded area background - should be mintgreen not white
+- [x] Add rounded corners to purple KI-Chat header button
+- [x] Change icon background from green back to white/transparent
+- [x] Fix Ayat des Tages navigation - should go to Surah start, not specific verse
