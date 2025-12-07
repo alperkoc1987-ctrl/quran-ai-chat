@@ -1,0 +1,73 @@
+/**
+ * Vercel Serverless Function for OpenAI Text-to-Speech API
+ */
+
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { text } = req.body;
+
+    if (!text || typeof text !== "string") {
+      return res.status(400).json({ error: "Text is required" });
+    }
+
+    // Limit text length to prevent abuse
+    if (text.length > 4000) {
+      return res.status(400).json({ error: "Text too long (max 4000 characters)" });
+    }
+
+    // Use OpenAI TTS API
+    const apiKey = process.env.OPENAI_API_KEY || process.env.BUILT_IN_FORGE_API_KEY;
+    const apiUrl = process.env.OPENAI_API_KEY 
+      ? (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1/audio/speech")
+      : "https://forge.manus.ai/v1/audio/speech";
+
+    if (!apiKey) {
+      return res.status(500).json({ error: "API key not configured" });
+    }
+
+    // Call OpenAI TTS API
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "tts-1",
+        voice: "echo", // Male, deep, warm voice
+        input: text,
+        speed: 1.0,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("TTS API error:", errorText);
+      return res.status(response.status).json({ 
+        error: "TTS generation failed",
+        details: errorText 
+      });
+    }
+
+    // Stream audio back to client
+    const audioBuffer = await response.arrayBuffer();
+    
+    res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Content-Length", audioBuffer.byteLength.toString());
+    res.send(Buffer.from(audioBuffer));
+
+  } catch (error: any) {
+    console.error("TTS error:", error);
+    res.status(500).json({ 
+      error: "Internal server error",
+      message: error.message 
+    });
+  }
+}
