@@ -173,7 +173,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
         {/* Sources display (only for AI responses) */}
         {!isUser && message.sources && message.sources.length > 0 && (
           <div className="mt-3 space-y-2">
-            <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
+            <div className={`flex items-center gap-2 text-xs font-semibold ${themeConfig.colors.textSecondary}`}>
               <BookOpen className="w-4 h-4" />
               Quellen
             </div>
@@ -197,10 +197,10 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
               <Card
                 key={source.id}
                 onClick={handleSourceClick}
-                className="p-3 bg-amber-50 border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
+                className={`p-3 ${themeConfig.colors.card} ${themeConfig.colors.border} hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer`}
               >
                 <div className="flex items-start gap-2">
-                  <Quote className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <Quote className="w-4 h-4 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge
@@ -214,10 +214,10 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
                         {source.type}
                       </Badge>
                     </div>
-                    <p className="text-xs font-medium text-gray-700 mb-1">
+                    <p className={`text-xs font-medium ${themeConfig.colors.text} mb-1`}>
                       {source.reference}
                     </p>
-                    <p className="text-xs text-gray-600 italic line-clamp-2">
+                    <p className={`text-xs ${themeConfig.colors.textSecondary} italic line-clamp-2`}>
                       "{source.text}"
                     </p>
                   </div>
@@ -231,7 +231,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
         {/* Timestamp */}
         <div
           className={`text-xs mt-1 ${
-            isUser ? "text-blue-200 text-right" : "text-gray-500"
+            isUser ? "text-blue-200 text-right" : themeConfig.colors.textSecondary
           }`}
         >
           {message.timestamp.toLocaleTimeString("de-DE", {
@@ -244,9 +244,9 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
       {/* Source Detail Modal */}
       {selectedSource !== null && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999]">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+          <div className={`${themeConfig.colors.card} rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col`}>
             {/* Header */}
-            <div className="bg-amber-50 border-b border-amber-200 px-6 py-4 flex items-center justify-between">
+            <div className={`${themeConfig.colors.backgroundSecondary} border-b ${themeConfig.colors.border} px-6 py-4 flex items-center justify-between`}>
               <div>
                 <Badge
                   className={`text-xs mb-2 ${
@@ -257,13 +257,13 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
                 >
                   {selectedSource?.type}
                 </Badge>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
                   {selectedSource?.reference}
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedSource(null)}
-                className="text-gray-500 hover:text-gray-700"
+                className={`${themeConfig.colors.textSecondary} hover:${themeConfig.colors.text}`}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -271,7 +271,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
 
             {/* Content */}
             <div className="flex-1 overflow-auto p-6">
-              <p className="text-gray-700 leading-relaxed text-base mb-6">
+              <p className={`${themeConfig.colors.text} leading-relaxed text-base mb-6`}>
                 {selectedSource?.text}
               </p>
               

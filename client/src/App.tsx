@@ -21,7 +21,7 @@ import PrayerTimes from "./pages/PrayerTimes";
 import Qibla from "./pages/Qibla";
 import SurahReader from "./pages/SurahReader";
 import IslamicStories from "./pages/IslamicStories";
-import SignsOfTheHour from "./pages/SignsOfTheHour";
+
 import Settings from "./pages/Settings";
 import Bookmarks from "./pages/Bookmarks";
 import PrayerSettings from "./pages/PrayerSettings";
@@ -46,7 +46,7 @@ function Router() {
       <Route path="/prayer-times" component={PrayerTimes} />
       <Route path="/qibla" component={Qibla} />
       <Route path="/stories" component={IslamicStories} />
-      <Route path="/signs" component={SignsOfTheHour} />
+
       <Route path="/settings" component={Settings} />
       <Route path="/prayer-settings" component={PrayerSettings} />
       <Route path="/bookmarks" component={Bookmarks} />

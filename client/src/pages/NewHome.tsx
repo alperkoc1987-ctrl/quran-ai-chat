@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, AlertTriangle, Settings as SettingsIcon, Bookmark, TrendingUp, Brain, Sparkles } from "lucide-react";
+import { BookOpen, HandHeart, Clock, Compass, MessageSquare, Send, Mic, MicOff, Loader2, ChevronUp, ChevronDown, Scroll, Settings as SettingsIcon, Bookmark, BarChart, Brain, Sparkles } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/useChat";
@@ -199,20 +199,13 @@ export default function NewHome() {
     },
     {
       id: "statistics",
-      title: "Statistiken",
+      title: "Fortschritt",
       description: "Fortschritt & Lesezeiten",
-      icon: TrendingUp,
+      icon: BarChart,
       link: "/statistics",
       gradient: "from-blue-500 to-cyan-600"
     },
-    {
-      id: "signs",
-      title: "Zeichen",
-      description: "Zeichen der Stunde",
-      icon: AlertTriangle,
-      link: "/signs",
-      gradient: "from-red-500 to-rose-600"
-    },
+
     {
       id: "bookmarks",
       title: "Lesezeichen",

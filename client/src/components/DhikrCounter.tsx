@@ -56,33 +56,33 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
   };
 
   return (
-    <Card className="p-6">
-      {/* Dhikr Text */}
-      <div className="text-center mb-6 max-h-[40vh] overflow-y-auto px-2">
-        <div className="text-lg md:text-xl font-arabic mb-2 leading-relaxed text-white">
+    <Card className="p-6 bg-slate-800 border-slate-700">
+      {/* Dhikr Text - Scrollable for long text */}
+      <div className="text-center mb-6 max-h-[30vh] overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+        <div className="text-lg md:text-xl font-arabic mb-2 leading-relaxed text-white drop-shadow-lg">
           {dhikr.arabic}
         </div>
-        <div className="text-sm md:text-base text-teal-600 dark:text-teal-400 mb-2 italic">
+        <div className="text-sm md:text-base text-cyan-400 mb-2 italic">
           {dhikr.transliteration}
         </div>
-        <div className="text-xs md:text-sm text-slate-300 dark:text-slate-400">
+        <div className="text-xs md:text-sm text-slate-300">
           {dhikr.translation}
         </div>
       </div>
 
       {/* Counter Display */}
       <div className="text-center mb-6">
-        <div className="text-6xl font-bold text-teal-600 dark:text-teal-400 mb-2">
+        <div className="text-6xl font-bold text-cyan-400 mb-2">
           {count}
         </div>
-        <div className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="text-sm text-slate-400">
           von {dhikr.count}
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 mt-4">
+        <div className="w-full bg-slate-700 rounded-full h-3 mt-4">
           <div
-            className="bg-gradient-to-r from-teal-500 to-emerald-600 h-3 rounded-full transition-all duration-300"
+            className="bg-gradient-to-r from-cyan-500 to-blue-600 h-3 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -96,7 +96,7 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
           className={`flex-1 h-20 text-lg font-semibold ${
             isCompleted
               ? "bg-green-600 hover:bg-green-700"
-              : "bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700"
+              : "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
           }`}
         >
           {isCompleted ? (

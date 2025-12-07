@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, TrendingUp, Clock, Flame, BookOpen, Target, Brain, Award, Share2 } from "lucide-react";
+import { ArrowLeft, BarChart, Clock, Flame, BookOpen, Target, Brain, Award, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
@@ -58,7 +58,7 @@ export function Statistics() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold">Statistiken</h1>
+            <h1 className="text-2xl font-bold">Fortschritt</h1>
             <p className="text-teal-100 text-sm">Ihr Lesefortschritt im Überblick</p>
           </div>
         </div>
@@ -267,7 +267,7 @@ export function Statistics() {
         {/* Recent Activity */}
         <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <BarChart className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             Letzte 7 Tage
           </h3>
           
@@ -305,7 +305,7 @@ export function Statistics() {
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
               <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-50" />
               <p>Noch keine Leseaktivität in den letzten 7 Tagen</p>
-              <p className="text-sm mt-1">Beginnen Sie mit dem Lesen, um Ihre Statistiken zu sehen!</p>
+              <p className="text-sm mt-1">Beginnen Sie mit dem Lesen, um Ihren Fortschritt zu sehen!</p>
             </div>
           )}
         </div>
