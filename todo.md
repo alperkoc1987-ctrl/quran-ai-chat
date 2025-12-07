@@ -98,10 +98,10 @@
 - [x] Add title field to Dhikr interface
 - [x] Add titles to morning, evening, after prayer, before sleep Dhikr entries
 - [x] Add titles to remaining Dhikr entries (after wudu, general)
-- [ ] Update Dhikr list to display title instead of long arabic text
+- [x] Update Dhikr list component (Dhikr.tsx) to display title instead of long arabic text
 - [x] Update Dhikr.tsx header to use title field
 - [ ] Test all Dhikr entries (morning, evening, after prayer, before sleep)
-- [ ] Commit and push to GitHub
+- [x] Commit and push to GitHub
 
 ## Prayer Times Chat Function Fix (December 2025)
 - [x] Find correct localStorage key for prayer times
