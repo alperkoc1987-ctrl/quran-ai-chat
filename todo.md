@@ -115,3 +115,11 @@
 - [x] Display Surah name and progress in notification
 - [ ] Test on iOS Safari and Android Chrome
 - [ ] Commit and push to GitHub
+
+## UX Improvements - December 7, 2025 (Evening)
+- [ ] Make toast notifications more visible (larger font, better contrast, centered position)
+- [ ] Add PWA manifest for "Add to Home Screen" functionality
+- [ ] Add service worker for offline support and background audio
+- [ ] Test PWA installation on mobile devices
+- [ ] Test background audio playback when app is in background
+- [ ] Commit and push to GitHub
