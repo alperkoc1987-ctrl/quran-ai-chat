@@ -44,7 +44,7 @@ export default function Dhikr() {
   // If a specific Dhikr is selected, show the counter
   if (selectedDhikr) {
     return (
-      <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
+      <div className={`min-h-screen ${themeConfig.colors.background} pb-32`}>
         {/* Header */}
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
           <div className="container mx-auto flex items-center gap-4">
@@ -64,7 +64,7 @@ export default function Dhikr() {
         </div>
 
         {/* Counter */}
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 pb-32">
           <DhikrCounter
             dhikr={selectedDhikr}
             onComplete={() => {
@@ -82,7 +82,7 @@ export default function Dhikr() {
     const category = DHIKR_CATEGORIES[selectedCategory];
 
     return (
-      <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
+      <div className={`min-h-screen ${themeConfig.colors.background} pb-32`}>
         {/* Header */}
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
           <div className="container mx-auto flex items-center gap-4">

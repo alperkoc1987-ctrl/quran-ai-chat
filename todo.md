@@ -6,7 +6,7 @@
 - [x] Remove "Zeichen der Stunde" section completely
 - [x] Update navigation and routing after removal
 - [ ] Test changes on live site
-- [ ] Commit and push to GitHub
+- [x] Commit and push to GitHub
 
 ## Multi-Language Support (Next Priority)
 - [ ] Create i18n translation system with language context
@@ -30,3 +30,9 @@
 - [x] Quiz system with 85 questions
 - [x] Prayer notification system
 - [x] Bottom Navigation: Home | Koran | Duas | Dhikr | Einstellungen
+
+## Dhikr Counter Modal Fix (December 2025)
+- [x] Fix bottom padding in Dhikr counter modal to prevent bottom navigation overlap
+- [x] Ensure counter area ("0 von 1") is always visible
+- [ ] Test on mobile devices
+- [ ] Commit and push to GitHub
