@@ -41,11 +41,20 @@ export async function handleChatRequest(req: Request, res: Response) {
 
     console.log(`Chat request with ${chatMessages.length} messages`);
 
+    // Add system prompt for concise but complete answers
+    const messagesWithSystem = [
+      {
+        role: "system",
+        content: "Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage."
+      },
+      ...chatMessages
+    ];
+
     // Call OpenAI API with GPT-4o-mini (94% cheaper than GPT-4o)
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: chatMessages as any,
-      max_tokens: 4000,
+      messages: messagesWithSystem as any,
+      max_tokens: 800,
       temperature: 0.7,
     });
 

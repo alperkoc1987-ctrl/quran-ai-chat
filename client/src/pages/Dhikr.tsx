@@ -46,7 +46,7 @@ export default function Dhikr() {
     return (
       <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-4 shadow-md sticky top-0 z-10">
+        <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
           <div className="container mx-auto flex items-center gap-4">
             <button
               onClick={() => setSelectedDhikr(null)}
@@ -84,7 +84,7 @@ export default function Dhikr() {
     return (
       <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-4 shadow-md sticky top-0 z-10">
+        <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
           <div className="container mx-auto flex items-center gap-4">
             <button
               onClick={() => setSelectedCategory(null)}
@@ -104,31 +104,33 @@ export default function Dhikr() {
           {adhkar.map((dhikr) => (
             <Card
               key={dhikr.id}
-              className={`p-4 cursor-pointer hover:shadow-lg transition-shadow ${themeConfig.colors.card} border ${themeConfig.colors.border} relative`}
+              className={`p-4 cursor-pointer hover:shadow-xl transition-all hover:scale-[1.02] bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 relative overflow-hidden`}
               onClick={() => handleDhikrClick(dhikr)}
             >
-              {/* Pulsing Tap Hint */}
+              {/* Pulsing Tap Hint - Improved */}
               {showTapHint && (
-                <div className="absolute top-2 right-2 flex items-center gap-1 text-teal-600 dark:text-teal-400 animate-pulse">
-                  <Hand className="w-4 h-4" />
-                  <span className="text-xs font-medium hidden sm:inline">Tippen zum Zählen</span>
-                  <span className="text-xs font-medium sm:hidden">Tippen</span>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-lg z-10 animate-pulse">
+                  <div className="text-center p-4">
+                    <Hand className="w-8 h-8 text-cyan-400 mx-auto mb-2" />
+                    <p className="text-white font-semibold text-sm">Tippe auf die Karte,</p>
+                    <p className="text-cyan-300 text-xs">um den Dhikr-Zähler zu starten</p>
+                  </div>
                 </div>
               )}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="text-2xl font-arabic mb-2 leading-relaxed text-white">
+                  <div className="text-2xl font-arabic mb-2 leading-relaxed text-white drop-shadow-lg">
                     {dhikr.arabic}
                   </div>
-                  <div className="text-sm italic mb-1 text-teal-600 dark:text-teal-400">
+                  <div className="text-sm italic mb-1 text-cyan-400">
                     {dhikr.transliteration}
                   </div>
-                  <div className="text-sm text-slate-200 dark:text-slate-300">
+                  <div className="text-sm text-slate-300">
                     {dhikr.translation}
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <div className="bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full w-12 h-12 flex items-center justify-center font-bold">
+                  <div className="bg-gradient-to-br from-cyan-500 to-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold shadow-lg">
                     {dhikr.count}×
                   </div>
                   <div className="text-xs text-slate-500 dark:text-slate-400">
@@ -138,11 +140,11 @@ export default function Dhikr() {
               </div>
 
               {/* Reward Preview */}
-              <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-                <div className="text-xs font-semibold text-teal-600 dark:text-teal-400 mb-1">
+              <div className="mt-3 pt-3 border-t border-slate-700">
+                <div className="text-xs font-semibold text-cyan-400 mb-1">
                   Belohnung:
                 </div>
-                <div className="text-xs text-slate-200 dark:text-slate-300 line-clamp-2">
+                <div className="text-xs text-slate-300 line-clamp-2">
                   {dhikr.reward}
                 </div>
               </div>
