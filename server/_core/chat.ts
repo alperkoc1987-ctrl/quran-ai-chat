@@ -44,8 +44,11 @@ export async function handleChatRequest(req: Request, res: Response) {
 
         3. KNOWLEDGE & SOURCES: 
            - When answering religious questions, cite sources (Quran Surah/Verse or Hadith) whenever possible.
-           - IMPORTANT: Always use this exact format for Quran citations: "Sure X, Vers Y" (e.g., "Sure 2, Vers 43")
+           - CRITICAL: You MUST ALWAYS include BOTH Surah AND Verse numbers in your citations.
+           - ALWAYS use this EXACT format: "Sure X, Vers Y" (e.g., "Sure 2, Vers 255" or "Sure 18, Vers 10")
+           - NEVER write just "Sure 2" - ALWAYS include the specific verse number!
            - This format is required for automatic verse linking to work correctly.
+           - Example: Instead of "Sure Al-Baqara", write "Sure 2, Vers 255"
 
         4. LANGUAGE: 
            - Always answer in the same language as the user (mostly German).

@@ -723,11 +723,26 @@
 - [ ] Test bookmark save and load functionality
 
 ## KI-Chat Link & Dua Recommendation Issues (December 2025)
-- [ ] Fix KI-Chat Quran verse links - currently not navigating to specific verses
+- [ ] **PRIORITY:** Fix KI-Chat Quran verse links - currently not navigating to specific verses
 - [ ] Add Dua recommendations to AI responses - AI should suggest relevant Duas from database
 - [ ] Ensure verse links in AI responses use correct format with verse parameter
+- [ ] Add transliteration to Dua responses so users can pronounce them
+- [ ] Change all "Sie" to "du" throughout the app (informal address)
 
 ## Dhikr Page Issues (December 2025)
 - [ ] Fix text readability on Dhikr cards - white text on mint green background hard to read
 - [ ] Fix Ayat al-Kursi overlay size - Arabic text too large and covers entire screen
 - [ ] Apply classic theme to Dhikr page for consistency
+
+## AI Prompt Improvement for Verse Citations (December 2025)
+- [x] Update AI system prompt to ALWAYS include verse numbers in citations
+- [x] Add explicit instruction: "NEVER write just 'Sure 2' - ALWAYS include the specific verse number!"
+- [x] Add example: "Instead of 'Sure Al-Baqara', write 'Sure 2, Vers 255'"
+- [x] Apply to both backend (chat.ts) and frontend (api.ts) prompts
+- [ ] Test with user queries to verify AI now returns complete citations
+
+## Verse Text Color Consistency (December 2025)
+- [x] Change all verse Arabic text from amber/yellow to white (match Bismillah style)
+- [x] Change all verse transliteration from amber/yellow to teal/green (match Bismillah style)
+- [x] Keep translation text as white/light gray
+- [x] Apply consistent color scheme across all verses in SurahReader

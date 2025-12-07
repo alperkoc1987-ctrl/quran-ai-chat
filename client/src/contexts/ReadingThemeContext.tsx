@@ -116,9 +116,9 @@ export const READING_THEMES: Record<ReadingTheme, ThemeConfig> = {
       textMuted: "text-amber-200/60",
       
       // Quran-specific
-      arabic: "text-amber-100",
-      transliteration: "text-amber-200",
-      translation: "text-amber-50",
+      arabic: "text-white",
+      transliteration: "text-teal-400",
+      translation: "text-slate-200",
       verseNumber: "text-amber-400",
       
       // UI Elements
