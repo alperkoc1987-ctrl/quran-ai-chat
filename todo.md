@@ -1,6 +1,15 @@
 # Project TODO
 
-## CRITICAL FIXES - December 7, 2025
+## CRITICAL FIXES - December 7, 2025 (DUPLICATE ENDPOINTS)
+- [x] Remove Express chat endpoint (server/_core/chat.ts) completely
+- [x] Keep only Vercel serverless function (/api/chat.ts)
+- [x] Verify Vercel function uses OPENAI_API_KEY from environment
+- [x] Remove chat route from server/_core/index.ts
+- [x] Document why we only use Vercel serverless functions (VERCEL_ARCHITECTURE.md)
+- [ ] Test KI-Chat on Vercel deployment after user sets OPENAI_API_KEY
+- [ ] Commit and push to GitHub
+
+## COMPLETED FIXES - December 7, 2025
 - [x] Fix Dhikr list to show transliteration instead of German translation
 - [x] Fix Dhikr header to show short title (title) instead of full transliteration text
 - [x] Add debug logging to Vercel function to diagnose API key error
