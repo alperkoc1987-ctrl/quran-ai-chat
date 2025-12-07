@@ -15,10 +15,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // FALLBACK: Use environment variable API keys if no API key is provided in request
     if (!apiKey || apiKey.trim() === "") {
-      console.log("No API key in request, checking environment variables...");
-      console.log("OPENAI_API_KEY available:", !!process.env.OPENAI_API_KEY);
-      console.log("BUILT_IN_FORGE_API_KEY available:", !!process.env.BUILT_IN_FORGE_API_KEY);
-      
       // First try user's OpenAI API key
       if (process.env.OPENAI_API_KEY) {
         console.log("Using OPENAI_API_KEY from environment");
@@ -28,9 +24,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       else if (process.env.BUILT_IN_FORGE_API_KEY) {
         console.log("Using Manus Built-in Forge API");
         apiKey = process.env.BUILT_IN_FORGE_API_KEY;
-      }
-      else {
-        console.error("No environment variables found! Available env keys:", Object.keys(process.env).filter(k => k.includes('API') || k.includes('KEY')));
       }
     }
 

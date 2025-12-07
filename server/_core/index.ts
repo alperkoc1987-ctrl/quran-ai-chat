@@ -9,7 +9,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { setupSpeechToTextRoute } from "./speechToText";
 import { setupTextToSpeechRoute } from "./textToSpeech";
-// Chat endpoint removed - using Vercel serverless function at /api/chat.ts instead
+import { handleChatRequest } from "./chat";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -53,8 +53,8 @@ async function startServer() {
   // Text-to-Speech API Route
   setupTextToSpeechRoute(app);
 
-  // Chat endpoint removed - using Vercel serverless function at /api/chat.ts instead
-  // Local development will proxy to Vercel function via vite.config.ts
+  // Custom OpenAI Chat API Route
+  app.post("/api/chat", handleChatRequest);
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
