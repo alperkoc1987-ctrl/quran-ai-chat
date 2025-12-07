@@ -716,3 +716,18 @@
 - [x] Fix aya links not working (fixed useEffect timing in SurahReader)
 - [x] Fix first verse in Koran showing white instead of correct color
 - [x] Ensure all pages use classic dark blue theme consistently
+
+## Bookmark Functionality Fix (December 2025)
+- [x] Fix bookmark error causing "An unexpected error occurred" crash
+- [x] Debug JavaScript error in bookmark implementation (added error handling for unauthenticated users)
+- [ ] Test bookmark save and load functionality
+
+## KI-Chat Link & Dua Recommendation Issues (December 2025)
+- [ ] Fix KI-Chat Quran verse links - currently not navigating to specific verses
+- [ ] Add Dua recommendations to AI responses - AI should suggest relevant Duas from database
+- [ ] Ensure verse links in AI responses use correct format with verse parameter
+
+## Dhikr Page Issues (December 2025)
+- [ ] Fix text readability on Dhikr cards - white text on mint green background hard to read
+- [ ] Fix Ayat al-Kursi overlay size - Arabic text too large and covers entire screen
+- [ ] Apply classic theme to Dhikr page for consistency

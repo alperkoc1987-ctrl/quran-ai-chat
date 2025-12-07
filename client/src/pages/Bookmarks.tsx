@@ -41,8 +41,11 @@ export default function Bookmarks() {
   const [newCollectionDesc, setNewCollectionDesc] = useState('');
   const [showNewCollection, setShowNewCollection] = useState(false);
 
-  // Load Surah bookmarks from database
-  const { data: surahBookmarksData } = trpc.surahBookmarks.list.useQuery();
+  // Load Surah bookmarks from database (may fail if user not authenticated)
+  const { data: surahBookmarksData, error: surahBookmarksError } = trpc.surahBookmarks.list.useQuery(undefined, {
+    retry: false,
+    enabled: true, // Always try to load, but handle errors gracefully
+  });
   const removeSurahBookmark = trpc.surahBookmarks.remove.useMutation();
 
   const loadData = () => {
@@ -231,7 +234,7 @@ export default function Bookmarks() {
             ) : (
               <div className="space-y-4">
                 {/* Surah Bookmarks */}
-                {surahBookmarksData?.map((surahBookmark) => (
+                {!surahBookmarksError && surahBookmarksData?.map((surahBookmark) => (
                   <div
                     key={`surah-${surahBookmark.surahNumber}`}
                     className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6"
