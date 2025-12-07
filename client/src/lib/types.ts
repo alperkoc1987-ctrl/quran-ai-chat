@@ -53,14 +53,20 @@ export interface SourceReference {
 
 export interface ChatRequest {
   userQuery?: string;
-  messages?: Array<{ role: string; content: string }>;
+  messages?: Array<{ role: string; content: string; name?: string }>;
   language: string;
   translationEdition: string;
+  functions?: Array<any>;
+  function_call?: string | { name: string };
 }
 
 export interface ChatResponse {
   generatedAnswer: string;
   sources: SourceReference[];
+  function_call?: {
+    name: string;
+    arguments: string;
+  };
 }
 
 export interface ChatMessage {

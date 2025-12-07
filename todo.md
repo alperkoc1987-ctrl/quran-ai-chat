@@ -44,3 +44,21 @@
 - [x] Verify text readability in all pages (white/light text on dark backgrounds)
 - [ ] Test both Classic and light themes
 - [ ] Commit and push to GitHub
+
+## Intelligent KI-Chat with Function Calling (December 2025)
+- [x] Design function calling system architecture
+- [x] Create prayer times helper functions (get current prayer times, calculate time until next prayer)
+- [x] Create statistics helper functions (reading progress, quiz stats, dhikr stats)
+- [x] Update chat API endpoint to support OpenAI function calling
+- [x] Add function definitions for prayer times queries
+- [x] Add function definitions for statistics queries
+- [ ] Test prayer time questions ("Wann ist Dhuhr?", "Wie lange noch bis zum nächsten Gebet?")
+- [ ] Test statistics questions ("Zeig mir meinen Fortschritt")
+- [ ] Ensure natural language understanding works
+- [ ] Commit and push to GitHub
+
+## Dhikr Header Title Fix (December 2025)
+- [x] Update Dhikr counter page header to show short title (e.g., "Ayat al-Kursi") instead of full Arabic text
+- [x] Ensure full Arabic text is still visible in the counter view below
+- [ ] Test with long Dhikr texts (Ayat al-Kursi, morning/evening Adhkar)
+- [ ] Commit and push to GitHub

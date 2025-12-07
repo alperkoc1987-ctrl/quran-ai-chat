@@ -67,7 +67,11 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({ 
+        messages,
+        ...(request.functions && { functions: request.functions }),
+        ...(request.function_call && { function_call: request.function_call }),
+      }),
     });
     
     console.log('[DEBUG] Response status:', response.status, response.statusText);
@@ -108,8 +112,9 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
       }
 
       return {
-        generatedAnswer: content,
-        sources: sources
+        generatedAnswer: content || "",
+        sources: sources,
+        ...(data.choices[0].message.function_call && { function_call: data.choices[0].message.function_call }),
       };
     }
     

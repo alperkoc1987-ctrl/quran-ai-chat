@@ -15,6 +15,7 @@ export interface Dhikr {
   source: string; // Hadith reference
   reward: string; // Fadl/Benefit
   audioUrl?: string;
+  shortName?: string; // Short display name for header (e.g., "Ayat al-Kursi")
 }
 
 export type DhikrCategory = 
@@ -37,6 +38,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Ayat al-Kursi nach jedem Pflichtgebet rezitiert, dem steht nichts im Wege zum Paradies außer dem Tod.",
     source: "An-Nasa'i in Al-Kubra (9928), authentifiziert von Al-Albani",
     reward: "Schutz bis zum nächsten Gebet, Eintritt ins Paradies",
+    shortName: "Ayat al-Kursi",
   },
   {
     id: "morning_subhanallah_100",
@@ -83,6 +85,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Ayat al-Kursi vor dem Schlafengehen rezitiert, wird von Allah beschützt und der Satan wird sich ihm nicht nähern bis zum Morgen.",
     source: "Sahih Bukhari 2311",
     reward: "Schutz vor Satan die ganze Nacht",
+    shortName: "Ayat al-Kursi",
   },
   {
     id: "evening_last_two_ayat_baqarah",
@@ -142,6 +145,7 @@ export const ADHKAR: Dhikr[] = [
     hadith: "Wer Ayat al-Kursi vor dem Schlafengehen rezitiert, wird von Allah beschützt und der Satan wird sich ihm nicht nähern bis zum Morgen.",
     source: "Sahih Bukhari 2311",
     reward: "Schutz vor Satan die ganze Nacht",
+    shortName: "Ayat al-Kursi",
   },
   {
     id: "before_sleep_surah_ikhlas",

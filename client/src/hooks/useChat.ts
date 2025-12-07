@@ -7,6 +7,7 @@ import { useState, useCallback } from "react";
 import { ChatMessage } from "@/lib/types";
 import { sendChatRequest } from "@/lib/api";
 import { nanoid } from "nanoid";
+import { chatFunctionDefinitions, executeChatFunction } from "@/lib/chatFunctions";
 
 // Simple local responses for greetings to ensure the bot always answers "Hi"
 const GREETING_KEYWORDS = ["hallo", "hi", "hey", "salam", "selam", "guten morgen", "guten tag", "guten abend"];
@@ -71,12 +72,50 @@ export function useChat() {
           content: userInput
         });
 
-        // Send to backend with full conversation history
+        // Send to backend with full conversation history and function definitions
         const response = await sendChatRequest({
           messages: conversationHistory,
           language: "de",
           translationEdition: "de.bubenheim",
+          functions: chatFunctionDefinitions,
+          function_call: "auto",
         });
+
+        // Check if AI wants to call a function
+        if (response.function_call) {
+          const functionName = response.function_call.name;
+          const functionArgs = JSON.parse(response.function_call.arguments || "{}");
+          
+          // Execute the function
+          const functionResult = executeChatFunction(functionName, functionArgs);
+          
+          // Add function result to conversation
+          conversationHistory.push({
+            role: "function",
+            name: functionName,
+            content: JSON.stringify(functionResult),
+          } as any);
+          
+          // Get final response from AI with function result
+          const finalResponse = await sendChatRequest({
+            messages: conversationHistory,
+            language: "de",
+            translationEdition: "de.bubenheim",
+            functions: chatFunctionDefinitions,
+          });
+          
+          // Add final AI response
+          const aiMessage: ChatMessage = {
+            id: nanoid(),
+            text: finalResponse.generatedAnswer,
+            isUser: false,
+            sources: finalResponse.sources,
+            timestamp: new Date(),
+          };
+          
+          setMessages((prev) => [...prev, aiMessage]);
+          return;
+        }
 
         // Add AI response
         const aiMessage: ChatMessage = {

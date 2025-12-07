@@ -11,7 +11,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    let { apiKey, messages, model = "gpt-4o-mini", temperature = 0.7, max_tokens = 3000 } = req.body;
+    let { apiKey, messages, model = "gpt-4o-mini", temperature = 0.7, max_tokens = 3000, functions, function_call } = req.body;
 
     // FALLBACK: Use environment variable API keys if no API key is provided in request
     if (!apiKey || apiKey.trim() === "") {
@@ -81,6 +81,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         messages: enhancedMessages,
         temperature,
         max_tokens,
+        ...(functions && { functions }),
+        ...(function_call && { function_call }),
       }),
     });
 

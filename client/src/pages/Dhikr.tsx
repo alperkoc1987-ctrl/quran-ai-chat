@@ -55,7 +55,7 @@ export default function Dhikr() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="text-xl font-bold">{selectedDhikr.transliteration}</h1>
+              <h1 className="text-xl font-bold">{selectedDhikr.shortName || selectedDhikr.transliteration}</h1>
               <p className="text-teal-100 text-sm">
                 {DHIKR_CATEGORIES[selectedDhikr.category].name}
               </p>
