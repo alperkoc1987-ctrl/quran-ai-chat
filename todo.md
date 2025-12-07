@@ -93,3 +93,9 @@
 - [x] Fix toast notification colors for better readability (dark text on light bg or vice versa)
 - [ ] Test with various Dhikr texts
 - [ ] Commit and push to GitHub
+
+## Remaining Dhikr Header Fixes (December 2025)
+- [ ] Verify Dhikr.tsx uses shortName for header display
+- [ ] Add shortName to all remaining long Dhikr entries (morning/evening Adhkar)
+- [ ] Test all long Dhikr headers (Ayat al-Kursi, Letzte 2 Verse Al-Baqarah, Shahada)
+- [ ] Commit and push to GitHub
