@@ -45,26 +45,6 @@ export function useChat() {
       setIsLoading(true);
       setError(null);
 
-      // Check for local greeting handling FIRST (works even without API key)
-      const lowerInput = userInput.toLowerCase().trim();
-      const isGreeting = GREETING_KEYWORDS.some(keyword => lowerInput === keyword || lowerInput.startsWith(keyword + " "));
-      
-      if (isGreeting && lowerInput.length < 20) {
-        // Simulate a short delay for natural feel
-        setTimeout(() => {
-          const randomResponse = GREETING_RESPONSES[Math.floor(Math.random() * GREETING_RESPONSES.length)];
-          const aiMessage: ChatMessage = {
-            id: nanoid(),
-            text: randomResponse,
-            isUser: false,
-            timestamp: new Date(),
-          };
-          setMessages((prev) => [...prev, aiMessage]);
-          setIsLoading(false);
-        }, 600);
-        return; // Exit early, no API call needed
-      }
-
       try {
         // Check for API key
         const apiKey = localStorage.getItem("openai_api_key");

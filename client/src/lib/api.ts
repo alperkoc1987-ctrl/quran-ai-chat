@@ -10,53 +10,67 @@ import { ChatRequest, ChatResponse, Surah, SurahWithAyahs, SourceType } from "./
 const API_BASE_URL = "/api";
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
+const SYSTEM_PROMPT = `You are a helpful, knowledgeable, and empathetic Islamic assistant. 
+
+Your main goal is to help users with questions about the Quran, Hadith, and Islamic teachings.
+
+IMPORTANT GUIDELINES:
+1. GREETINGS & SMALL TALK: 
+   - If the user says "Hi", "Hallo", "Salam", "Wie geht's" or similar, respond naturally and warmly. 
+   - Do NOT say you cannot process the request. 
+   - Example: "Wa alaikum assalam! Mir geht es gut, danke der Nachfrage. Wie kann ich Ihnen heute helfen?" or "Hallo! Ich bin hier, um Ihre Fragen zum Islam zu beantworten."
+
+2. PROACTIVE DUAS:
+   - If the user mentions a problem, difficulty, or specific situation (e.g., "I am sad", "I have an exam", "someone is sick"), PROACTIVELY suggest a relevant Dua.
+   - Say: "Hier ist eine Dua aus dem Koran/Sunnah für diese Situation:" followed by the Dua in Arabic (if possible) and its translation.
+   - Example: "Möge Allah es Ihnen erleichtern. Hier ist eine Dua für schwierige Zeiten: ..."
+
+3. KNOWLEDGE & SOURCES: 
+   - When answering religious questions, cite sources (Quran Surah/Verse or Hadith) whenever possible.
+   - CRITICAL: You MUST ALWAYS include BOTH Surah AND Verse numbers in your citations.
+   - ALWAYS use this EXACT format: "Sure X, Vers Y" (e.g., "Sure 2, Vers 255" or "Sure 18, Vers 10")
+   - NEVER write just "Sure 2" - ALWAYS include the specific verse number!
+   - This format is required for automatic verse linking to work correctly.
+   - Example: Instead of "Sure Al-Baqara", write "Sure 2, Vers 255"
+
+4. LANGUAGE: 
+   - Always answer in the same language as the user (mostly German).
+   - Keep the tone respectful, gentle, and supportive.`;
+
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
   try {
-    // For Vercel deployment: API key is handled by backend environment variables
-    // No need to pass API key from frontend
+    // Prepare messages array
+    let messages;
+    if (request.messages && request.messages.length > 0) {
+      // Use messages from useChat, but ensure system prompt is first
+      const hasSystemPrompt = request.messages.some(m => m.role === 'system');
+      if (!hasSystemPrompt) {
+        messages = [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...request.messages
+        ];
+      } else {
+        messages = request.messages;
+      }
+    } else {
+      // Fallback to userQuery for backwards compatibility
+      messages = [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: (request.userQuery || "").trim() }
+      ];
+    }
+    
+    console.log('[DEBUG] Sending chat request with messages:', messages);
     
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        ...request,
-        // apiKey removed - backend will use OPENAI_API_KEY from environment
-        messages: [
-          { 
-            role: "system", 
-            content: `You are a helpful, knowledgeable, and empathetic Islamic assistant. 
-            
-            Your main goal is to help users with questions about the Quran, Hadith, and Islamic teachings.
-            
-            IMPORTANT GUIDELINES:
-            1. GREETINGS & SMALL TALK: 
-               - If the user says "Hi", "Hallo", "Salam", "Wie geht's" or similar, respond naturally and warmly. 
-               - Do NOT say you cannot process the request. 
-               - Example: "Wa alaikum assalam! Mir geht es gut, danke der Nachfrage. Wie kann ich Ihnen heute helfen?" or "Hallo! Ich bin hier, um Ihre Fragen zum Islam zu beantworten."
-
-            2. PROACTIVE DUAS:
-               - If the user mentions a problem, difficulty, or specific situation (e.g., "I am sad", "I have an exam", "someone is sick"), PROACTIVELY suggest a relevant Dua.
-               - Say: "Hier ist eine Dua aus dem Koran/Sunnah für diese Situation:" followed by the Dua in Arabic (if possible) and its translation.
-               - Example: "Möge Allah es Ihnen erleichtern. Hier ist eine Dua für schwierige Zeiten: ..."
-
-            3. KNOWLEDGE & SOURCES: 
-               - When answering religious questions, cite sources (Quran Surah/Verse or Hadith) whenever possible.
-               - CRITICAL: You MUST ALWAYS include BOTH Surah AND Verse numbers in your citations.
-               - ALWAYS use this EXACT format: "Sure X, Vers Y" (e.g., "Sure 2, Vers 255" or "Sure 18, Vers 10")
-               - NEVER write just "Sure 2" - ALWAYS include the specific verse number!
-               - This format is required for automatic verse linking to work correctly.
-               - Example: Instead of "Sure Al-Baqara", write "Sure 2, Vers 255"
-
-            4. LANGUAGE: 
-               - Always answer in the same language as the user (mostly German).
-               - Keep the tone respectful, gentle, and supportive.` 
-          },
-          { role: "user", content: (request.userQuery || "").trim() }
-        ]
-      }),
+      body: JSON.stringify({ messages }),
     });
+    
+    console.log('[DEBUG] Response status:', response.status, response.statusText);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -68,22 +82,20 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
     }
 
     const data = await response.json();
+    console.log('[DEBUG] Response data:', data);
     
     // Transform OpenAI response format to our app's expected format if needed
     if (data.choices && data.choices[0]) {
       const content = data.choices[0].message.content;
       
       // Parse sources from content on client side as well
-      // Expanded regex to catch multiple citation formats:
-      // [2:43], (Sure 2, Vers 43), Sure 2:43, Surah 2, Ayah 43, etc.
-      const citationRegex = /\[(\d+):(\d+)\]|\(Sure\s*(\d+)[,:;]\s*Vers\s*(\d+)\)|Sure\s*(\d+)[,:;]\s*Vers\s*(\d+)|Surah\s*(\d+)[,:;]\s*(?:Ayah|Verse)\s*(\d+)/gi;
+      const citationRegex = /\[(\d+):(\d+)\]|\(Sure\s*(\d+),\s*Vers\s*(\d+)\)/g;
       const sources = [];
       let match;
 
       while ((match = citationRegex.exec(content)) !== null) {
-        // Extract surah and ayah from different capture groups
-        const surahNum = parseInt(match[1] || match[3] || match[5] || match[7]);
-        const ayahNum = parseInt(match[2] || match[4] || match[6] || match[8]);
+        const surahNum = parseInt(match[1] || match[3]);
+        const ayahNum = parseInt(match[2] || match[4]);
         
         sources.push({
           id: `quran-${surahNum}-${ayahNum}-${Date.now()}-${Math.random()}`,
@@ -115,73 +127,48 @@ export async function fetchAllSurahs(): Promise<Surah[]> {
       throw new Error(`Failed to fetch Surahs: ${response.statusText}`);
     }
     const data = await response.json();
-    return data.data || [];
+    return data.data;
   } catch (error) {
     console.error("Failed to fetch Surahs:", error);
     throw error;
   }
 }
 
-export async function fetchSurahWithAyahs(
-  surahNumber: number,
-  edition: string = "quran-uthmani"
-): Promise<SurahWithAyahs> {
+export async function fetchSurahWithAyahs(surahNumber: number, edition: string = "quran-simple-enhanced"): Promise<SurahWithAyahs> {
   try {
     const response = await fetch(`${QURAN_API_URL}/surah/${surahNumber}/${edition}`);
     if (!response.ok) {
-      throw new Error(`Failed to fetch Surah ${surahNumber}: ${response.statusText}`);
+      throw new Error(`Failed to fetch Surah: ${response.statusText}`);
     }
     const data = await response.json();
     return data.data;
   } catch (error) {
-    console.error(`Failed to fetch Surah ${surahNumber}:`, error);
+    console.error("Failed to fetch Surah with Ayahs:", error);
     throw error;
   }
 }
 
-export async function fetchSurahWithTranslation(
-  surahNumber: number,
-  translationEdition: string = "de.bubenheim"
-): Promise<{ arabic: SurahWithAyahs; translation: SurahWithAyahs }> {
+export async function fetchSurahComplete(surahNumber: number, translationEdition: string = "de.bubenheim", includeTransliteration: boolean = false): Promise<any> {
   try {
-    const arabicResponse = await fetchSurahWithAyahs(surahNumber, "quran-uthmani");
-    const translationResponse = await fetchSurahWithAyahs(surahNumber, translationEdition);
-    return {
-      arabic: arabicResponse,
-      translation: translationResponse,
-    };
-  } catch (error) {
-    console.error(`Failed to fetch Surah with translation:`, error);
-    throw error;
-  }
-}
-
-export async function fetchSurahComplete(
-  surahNumber: number,
-  translationEdition: string = "de.bubenheim",
-  includeTransliteration: boolean = false
-): Promise<{ 
-  arabic: SurahWithAyahs; 
-  translation: SurahWithAyahs;
-  transliteration?: SurahWithAyahs;
-}> {
-  try {
-    const arabicResponse = await fetchSurahWithAyahs(surahNumber, "quran-uthmani");
-    const translationResponse = await fetchSurahWithAyahs(surahNumber, translationEdition);
+    // Fetch both Arabic and translation
+    const [arabicResponse, translationResponse] = await Promise.all([
+      fetch(`${QURAN_API_URL}/surah/${surahNumber}/quran-simple-enhanced`),
+      fetch(`${QURAN_API_URL}/surah/${surahNumber}/${translationEdition}`)
+    ]);
     
-    const result: any = {
-      arabic: arabicResponse,
-      translation: translationResponse,
-    };
-
-    if (includeTransliteration) {
-      const transliterationResponse = await fetchSurahWithAyahs(surahNumber, "en.transliteration");
-      result.transliteration = transliterationResponse;
+    if (!arabicResponse.ok || !translationResponse.ok) {
+      throw new Error(`Failed to fetch Surah`);
     }
-
-    return result;
+    
+    const arabicData = await arabicResponse.json();
+    const translationData = await translationResponse.json();
+    
+    return {
+      arabic: arabicData.data,
+      translation: translationData.data
+    };
   } catch (error) {
-    console.error(`Failed to fetch complete Surah data:`, error);
+    console.error("Failed to fetch complete Surah:", error);
     throw error;
   }
 }
