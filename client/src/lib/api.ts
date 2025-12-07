@@ -12,6 +12,11 @@ const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 export async function sendChatRequest(request: ChatRequest): Promise<ChatResponse> {
   try {
+    // Validate userQuery
+    if (!request.userQuery || typeof request.userQuery !== 'string' || request.userQuery.trim() === '') {
+      throw new Error('Bitte geben Sie eine Frage ein.');
+    }
+
     // For Vercel deployment: API key is handled by backend environment variables
     // No need to pass API key from frontend
     
@@ -53,7 +58,7 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
                - Always answer in the same language as the user (mostly German).
                - Keep the tone respectful, gentle, and supportive.` 
           },
-          { role: "user", content: request.userQuery }
+          { role: "user", content: request.userQuery.trim() }
         ]
       }),
     });
