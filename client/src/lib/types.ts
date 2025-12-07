@@ -52,7 +52,8 @@ export interface SourceReference {
 }
 
 export interface ChatRequest {
-  userQuery: string;
+  userQuery?: string;
+  messages?: Array<{ role: string; content: string }>;
   language: string;
   translationEdition: string;
 }

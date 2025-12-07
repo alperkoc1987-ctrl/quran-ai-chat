@@ -117,13 +117,13 @@ export default function Dhikr() {
               )}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="text-2xl font-arabic mb-2 leading-relaxed">
+                  <div className="text-2xl font-arabic mb-2 leading-relaxed text-white">
                     {dhikr.arabic}
                   </div>
-                  <div className={`text-sm italic mb-1 ${themeConfig.colors.textSecondary}`}>
+                  <div className="text-sm italic mb-1 text-teal-600 dark:text-teal-400">
                     {dhikr.transliteration}
                   </div>
-                  <div className={`text-sm ${themeConfig.colors.textMuted}`}>
+                  <div className="text-sm text-slate-200 dark:text-slate-300">
                     {dhikr.translation}
                   </div>
                 </div>
@@ -139,10 +139,10 @@ export default function Dhikr() {
 
               {/* Reward Preview */}
               <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-                <div className="text-xs font-semibold text-green-700 dark:text-green-400 mb-1">
+                <div className="text-xs font-semibold text-teal-600 dark:text-teal-400 mb-1">
                   Belohnung:
                 </div>
-                <div className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
+                <div className="text-xs text-slate-200 dark:text-slate-300 line-clamp-2">
                   {dhikr.reward}
                 </div>
               </div>

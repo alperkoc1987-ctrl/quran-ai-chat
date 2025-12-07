@@ -71,9 +71,24 @@ export function useChat() {
         // Note: We allow proceeding without an API key because the backend has a fallback key.
         // The backend will handle the missing key logic if the fallback also fails.
 
-        // Send to backend
+        // Build conversation history for context
+        // Convert ChatMessage[] to OpenAI message format
+        const conversationHistory = messages
+          .filter(msg => !msg.text.startsWith("Assalamu alaikum! Ich bin Ihr KI-Assistent")) // Skip initial greeting
+          .map(msg => ({
+            role: msg.isUser ? "user" : "assistant",
+            content: msg.text
+          }));
+
+        // Add current user message
+        conversationHistory.push({
+          role: "user",
+          content: userInput
+        });
+
+        // Send to backend with full conversation history
         const response = await sendChatRequest({
-          userQuery: userInput,
+          messages: conversationHistory,
           language: "de",
           translationEdition: "de.bubenheim",
         });

@@ -23,11 +23,10 @@ export async function handleChatRequest(req: Request, res: Response) {
       });
     }
 
-    // Build messages array
-    const chatMessages = messages || [
-      {
-        role: "system",
-        content: `You are a helpful, knowledgeable, and empathetic Islamic assistant. 
+    // System message with instructions (always prepended)
+    const systemMessage = {
+      role: "system",
+      content: `You are a helpful, knowledgeable, and empathetic Islamic assistant. 
         
         Your main goal is to help users with questions about the Quran, Hadith, and Islamic teachings.
         
@@ -64,10 +63,23 @@ export async function handleChatRequest(req: Request, res: Response) {
 
         4. LANGUAGE: 
            - Always answer in the same language as the user (mostly German).
-           - Keep the tone respectful, gentle, and supportive.`,
-      },
-      { role: "user", content: userQuery },
-    ];
+           - Keep the tone respectful, gentle, and supportive.
+        
+        5. CONVERSATION CONTEXT:
+           - You have access to the full conversation history.
+           - When the user asks follow-up questions (e.g., "Kannst du mir auch eine Transliteration dazu schreiben?"), refer to previous messages in the conversation.
+           - Maintain context across the entire conversation.`,
+    };
+
+    // Build messages array
+    let chatMessages;
+    if (messages) {
+      // If conversation history is provided, prepend system message
+      chatMessages = [systemMessage, ...messages];
+    } else {
+      // Legacy single-query mode
+      chatMessages = [systemMessage, { role: "user", content: userQuery }];
+    }
 
     // Call Manus Forge API (supports multiple models including Gemini)
     const completion = await openai.chat.completions.create({

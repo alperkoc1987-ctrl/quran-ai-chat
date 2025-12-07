@@ -768,3 +768,20 @@
 - [x] Reduce Ayat al-Kursi overlay text size (changed from text-3xl to text-2xl md:text-3xl)
 - [x] Make Dhikr counter overlay scrollable (added max-h-[50vh] overflow-y-auto)
 - [x] Improve text readability with better color contrast
+
+## KI-Chat Conversation History (December 2025)
+- [x] Update backend chat.ts to accept full message history array
+- [x] Modify frontend to send all previous messages with each request
+- [x] Implement conversation context so AI remembers previous exchanges
+- [x] Added system message guideline #5 for conversation context
+- [x] Backend prepends system message to conversation history
+- [x] Frontend converts ChatMessage[] to OpenAI message format
+- [ ] Test follow-up questions (e.g., "Kannst du mir auch eine Transliteration dazu schreiben?")
+
+## Dhikr Card Text Colors (December 2025)
+- [x] Change Dhikr card Arabic text to white
+- [x] Change Dhikr card transliteration to teal (text-teal-600 dark:text-teal-400)
+- [x] Change Dhikr card translation to light gray (text-slate-200 dark:text-slate-300)
+- [x] Change reward label to teal (was green)
+- [x] Change reward text to light gray for readability
+- [x] Match exact colors from Quran verse cards
