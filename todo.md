@@ -1,5 +1,13 @@
 # Project TODO
 
+## CRITICAL FIXES - December 7, 2025
+- [x] Fix Dhikr list to show transliteration instead of German translation
+- [x] Fix Dhikr header to show short title (title) instead of full transliteration text
+- [x] Add debug logging to Vercel function to diagnose API key error
+- [ ] Test all Dhikr categories (morning, evening, after prayer, before sleep)
+- [ ] Test KI-Chat functionality on Vercel
+- [ ] Commit and push to GitHub
+
 ## Current Priority Tasks (December 2025)
 - [x] Rename "Statistiken" to "Fortschritt" throughout the app
 - [x] Change Statistics icon from TrendingUp to BarChart (📊)

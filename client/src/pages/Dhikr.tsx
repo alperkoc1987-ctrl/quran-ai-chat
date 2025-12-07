@@ -55,7 +55,7 @@ export default function Dhikr() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="text-xl font-bold">{selectedDhikr.shortName || selectedDhikr.transliteration}</h1>
+              <h1 className="text-xl font-bold">{selectedDhikr.title || selectedDhikr.transliteration}</h1>
               <p className="text-teal-100 text-sm">
                 {DHIKR_CATEGORIES[selectedDhikr.category].name}
               </p>
@@ -120,7 +120,7 @@ export default function Dhikr() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="text-xl font-semibold mb-2 text-white drop-shadow-lg">
-                    {dhikr.title || dhikr.transliteration}
+                    {dhikr.transliteration}
                   </div>
                   <div className="text-sm text-slate-300 line-clamp-2">
                     {dhikr.translation}
