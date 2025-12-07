@@ -117,9 +117,11 @@
 - [ ] Commit and push to GitHub
 
 ## UX Improvements - December 7, 2025 (Evening)
-- [ ] Make toast notifications more visible (larger font, better contrast, centered position)
-- [ ] Add PWA manifest for "Add to Home Screen" functionality
-- [ ] Add service worker for offline support and background audio
-- [ ] Test PWA installation on mobile devices
-- [ ] Test background audio playback when app is in background
+- [x] Make toast notifications more visible (larger font, better contrast, top-center position)
+- [x] Add PWA manifest for "Add to Home Screen" functionality
+- [x] Verify service worker is registered (already implemented)
+- [x] Generate app icons (192x192 and 512x512)
+- [x] Add PWA meta tags to HTML (theme-color, apple-mobile-web-app-capable)
+- [ ] Test PWA installation on mobile devices (user testing required)
+- [ ] Test background audio playback when app is in background (user testing required)
 - [ ] Commit and push to GitHub

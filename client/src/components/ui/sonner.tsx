@@ -8,17 +8,22 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      position="top-center"
       toastOptions={{
         style: {
           background: "hsl(var(--popover))",
           color: "hsl(var(--popover-foreground))",
-          border: "1px solid hsl(var(--border))",
+          border: "2px solid hsl(var(--border))",
+          fontSize: "16px",
+          fontWeight: "600",
+          padding: "16px 24px",
+          minWidth: "300px",
         },
         classNames: {
-          success: "bg-green-50 dark:bg-green-900 text-green-900 dark:text-green-50 border-green-200 dark:border-green-700",
-          error: "bg-red-50 dark:bg-red-900 text-red-900 dark:text-red-50 border-red-200 dark:border-red-700",
-          info: "bg-blue-50 dark:bg-blue-900 text-blue-900 dark:text-blue-50 border-blue-200 dark:border-blue-700",
-          warning: "bg-yellow-50 dark:bg-yellow-900 text-yellow-900 dark:text-yellow-50 border-yellow-200 dark:border-yellow-700",
+          success: "bg-green-600 dark:bg-green-600 text-white dark:text-white border-green-700 dark:border-green-500 shadow-lg",
+          error: "bg-red-600 dark:bg-red-600 text-white dark:text-white border-red-700 dark:border-red-500 shadow-lg",
+          info: "bg-blue-600 dark:bg-blue-600 text-white dark:text-white border-blue-700 dark:border-blue-500 shadow-lg",
+          warning: "bg-yellow-600 dark:bg-yellow-600 text-white dark:text-white border-yellow-700 dark:border-yellow-500 shadow-lg",
         },
       }}
       {...props}
