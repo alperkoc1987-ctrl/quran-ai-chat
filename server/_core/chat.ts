@@ -41,11 +41,11 @@ export async function handleChatRequest(req: Request, res: Response) {
 
     console.log(`Chat request with ${chatMessages.length} messages`);
 
-    // Call OpenAI API
+    // Call OpenAI API with GPT-4o-mini (94% cheaper than GPT-4o)
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: chatMessages as any,
-      max_tokens: 2000,
+      max_tokens: 4000,
       temperature: 0.7,
     });
 
