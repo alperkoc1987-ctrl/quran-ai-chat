@@ -270,13 +270,8 @@ export default function Bookmarks() {
                           variant="ghost"
                           size="icon"
                           onClick={async () => {
-                            try {
-                              await removeSurahBookmark.mutateAsync({ surahNumber: surahBookmark.surahNumber });
-                              toast.success('Surah-Lesezeichen entfernt');
-                            } catch (error) {
-                              console.error('Error removing surah bookmark:', error);
-                              toast.error('Fehler beim Entfernen des Lesezeichens');
-                            }
+                            await removeSurahBookmark.mutateAsync({ surahNumber: surahBookmark.surahNumber });
+                            toast.success('Surah-Lesezeichen entfernt');
                           }}
                           className="text-red-500 dark:text-red-400"
                           title="Entfernen"
