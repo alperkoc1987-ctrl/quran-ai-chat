@@ -69,6 +69,7 @@ export interface ChatMessage {
   isUser: boolean;
   sources?: SourceReference[];
   timestamp: Date;
+  isError?: boolean; // Mark error messages to exclude from AI conversation history
 }
 
 export enum Language {

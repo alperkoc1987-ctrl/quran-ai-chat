@@ -75,10 +75,10 @@ export function useChat() {
         // Convert ChatMessage[] to OpenAI message format
         const conversationHistory = messages
           .filter(msg => 
+            !msg.isError && // Skip error messages (marked with isError flag)
             msg.text && // Filter out null/undefined/empty text
             msg.text.trim() && // Filter out whitespace-only messages
-            !msg.text.startsWith("Assalamu alaikum! Ich bin Ihr KI-Assistent") && // Skip initial greeting
-            !msg.text.startsWith("❌ FEHLER:") // Skip error messages
+            !msg.text.startsWith("Assalamu alaikum! Ich bin Ihr KI-Assistent") // Skip initial greeting
           )
           .map(msg => ({
             role: msg.isUser ? "user" : "assistant",
@@ -120,12 +120,13 @@ export function useChat() {
 
         setError(errorMessage);
 
-        // Add error message to chat
+        // Add error message to chat (but mark it so it's not sent to AI)
         const errorChatMessage: ChatMessage = {
           id: nanoid(),
           text: displayMessage,
           isUser: false,
           timestamp: new Date(),
+          isError: true, // Mark as error message
         };
 
         setMessages((prev) => [...prev, errorChatMessage]);

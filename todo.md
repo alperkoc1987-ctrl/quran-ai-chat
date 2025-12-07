@@ -798,3 +798,10 @@
 - [x] Fix Lesezeichen page not opening (JavaScript error)
 - [x] Added try-catch for surah bookmark removal mutation
 - [x] Graceful error handling when user not authenticated
+
+## CRITICAL: KI-Chat null content error STILL PERSISTS (December 2025)
+- [x] Error still occurs on production despite backend filtering
+- [x] Found actual source: error messages were included in conversation history
+- [x] Error messages have different format than normal AI responses
+- [x] Added `isError` flag to ChatMessage interface
+- [x] Updated filter to exclude error messages from conversation history
