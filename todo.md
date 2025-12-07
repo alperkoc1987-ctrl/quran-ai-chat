@@ -787,11 +787,14 @@
 - [x] Match exact colors from Quran verse cards
 
 ## CRITICAL BUGS (December 2025)
-- [x] Fix KI-Chat error: "Invalid value for 'content': expected a string, got null"
-- [x] Filter out messages with null/empty content in conversation history
+- [x] Fix KI-Chat error: "Invalid value for 'content': expected a string, got null" (FIXED IN BACKEND)
+- [x] Added message filtering in backend chat.ts to prevent null content
+- [x] Filter validates: msg exists, has content, content is string, content not empty
 - [x] Reduce Ayat al-Kursi overlay text size (text-lg instead of text-2xl)
 - [x] Limit Ayat al-Kursi modal height to max-h-[40vh] (was 50vh)
 - [x] Reduce transliteration size (text-sm instead of text-base)
 - [x] Reduce translation size (text-xs instead of text-sm)
 - [x] Add horizontal padding for better readability
-- [ ] Fix Lesezeichen page not opening (JavaScript error)
+- [x] Fix Lesezeichen page not opening (JavaScript error)
+- [x] Added try-catch for surah bookmark removal mutation
+- [x] Graceful error handling when user not authenticated

@@ -74,8 +74,15 @@ export async function handleChatRequest(req: Request, res: Response) {
     // Build messages array
     let chatMessages;
     if (messages) {
+      // Filter out invalid messages before sending to OpenAI
+      const validMessages = messages.filter((msg: any) => 
+        msg && 
+        msg.content && 
+        typeof msg.content === 'string' && 
+        msg.content.trim().length > 0
+      );
       // If conversation history is provided, prepend system message
-      chatMessages = [systemMessage, ...messages];
+      chatMessages = [systemMessage, ...validMessages];
     } else {
       // Legacy single-query mode
       chatMessages = [systemMessage, { role: "user", content: userQuery }];
