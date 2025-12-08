@@ -146,14 +146,13 @@ export default function Qibla() {
     }
   }, [locationGranted]);
 
-  // Check if device is pointing toward Qibla
-  // When smoothedHeading matches qiblaDirection, device faces Qibla (needle points up to Kaaba)
-  const headingDiff = qiblaDirection !== null ? (() => {
-    let diff = Math.abs(smoothedHeading - qiblaDirection);
-    // Take shortest angle (handle 360° wrap)
-    if (diff > 180) diff = 360 - diff;
-    return diff;
-  })() : 180;
+  // Check if needle is pointing up (to Kaaba)
+  // Needle rotation: qiblaDirection - smoothedHeading
+  // When this equals 0, needle points straight up = aligned
+  const needleAngle = qiblaDirection !== null ? ((qiblaDirection - smoothedHeading + 360) % 360) : 0;
+  // Normalize to -180 to 180 range
+  const normalizedAngle = needleAngle > 180 ? needleAngle - 360 : needleAngle;
+  const headingDiff = Math.abs(normalizedAngle);
 
   // Vibration feedback when aligned with Qibla
   useEffect(() => {
@@ -275,10 +274,10 @@ export default function Qibla() {
                     : 'border-slate-600'
                 } bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950`}>
                   
-                  {/* White Compass Needle - Rotates with device (always points north) */}
+                  {/* White Compass Needle - Points toward Qibla direction */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
+                    style={{ transform: `rotate(${qiblaDirection !== null ? qiblaDirection - smoothedHeading : 0}deg)` }}
                   >
                     <div className="relative">
                       {/* Needle pointing up */}

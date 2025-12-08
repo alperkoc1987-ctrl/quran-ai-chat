@@ -329,3 +329,10 @@
 - [ ] Green highlight not showing when aligned with Qibla
 - [ ] Needle rotates 360° quickly when pointing to Kaaba (0°/360° jump issue)
 - [ ] Fix rotation smoothing to prevent jumps at 0° boundary
+
+# CRITICAL BUG - Qibla Compass - December 8, 2025 (07:24)
+
+- [ ] Needle points to NORTH instead of QIBLA
+- [ ] When device faces Qibla, needle should point UP (to Kaaba)
+- [ ] Currently: green glow works, but needle points wrong direction
+- [ ] Fix: Needle rotation should be relative to Qibla, not north
