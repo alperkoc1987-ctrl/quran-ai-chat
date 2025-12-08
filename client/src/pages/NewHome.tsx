@@ -10,11 +10,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResumeReadingCard } from "@/components/ResumeReadingCard";
 import { AyatOfTheDay } from "@/components/AyatOfTheDay";
 import { PrayerTimesWidget } from "@/components/PrayerTimesWidget";
+import { useWidgetPreferences } from "@/components/WidgetSettings";
 import { PushToTalkButton } from "@/components/PushToTalkButton";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 export default function NewHome() {
   const { themeConfig } = useReadingTheme();
+  const widgetPrefs = useWidgetPreferences();
   const [chatExpanded, setChatExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -258,9 +260,11 @@ export default function NewHome() {
       </header>
 
       {/* Resume Reading Card */}
-      <div className="container mx-auto px-4 pt-4">
-        <ResumeReadingCard />
-      </div>
+      {widgetPrefs.showResumeReading && (
+        <div className="container mx-auto px-4 pt-4">
+          <ResumeReadingCard />
+        </div>
+      )}
 
       {/* KI-Assistent Section */}
       <div className="container mx-auto px-4 mt-4">
@@ -355,14 +359,18 @@ export default function NewHome() {
         </div>
 
         {/* Prayer Times Widget */}
-        <div className="mt-8">
-          <PrayerTimesWidget />
-        </div>
+        {widgetPrefs.showPrayerTimes && (
+          <div className="mt-8">
+            <PrayerTimesWidget />
+          </div>
+        )}
 
         {/* Ayat des Tages */}
-        <div className="mt-8">
-          <AyatOfTheDay />
-        </div>
+        {widgetPrefs.showAyatOfTheDay && (
+          <div className="mt-8">
+            <AyatOfTheDay />
+          </div>
+        )}
 
         {/* Quick Info Section */}
         <div className="mt-8 text-center">

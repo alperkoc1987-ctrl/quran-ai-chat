@@ -149,5 +149,8 @@
 - [x] Add compass smoothing algorithm to prevent erratic movement
 - [x] Create halftransparent audio player overlay with Surah info when playing
 - [x] Add prayer times widget to home page
+- [x] Update widget colors to match app design (dark blue bg, orange time)
+- [x] Add vibration feedback to prayer notifications
+- [x] Create widget customization settings (show/hide widgets)
 - [ ] Test all changes on mobile
 - [ ] Commit and push to GitHub

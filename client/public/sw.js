@@ -131,7 +131,7 @@ self.addEventListener('push', (event) => {
     body: data.body || 'Es ist Zeit für das Gebet',
     icon: '/icon-192.png',
     badge: '/icon-192.png',
-    vibrate: [200, 100, 200],
+    vibrate: [500, 200, 500, 200, 500], // Longer vibration pattern for prayer time
     tag: data.tag || 'prayer-notification',
     requireInteraction: true,
     actions: [

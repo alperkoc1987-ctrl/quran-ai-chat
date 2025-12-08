@@ -9,6 +9,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTransliteration } from "@/contexts/TransliterationContext";
 import { useTranslationLanguage, type TranslationLanguage } from "@/contexts/TranslationLanguageContext";
 import { ReadingThemeSelector } from "@/components/ReadingThemeSelector";
+import { WidgetSettings } from "@/components/WidgetSettings";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
@@ -226,6 +227,9 @@ export default function Settings() {
             </button>
           </div>
         </div>
+
+        {/* Widget Customization */}
+        <WidgetSettings />
 
         {/* Reading Theme Selection */}
         <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>

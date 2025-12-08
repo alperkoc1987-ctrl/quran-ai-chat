@@ -107,10 +107,10 @@ export function PrayerTimesWidget() {
     // No prayer times available - show link to prayer times page
     return (
       <Link href="/prayer-times">
-        <div className="bg-gradient-to-br from-slate-900 to-blue-950 rounded-3xl p-6 shadow-lg border border-slate-700/50 hover:border-teal-500/50 transition-all cursor-pointer">
+        <div className="bg-slate-800/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-slate-700/50 hover:border-teal-500/50 transition-all cursor-pointer">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center">
-              <Moon className="w-5 h-5 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center">
+              <Moon className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-lg font-bold text-white">Gebetszeiten</h3>
           </div>
@@ -124,23 +124,23 @@ export function PrayerTimesWidget() {
 
   return (
     <Link href="/prayer-times">
-      <div className="bg-gradient-to-br from-slate-900 to-blue-950 rounded-3xl p-6 shadow-lg border border-slate-700/50 hover:border-teal-500/50 transition-all cursor-pointer">
+      <div className="bg-slate-800/80 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-slate-700/50 hover:border-teal-500/50 transition-all cursor-pointer">
         {/* Header with Moon Icon */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center">
-            <Moon className="w-5 h-5 text-white" />
+          <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center">
+            <Moon className="w-6 h-6 text-white" />
           </div>
           <h3 className="text-sm font-medium text-slate-300">Nächstes Gebet</h3>
         </div>
 
         {/* Prayer Name */}
         <div className="mb-2">
-          <h2 className="text-2xl font-bold text-white">{nextPrayer.name}</h2>
+          <h2 className="text-3xl font-bold text-white">{nextPrayer.name}</h2>
         </div>
 
         {/* Prayer Time */}
         <div className="mb-4">
-          <p className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-teal-400 bg-clip-text text-transparent">
+          <p className="text-5xl font-bold text-orange-400">
             {nextPrayer.time}
           </p>
         </div>
@@ -148,7 +148,7 @@ export function PrayerTimesWidget() {
         {/* Countdown */}
         <div className="pt-3 border-t border-slate-700/50">
           <p className="text-xs text-slate-400 mb-1">Gebetszeit beginnt in:</p>
-          <p className="text-xl font-semibold text-teal-400 font-mono">{countdown}</p>
+          <p className="text-2xl font-semibold text-teal-400 font-mono">{countdown}</p>
         </div>
       </div>
     </Link>
