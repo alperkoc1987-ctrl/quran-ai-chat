@@ -55,6 +55,10 @@ export default function SurahReader() {
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [verseRepeatCount, setVerseRepeatCount] = useState<number>(1); // How many times to repeat each verse
+  const [showRepeatDialog, setShowRepeatDialog] = useState(false);
+  const [playingVerse, setPlayingVerse] = useState<number | null>(null); // Currently playing verse number
+  const [currentRepeat, setCurrentRepeat] = useState<number>(0); // Current repeat iteration
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -333,6 +337,45 @@ export default function SurahReader() {
     }
   };
 
+  // Play single verse with repeat functionality
+  const playVerseWithRepeat = async (verseNumber: number) => {
+    if (!surahInfo) return;
+
+    // If already playing this verse, stop it
+    if (playingVerse === verseNumber) {
+      setPlayingVerse(null);
+      setCurrentRepeat(0);
+      audioPlayer.stop();
+      return;
+    }
+
+    // Start playing the verse
+    setPlayingVerse(verseNumber);
+    setCurrentRepeat(1);
+
+    // Play the verse N times
+    for (let i = 0; i < verseRepeatCount; i++) {
+      if (playingVerse !== verseNumber && i > 0) break; // User stopped playback
+      
+      setCurrentRepeat(i + 1);
+      
+      // Play single verse audio
+      const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${surahInfo.number}_${verseNumber}.mp3`;
+      
+      // Wait for audio to finish before next repeat
+      await new Promise<void>((resolve) => {
+        const audio = new Audio(audioUrl);
+        audio.addEventListener('ended', () => resolve());
+        audio.addEventListener('error', () => resolve());
+        audio.play();
+      });
+    }
+
+    // Finished all repeats
+    setPlayingVerse(null);
+    setCurrentRepeat(0);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
@@ -388,14 +431,24 @@ export default function SurahReader() {
               )}
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSettingsOpen(true)}
-            className="text-slate-600 hover:text-slate-900"
-          >
-            <Settings className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowRepeatDialog(true)}
+              className="text-xs text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400"
+            >
+              Wiederholung: {verseRepeatCount}x
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsSettingsOpen(true)}
+              className="text-slate-600 hover:text-slate-900"
+            >
+              <Settings className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -532,6 +585,22 @@ export default function SurahReader() {
                   >
                     <Share2 className="w-4 h-4" />
                   </Button>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={`h-8 w-8 ${playingVerse === verseNumber ? 'text-teal-600' : 'text-slate-600 hover:text-teal-600'}`}
+                      onClick={() => playVerseWithRepeat(verseNumber)}
+                      title="Vers abspielen"
+                    >
+                      {playingVerse === verseNumber ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                    </Button>
+                    {playingVerse === verseNumber && (
+                      <span className="text-xs text-teal-600 font-medium">
+                        {currentRepeat}/{verseRepeatCount}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -541,6 +610,34 @@ export default function SurahReader() {
 
       {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
+      {/* Repeat Count Dialog */}
+      {showRepeatDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowRepeatDialog(false)}>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Wiederholungen pro Vers</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Wählen Sie, wie oft jeder Vers wiederholt werden soll
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {[1, 2, 3, 5, 7, 10].map((count) => (
+                <Button
+                  key={count}
+                  variant={verseRepeatCount === count ? "default" : "outline"}
+                  className={verseRepeatCount === count ? "bg-teal-600 hover:bg-teal-700" : ""}
+                  onClick={() => {
+                    setVerseRepeatCount(count);
+                    setShowRepeatDialog(false);
+                    toast.success(`Wiederholung auf ${count}x gesetzt`);
+                  }}
+                >
+                  {count}x
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

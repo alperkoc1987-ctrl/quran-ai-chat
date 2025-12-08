@@ -285,3 +285,32 @@
 - [x] Add green glow effect when aligned with Qibla
 - [x] Add vibration feedback when aligned
 - [ ] Test all fixes on Vercel deployment
+
+# Critical Bugs - December 8, 2025 (Morning) - Round 3
+
+- [x] Fix prayer times dialog buttons - changed to white text on dark background (bg-slate-700/50)
+- [x] Fix Qibla compass - Kaaba now FIXED at Qibla direction, only needle rotates with device
+- [x] Fix Qibla compass alignment detection - green glow when needle points to Kaaba
+- [x] Switch KI-Chat from OpenAI to Google Gemini (user needs to add API key)
+- [ ] Test all fixes in local browser before deployment
+
+# New Feature - Verse Audio Player - December 8, 2025
+
+- [x] Add play button icon to each verse card (next to heart/bookmark/share icons)
+- [x] Create repeat count selector dialog (1x, 2x, 3x, 5x, 7x, 10x)
+- [x] Implement single verse playback (not entire Surah)
+- [x] Add repeat functionality - play verse N times before stopping
+- [x] Show playing indicator on active verse with count (e.g., "2/5")
+- [x] Add repeat count button in header ("Wiederholung: 1x")
+- [ ] Test with different repeat counts
+
+# Switch to Google Gemini API - December 8, 2025
+
+- [x] Replace OpenAI with Google Gemini in chat backend
+- [x] Update chat.ts to use @google/generative-ai SDK
+- [x] Install @google/generative-ai package
+- [x] Convert OpenAI message format to Gemini format
+- [x] Use Gemini 2.0 Flash Exp model (fast & cheap)
+- [x] Update error handling for Gemini API
+- [ ] User needs to add GEMINI_API_KEY via webdev_request_secrets
+- [ ] Test chat with Gemini after API key is added

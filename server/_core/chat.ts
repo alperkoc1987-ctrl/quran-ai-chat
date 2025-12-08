@@ -1,23 +1,20 @@
 /**
  * chat.ts
- * Express endpoint for handling chat requests with OpenAI API
+ * Express endpoint for handling chat requests with Google Gemini API
  */
 
 import { Request, Response } from "express";
-import OpenAI from "openai";
-import { ENV } from "./env";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Try to use OpenAI API key from environment, fallback to Manus Forge API
-const apiKey = process.env.OPENAI_API_KEY || ENV.forgeApiKey;
-const baseURL = process.env.OPENAI_API_KEY 
-  ? (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1")
-  : ENV.forgeApiUrl;
+// Use Gemini API key from environment
+const apiKey = process.env.GEMINI_API_KEY || "";
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey,
-  baseURL,
-});
+if (!apiKey) {
+  console.warn("⚠️  GEMINI_API_KEY not set - chat will not work!");
+}
+
+// Initialize Gemini client
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function handleChatRequest(req: Request, res: Response) {
   try {
@@ -41,40 +38,77 @@ export async function handleChatRequest(req: Request, res: Response) {
 
     console.log(`Chat request with ${chatMessages.length} messages`);
 
-    // Add system prompt for concise but complete answers
-    const messagesWithSystem = [
-      {
-        role: "system",
-        content: "Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage."
-      },
-      ...chatMessages
-    ];
+    // Convert OpenAI-style messages to Gemini format
+    const systemPrompt = "Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage.";
+    
+    // Gemini expects alternating user/model messages
+    const geminiMessages = chatMessages
+      .filter((msg: any) => msg.role !== 'system')
+      .map((msg: any) => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }]
+      }));
 
-    // Call OpenAI API with GPT-4o-mini (94% cheaper than GPT-4o)
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: messagesWithSystem as any,
-      max_tokens: 800,
-      temperature: 0.7,
+    // Add system prompt to first user message
+    if (geminiMessages.length > 0 && geminiMessages[0].role === 'user') {
+      geminiMessages[0].parts[0].text = `${systemPrompt}\n\n${geminiMessages[0].parts[0].text}`;
+    }
+
+    // Use Gemini 2.0 Flash (fast and cost-effective)
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.0-flash-exp",
+      generationConfig: {
+        maxOutputTokens: 800,
+        temperature: 0.7,
+      }
     });
 
-    console.log("OpenAI response received successfully");
+    // Start chat session
+    const chat = model.startChat({
+      history: geminiMessages.slice(0, -1), // All messages except the last one
+    });
 
-    // Return response in format expected by frontend
-    return res.json(completion);
+    // Send the last message
+    const lastMessage = geminiMessages[geminiMessages.length - 1];
+    const result = await chat.sendMessage(lastMessage.parts[0].text);
+    const response = result.response;
+    const text = response.text();
+
+    console.log("Gemini response received successfully");
+
+    // Return response in OpenAI-compatible format for frontend
+    return res.json({
+      id: `chatcmpl-${Date.now()}`,
+      object: "chat.completion",
+      created: Math.floor(Date.now() / 1000),
+      model: "gemini-2.0-flash-exp",
+      choices: [{
+        index: 0,
+        message: {
+          role: "assistant",
+          content: text,
+        },
+        finish_reason: "stop",
+      }],
+      usage: {
+        prompt_tokens: 0, // Gemini doesn't provide token counts in the same way
+        completion_tokens: 0,
+        total_tokens: 0,
+      },
+    });
   } catch (error: any) {
     console.error("Chat API error:", error);
-    console.error("Error details:", error.response?.data || error.message);
+    console.error("Error details:", error.message || error);
     
     // User-friendly error message
     let userMessage = "Es gab ein Problem bei der Verarbeitung Ihrer Anfrage.";
     
-    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+    if (error.message?.includes('API key')) {
+      userMessage = "API-Schlüssel fehlt oder ist ungültig. Bitte fügen Sie einen gültigen Gemini API-Schlüssel hinzu.";
+    } else if (error.message?.includes('quota') || error.message?.includes('limit')) {
+      userMessage = "API-Limit erreicht. Bitte versuchen Sie es später erneut.";
+    } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
       userMessage = "Die Verbindung zum KI-Service konnte nicht hergestellt werden.";
-    } else if (error.response?.status === 401) {
-      userMessage = "API-Authentifizierung fehlgeschlagen.";
-    } else if (error.response?.status === 429) {
-      userMessage = "Zu viele Anfragen. Bitte versuchen Sie es in ein paar Minuten erneut.";
     }
     
     return res.status(500).json({
