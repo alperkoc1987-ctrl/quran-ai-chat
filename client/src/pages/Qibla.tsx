@@ -96,22 +96,28 @@ export default function Qibla() {
           setCurrentHeading(event.alpha);
           // Smooth the compass rotation using exponential moving average
           setSmoothedHeading(prev => {
-            const alpha = 0.15; // Smoothing factor
+            const alpha = 0.2; // Smoothing factor (increased for better responsiveness)
             let newHeading = event.alpha!;
-            let diff = newHeading - prev;
+            
+            // Normalize both values to 0-360
+            newHeading = ((newHeading % 360) + 360) % 360;
+            let prevNormalized = ((prev % 360) + 360) % 360;
+            
+            // Calculate shortest angular distance
+            let diff = newHeading - prevNormalized;
             
             // Handle 360° wrap-around (shortest path)
             if (diff > 180) diff -= 360;
             if (diff < -180) diff += 360;
             
             // Dead zone: ignore very small changes to prevent jitter
-            if (Math.abs(diff) < 1.5) return prev;
+            if (Math.abs(diff) < 2) return prevNormalized;
             
             // Apply smoothing
-            let result = prev + alpha * diff;
-            // Normalize to 0-360 range
-            if (result < 0) result += 360;
-            if (result >= 360) result -= 360;
+            let result = prevNormalized + alpha * diff;
+            
+            // Normalize result to 0-360 range
+            result = ((result % 360) + 360) % 360;
             
             return result;
           });
@@ -161,6 +167,20 @@ export default function Qibla() {
 
   // Apply magnetic declination correction to convert magnetic north to true north
   const correctedHeading = (smoothedHeading + magneticDeclination + 360) % 360;
+  
+  // DEBUG LOGGING
+  useEffect(() => {
+    if (qiblaDirection !== null && userLocation) {
+      console.log('=== QIBLA COMPASS DEBUG ===');
+      console.log('User Location:', userLocation);
+      console.log('Qibla Direction (true north):', qiblaDirection.toFixed(1), '°');
+      console.log('Raw Compass Heading (magnetic):', smoothedHeading.toFixed(1), '°');
+      console.log('Magnetic Declination:', magneticDeclination.toFixed(1), '°');
+      console.log('Corrected Heading (true north):', correctedHeading.toFixed(1), '°');
+      console.log('Needle Rotation:', (qiblaDirection - correctedHeading).toFixed(1), '°');
+      console.log('========================');
+    }
+  }, [smoothedHeading, qiblaDirection, magneticDeclination, correctedHeading, userLocation]);
   
   // Check if needle is pointing up (to Kaaba)
   // Needle rotation: qiblaDirection - correctedHeading
