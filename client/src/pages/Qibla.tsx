@@ -244,9 +244,12 @@ export default function Qibla() {
                     </div>
                   </div>
 
-                  {/* Kaaba Icon */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center">
-                    <div className="text-3xl" style={{ transform: `rotate(${-relativeDirection}deg)` }}>🕋</div>
+                  {/* Kaaba Icon - Fixed at Qibla direction on compass edge */}
+                  <div 
+                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
+                    style={{ transform: `rotate(${relativeDirection}deg)`, transformOrigin: 'center calc(50vh - 8rem)' }}
+                  >
+                    <div className="text-4xl" style={{ transform: `rotate(${-relativeDirection}deg)` }}>🕋</div>
                   </div>
                 </div>
               </div>
