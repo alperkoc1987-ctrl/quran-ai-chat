@@ -163,7 +163,7 @@ export default function PrayerTimes() {
         }
       }
     }
-  }, [prayerTimes, currentTime]);
+  }, [prayerTimes, currentTime, timeAdjustments]);
 
   // Load saved location preference on mount
   useEffect(() => {
@@ -179,9 +179,17 @@ export default function PrayerTimes() {
       const lon = parseFloat(savedLon);
       setCurrentLocation({ lat, lon });
       fetchPrayerTimes(lat, lon, savedCity, savedCountry || '');
-    } else {
+    } else if (savedMode === 'auto' && savedLat && savedLon) {
+      // Load previously saved auto location
       setLocationMode('auto');
-      requestLocation();
+      const lat = parseFloat(savedLat);
+      const lon = parseFloat(savedLon);
+      setCurrentLocation({ lat, lon });
+      fetchPrayerTimes(lat, lon, savedCity || undefined, savedCountry || undefined);
+    } else {
+      // Don't auto-request, wait for user to click Automatisch button
+      setLocationMode('auto');
+      setLoading(false);
     }
   }, []);
 
@@ -270,6 +278,7 @@ export default function PrayerTimes() {
     if (!navigator.geolocation) {
       setError("Geolocation wird von Ihrem Browser nicht unterstützt");
       toast.error("Geolocation nicht unterstützt");
+      setLoading(false);
       return;
     }
 
@@ -279,6 +288,8 @@ export default function PrayerTimes() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         localStorage.setItem('prayerLocationMode', 'auto');
+        localStorage.setItem('prayerLat', lat.toString());
+        localStorage.setItem('prayerLon', lon.toString());
         fetchPrayerTimes(lat, lon);
         toast.success("Standort erfolgreich erkannt");
       },
@@ -301,6 +312,10 @@ export default function PrayerTimes() {
             setError("Ein unbekannter Fehler ist aufgetreten.");
             toast.error("Fehler beim Standortzugriff");
         }
+      },
+      {
+        timeout: 10000,
+        enableHighAccuracy: true
       }
     );
   };

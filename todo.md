@@ -235,3 +235,20 @@
 - [x] Apply adjustments to displayed prayer times
 - [x] Show indicator when time is adjusted (e.g., "+10 min")
 - [x] Reset option to restore original times
+
+# Bug Fixes - Loading Issues
+
+- [ ] Debug prayer times infinite loading
+- [ ] Debug Qibla infinite loading
+- [ ] Check geolocation API errors
+- [ ] Check prayer times API endpoint
+- [ ] Add error handling and user feedback
+
+# Location Permission Fix - December 8, 2025
+
+- [x] Fix: Don't auto-request geolocation on page load
+- [x] Wait for user to click "Automatisch" button before requesting location
+- [x] Save lat/lon to localStorage for future visits
+- [x] Show proper error messages when permission denied
+- [x] Qibla page already works correctly (no auto-load)
+- [ ] Test on Vercel deployment
