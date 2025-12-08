@@ -42,6 +42,63 @@ export default function PrayerTimes() {
   const [currentPrayer, setCurrentPrayer] = useState<string | null>(null);
   const [nextPrayer, setNextPrayer] = useState<string | null>(null);
   const [timeUntilNext, setTimeUntilNext] = useState<string>("");
+  const [showTimeAdjustDialog, setShowTimeAdjustDialog] = useState(false);
+  const [selectedPrayerForAdjust, setSelectedPrayerForAdjust] = useState<string | null>(null);
+  const [timeAdjustments, setTimeAdjustments] = useState<Record<string, number>>({});
+
+  // Load time adjustments from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('prayerTimeAdjustments');
+    if (stored) {
+      try {
+        setTimeAdjustments(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to load prayer time adjustments:', e);
+      }
+    }
+  }, []);
+
+  // Apply time adjustment to a prayer time
+  const applyTimeAdjustment = (timeStr: string, adjustmentMinutes: number): string => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    let totalMinutes = hours * 60 + minutes + adjustmentMinutes;
+    
+    // Handle day wrap-around
+    if (totalMinutes < 0) totalMinutes += 24 * 60;
+    if (totalMinutes >= 24 * 60) totalMinutes -= 24 * 60;
+    
+    const newHours = Math.floor(totalMinutes / 60);
+    const newMinutes = totalMinutes % 60;
+    
+    return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+  };
+
+  // Get adjusted prayer time
+  const getAdjustedTime = (prayerName: string): string => {
+    if (!prayerTimes) return '';
+    const originalTime = prayerTimes[prayerName as keyof PrayerTimesData];
+    const adjustment = timeAdjustments[prayerName] || 0;
+    return adjustment !== 0 ? applyTimeAdjustment(originalTime, adjustment) : originalTime;
+  };
+
+  // Save time adjustment
+  const saveTimeAdjustment = (prayerName: string, minutes: number) => {
+    const newAdjustments = { ...timeAdjustments, [prayerName]: minutes };
+    setTimeAdjustments(newAdjustments);
+    localStorage.setItem('prayerTimeAdjustments', JSON.stringify(newAdjustments));
+    setShowTimeAdjustDialog(false);
+    setSelectedPrayerForAdjust(null);
+  };
+
+  // Reset time adjustment
+  const resetTimeAdjustment = (prayerName: string) => {
+    const newAdjustments = { ...timeAdjustments };
+    delete newAdjustments[prayerName];
+    setTimeAdjustments(newAdjustments);
+    localStorage.setItem('prayerTimeAdjustments', JSON.stringify(newAdjustments));
+    setShowTimeAdjustDialog(false);
+    setSelectedPrayerForAdjust(null);
+  };
 
   // Update current time every second
   useEffect(() => {
@@ -60,7 +117,8 @@ export default function PrayerTimes() {
 
     const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     const prayerMinutes = prayerOrder.map(prayer => {
-      const [hours, minutes] = prayerTimes[prayer as keyof PrayerTimesData].split(':').map(Number);
+      const adjustedTime = getAdjustedTime(prayer);
+      const [hours, minutes] = adjustedTime.split(':').map(Number);
       return { name: prayer, minutes: hours * 60 + minutes };
     });
 
@@ -440,7 +498,7 @@ export default function PrayerTimes() {
                     <div className="flex items-center gap-2 mb-1">
                       <Clock className="w-5 h-5 text-teal-600" />
                       <span className="text-3xl font-bold text-teal-600">
-                        {prayerTimes[nextPrayer as keyof PrayerTimesData]}
+                        {getAdjustedTime(nextPrayer)}
                       </span>
                     </div>
                     <p className="text-sm text-teal-600 font-medium">in {timeUntilNext}</p>
@@ -483,14 +541,32 @@ export default function PrayerTimes() {
                         </div>
                       </div>
 
-                      {/* Prayer Time */}
-                      <div className="text-right">
-                        <div className={`text-2xl font-bold ${isCurrent ? 'text-teal-600' : themeConfig.colors.text}`}>
-                          {prayerTimes[prayer.name as keyof PrayerTimesData]}
+                      {/* Prayer Time & Edit Button */}
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <div className={`text-2xl font-bold ${isCurrent ? 'text-teal-600' : themeConfig.colors.text}`}>
+                            {getAdjustedTime(prayer.name)}
+                          </div>
+                          {isCurrent && (
+                            <span className="text-xs text-teal-600 font-medium">Aktuell</span>
+                          )}
+                          {timeAdjustments[prayer.name] && (
+                            <span className="text-xs text-amber-600 font-medium">
+                              {timeAdjustments[prayer.name] > 0 ? '+' : ''}{timeAdjustments[prayer.name]} min
+                            </span>
+                          )}
                         </div>
-                        {isCurrent && (
-                          <span className="text-xs text-teal-600 font-medium">Aktuell</span>
-                        )}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setSelectedPrayerForAdjust(prayer.name);
+                            setShowTimeAdjustDialog(true);
+                          }}
+                          className="h-8 w-8 text-slate-600 hover:text-teal-600"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   </Card>
@@ -579,6 +655,61 @@ export default function PrayerTimes() {
                   </button>
                 ))}
               </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Time Adjustment Dialog */}
+      <Dialog open={showTimeAdjustDialog} onOpenChange={setShowTimeAdjustDialog}>
+        <DialogContent className={themeConfig.colors.card}>
+          <DialogHeader>
+            <DialogTitle className={themeConfig.colors.text}>Gebetszeit anpassen</DialogTitle>
+            <DialogDescription className={themeConfig.colors.textSecondary}>
+              {selectedPrayerForAdjust && `Passen Sie die Zeit für ${prayers.find(p => p.name === selectedPrayerForAdjust)?.label} an`}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Current Adjustment */}
+            {selectedPrayerForAdjust && (
+              <div className="text-center p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                <p className={`text-sm ${themeConfig.colors.textSecondary} mb-1`}>Aktuelle Zeit</p>
+                <p className="text-3xl font-bold text-teal-600">
+                  {getAdjustedTime(selectedPrayerForAdjust)}
+                </p>
+                {timeAdjustments[selectedPrayerForAdjust] && (
+                  <p className="text-xs text-amber-600 mt-1">
+                    Original: {prayerTimes![selectedPrayerForAdjust as keyof PrayerTimesData]} 
+                    ({timeAdjustments[selectedPrayerForAdjust] > 0 ? '+' : ''}{timeAdjustments[selectedPrayerForAdjust]} min)
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Adjustment Buttons */}
+            <div className="grid grid-cols-2 gap-2">
+              {[-30, -15, -10, -5, 5, 10, 15, 30].map((minutes) => (
+                <Button
+                  key={minutes}
+                  variant="outline"
+                  onClick={() => selectedPrayerForAdjust && saveTimeAdjustment(selectedPrayerForAdjust, minutes)}
+                  className="h-12"
+                >
+                  {minutes > 0 ? '+' : ''}{minutes} min
+                </Button>
+              ))}
+            </div>
+
+            {/* Reset Button */}
+            {selectedPrayerForAdjust && timeAdjustments[selectedPrayerForAdjust] && (
+              <Button
+                variant="destructive"
+                onClick={() => resetTimeAdjustment(selectedPrayerForAdjust)}
+                className="w-full"
+              >
+                Auf Original zurücksetzen
+              </Button>
             )}
           </div>
         </DialogContent>

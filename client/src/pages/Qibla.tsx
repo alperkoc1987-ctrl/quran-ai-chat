@@ -255,25 +255,22 @@ export default function Qibla() {
                   {/* Top Notch Marker */}
                   <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-4 bg-teal-400 rounded-full"></div>
                   
-                  {/* Compass Ring - Rotates based on device heading */}
+                  {/* Kaaba Icon - Fixed at Qibla direction */}
                   <div 
-                    className="absolute inset-0 transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
+                    className="absolute left-1/2 -translate-x-1/2"
+                    style={{ 
+                      transform: `rotate(${qiblaDirection}deg) translateY(-50%)`,
+                      top: '0'
+                    }}
                   >
-                    {/* Kaaba Icon at calculated Qibla direction */}
-                    <div 
-                      className="absolute left-1/2 -translate-x-1/2"
-                      style={{ 
-                        transform: `rotate(${qiblaDirection}deg) translateY(-50%)`,
-                        top: '0'
-                      }}
-                    >
-                      <div className="text-4xl -rotate-90">🕋</div>
-                    </div>
+                    <div className="text-4xl -rotate-90">🕋</div>
                   </div>
 
-                  {/* Device Direction Arrow - Fixed pointing up */}
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Device Direction Arrow - Rotates with device heading */}
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
+                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
+                  >
                     <div className="relative">
                       <div className="w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[100px] border-b-white drop-shadow-lg"></div>
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 w-3 h-3 bg-teal-400 rounded-full"></div>
@@ -315,8 +312,9 @@ export default function Qibla() {
               <h3 className="font-semibold text-teal-300 mb-2">Anleitung:</h3>
               <ul className="text-sm text-teal-200 space-y-1 list-disc list-inside">
                 <li>Halten Sie Ihr Gerät flach (parallel zum Boden)</li>
-                <li>Der grüne Pfeil zeigt zur Kaaba 🕋 in Mekka</li>
-                <li>Drehen Sie sich, bis der Pfeil nach oben zeigt</li>
+                <li>Der weiße Pfeil zeigt immer nach Norden</li>
+                <li>Die Kaaba 🕋 zeigt die Qibla-Richtung</li>
+                <li>Drehen Sie sich, bis die Kaaba oben am Pfeil ist</li>
                 <li>Kalibrieren Sie Ihren Kompass bei Bedarf in den Geräteeinstellungen</li>
               </ul>
             </Card>

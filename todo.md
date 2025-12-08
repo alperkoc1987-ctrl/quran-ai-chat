@@ -220,3 +220,18 @@
 - [x] Fix reading time tracking (currently shows "0m")
 - [x] Ensure minutes are correctly calculated and displayed
 - [x] Test reading time tracking with actual reading sessions
+
+# Qibla Compass Fix
+
+- [x] Fix compass: Arrow should rotate, not Kaaba
+- [x] Arrow always points north (rotates with device)
+- [x] Kaaba stays fixed at Qibla direction
+
+# Prayer Time Adjustment Feature
+
+- [x] Add settings/edit button for each prayer time
+- [x] Create time adjustment dialog (±5, ±10, ±15, ±30 minutes)
+- [x] Store adjustments in localStorage per prayer
+- [x] Apply adjustments to displayed prayer times
+- [x] Show indicator when time is adjusted (e.g., "+10 min")
+- [x] Reset option to restore original times
