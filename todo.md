@@ -336,3 +336,11 @@
 - [ ] When device faces Qibla, needle should point UP (to Kaaba)
 - [ ] Currently: green glow works, but needle points wrong direction
 - [ ] Fix: Needle rotation should be relative to Qibla, not north
+
+# CRITICAL BUG - Qibla Calculation Wrong - December 8, 2025 (11:11)
+
+- [x] Qibla direction calculation was WRONG (magnetic vs true north)
+- [x] Compared with other Quran app - found magnetic declination issue
+- [x] Added geomagnetism library for magnetic declination correction
+- [x] Applied correction: correctedHeading = smoothedHeading + magneticDeclination
+- [x] Needle now points correctly when device faces Qibla

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, Compass as CompassIcon, MapPin, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import geomagnetism from "geomagnetism";
 
 export default function Qibla() {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,7 @@ export default function Qibla() {
   const [isAligned, setIsAligned] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [compassPermissionNeeded, setCompassPermissionNeeded] = useState(false);
+  const [magneticDeclination, setMagneticDeclination] = useState<number>(0);
 
   // Kaaba coordinates
   const KAABA_LAT = 21.4225;
@@ -52,6 +54,17 @@ export default function Qibla() {
         
         setUserLocation({ lat, lng });
         setLocationGranted(true);
+        
+        // Calculate magnetic declination for this location
+        try {
+          const model = geomagnetism.model();
+          const info = model.point([lat, lng]);
+          setMagneticDeclination(info.decl); // Magnetic declination in degrees
+          console.log('Magnetic Declination:', info.decl, 'degrees');
+        } catch (err) {
+          console.error('Failed to calculate magnetic declination:', err);
+          setMagneticDeclination(0); // Fallback to no correction
+        }
         
         const direction = calculateQiblaDirection(lat, lng);
         setQiblaDirection(direction);
@@ -146,10 +159,13 @@ export default function Qibla() {
     }
   }, [locationGranted]);
 
+  // Apply magnetic declination correction to convert magnetic north to true north
+  const correctedHeading = (smoothedHeading + magneticDeclination + 360) % 360;
+  
   // Check if needle is pointing up (to Kaaba)
-  // Needle rotation: qiblaDirection - smoothedHeading
+  // Needle rotation: qiblaDirection - correctedHeading
   // When this equals 0, needle points straight up = aligned
-  const needleAngle = qiblaDirection !== null ? ((qiblaDirection - smoothedHeading + 360) % 360) : 0;
+  const needleAngle = qiblaDirection !== null ? ((qiblaDirection - correctedHeading + 360) % 360) : 0;
   // Normalize to -180 to 180 range
   const normalizedAngle = needleAngle > 180 ? needleAngle - 360 : needleAngle;
   const headingDiff = Math.abs(normalizedAngle);
@@ -277,7 +293,7 @@ export default function Qibla() {
                   {/* White Compass Needle - Points toward Qibla direction */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${qiblaDirection !== null ? qiblaDirection - smoothedHeading : 0}deg)` }}
+                    style={{ transform: `rotate(${qiblaDirection !== null ? qiblaDirection - correctedHeading : 0}deg)` }}
                   >
                     <div className="relative">
                       {/* Needle pointing up */}
