@@ -11,6 +11,7 @@ export default function Qibla() {
   const [currentHeading, setCurrentHeading] = useState<number>(0);
   const [smoothedHeading, setSmoothedHeading] = useState<number>(0);
   const [locationGranted, setLocationGranted] = useState(false);
+  const [isAligned, setIsAligned] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [compassPermissionNeeded, setCompassPermissionNeeded] = useState(false);
 
@@ -82,11 +83,15 @@ export default function Qibla() {
           setCurrentHeading(event.alpha);
           // Smooth the compass rotation using exponential moving average
           setSmoothedHeading(prev => {
-            const alpha = 0.15; // Smoothing factor (lower = smoother)
+            const alpha = 0.08; // Lower smoothing factor for more stability
             let diff = event.alpha! - prev;
             // Handle 360° wrap-around
             if (diff > 180) diff -= 360;
             if (diff < -180) diff += 360;
+            
+            // Dead zone: ignore very small changes to prevent jitter
+            if (Math.abs(diff) < 2) return prev;
+            
             return (prev + alpha * diff + 360) % 360;
           });
         }
@@ -134,6 +139,23 @@ export default function Qibla() {
   }, [locationGranted]);
 
   const relativeDirection = qiblaDirection !== null ? (qiblaDirection - smoothedHeading + 360) % 360 : 0;
+
+  // Vibration feedback when aligned with Qibla
+  useEffect(() => {
+    if (qiblaDirection === null) return;
+
+    // Check if arrow is pointing toward Qibla (±5° tolerance)
+    const isNowAligned = Math.abs(relativeDirection) < 5 || Math.abs(relativeDirection - 360) < 5;
+    
+    // Vibrate when becoming aligned (not continuously)
+    if (isNowAligned && !isAligned) {
+      if ('vibrate' in navigator) {
+        navigator.vibrate(200); // Short vibration pulse
+      }
+    }
+    
+    setIsAligned(isNowAligned);
+  }, [relativeDirection, qiblaDirection, isAligned]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950">
@@ -227,7 +249,9 @@ export default function Qibla() {
             <Card className="p-8 bg-slate-800/50 border-slate-700">
               <div className="relative w-full max-w-sm mx-auto aspect-square">
                 {/* Compass Circle */}
-                <div className="absolute inset-0 rounded-full border-4 border-slate-600 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 shadow-2xl">
+                <div className={`absolute inset-0 rounded-full border-4 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 shadow-2xl transition-all duration-300 ${
+                  isAligned ? 'border-teal-500 shadow-teal-500/50' : 'border-slate-600'
+                }`}>
                   {/* Cardinal Directions */}
                   <div className="absolute top-4 left-1/2 -translate-x-1/2 text-sm font-bold text-teal-400">N</div>
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm font-bold text-slate-400">S</div>
