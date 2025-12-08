@@ -29,6 +29,8 @@ export function useChat() {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dailyRemaining, setDailyRemaining] = useState<number>(10);
+  const [minuteRemaining, setMinuteRemaining] = useState<number>(5);
 
   const sendMessage = useCallback(
     async (userInput: string) => {
@@ -74,6 +76,7 @@ export function useChat() {
 
         // Send to backend with full conversation history and function definitions
         const response = await sendChatRequest({
+          apiKey: apiKey || undefined,
           messages: conversationHistory,
           language: "de",
           translationEdition: "de.bubenheim",
@@ -114,6 +117,14 @@ export function useChat() {
           };
           
           setMessages((prev) => [...prev, aiMessage]);
+        
+        // Update rate limit info from response if available
+        if (response.dailyRemaining !== undefined) {
+          setDailyRemaining(response.dailyRemaining);
+        }
+        if (response.minuteRemaining !== undefined) {
+          setMinuteRemaining(response.minuteRemaining);
+        }
           return;
         }
 
@@ -127,14 +138,36 @@ export function useChat() {
         };
 
         setMessages((prev) => [...prev, aiMessage]);
-      } catch (err) {
+        
+        // Update rate limit info from response if available
+        if (response.dailyRemaining !== undefined) {
+          setDailyRemaining(response.dailyRemaining);
+        }
+        if (response.minuteRemaining !== undefined) {
+          setMinuteRemaining(response.minuteRemaining);
+        }
+      } catch (err: any) {
         let errorMessage = "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
         let displayMessage = "Entschuldigung, es gab ein technisches Problem.";
 
         if (err instanceof Error) {
           errorMessage = err.message;
-          // ALWAYS display the full error message from the backend for debugging
-          displayMessage = `❌ FEHLER:\n\n${errorMessage}\n\n(Dies ist eine Debug-Nachricht. Bitte schicken Sie diesen Text an den Entwickler!)`;
+          
+          // Check if it's a rate limit error (429)
+          if (err.message.includes('429') || err.message.includes('Tageslimit') || err.message.includes('Zu viele Nachrichten')) {
+            displayMessage = `⏱️ ${errorMessage}`;
+            
+            // Update rate limit counters if available in error
+            if ((err as any).dailyRemaining !== undefined) {
+              setDailyRemaining((err as any).dailyRemaining);
+            }
+            if ((err as any).minuteRemaining !== undefined) {
+              setMinuteRemaining((err as any).minuteRemaining);
+            }
+          } else {
+            // ALWAYS display the full error message from the backend for debugging
+            displayMessage = `❌ FEHLER:\n\n${errorMessage}\n\n(Dies ist eine Debug-Nachricht. Bitte schicken Sie diesen Text an den Entwickler!)`;
+          }
         }
 
         setError(errorMessage);
@@ -174,5 +207,7 @@ export function useChat() {
     error,
     sendMessage,
     clearMessages,
+    dailyRemaining,
+    minuteRemaining,
   };
 }

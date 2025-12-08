@@ -52,6 +52,7 @@ export interface SourceReference {
 }
 
 export interface ChatRequest {
+  apiKey?: string;
   userQuery?: string;
   messages?: Array<{ role: string; content: string; name?: string }>;
   language: string;
@@ -67,6 +68,8 @@ export interface ChatResponse {
     name: string;
     arguments: string;
   };
+  dailyRemaining?: number;
+  minuteRemaining?: number;
 }
 
 export interface ChatMessage {

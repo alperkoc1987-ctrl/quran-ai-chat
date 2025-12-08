@@ -6,8 +6,8 @@
 import { ChatMessage, SourceType, SourceReference } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Quote, X, Volume2, StopCircle, ExternalLink, Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { BookOpen, Quote, X, ExternalLink } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
@@ -40,74 +40,7 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
   const { themeConfig } = useReadingTheme();
   const isUser = message.isUser;
   const [selectedSource, setSelectedSource] = useState<SourceReference | null>(null);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isLoadingTTS, setIsLoadingTTS] = useState(false);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const [, setLocation] = useLocation();
-
-  // Handle speech synthesis with OpenAI TTS
-  const handleSpeak = async () => {
-    if (isSpeaking && audioElement) {
-      audioElement.pause();
-      audioElement.currentTime = 0;
-      setIsSpeaking(false);
-      setAudioElement(null);
-    } else {
-      try {
-        setIsLoadingTTS(true);
-        setIsSpeaking(true);
-        
-        // Call backend TTS API
-        const response = await fetch("/api/tts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text: message.text }),
-        });
-
-        if (!response.ok) {
-          throw new Error("TTS generation failed");
-        }
-
-        // Create audio from response
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        
-        audio.onended = () => {
-          setIsSpeaking(false);
-          setAudioElement(null);
-          URL.revokeObjectURL(audioUrl);
-        };
-
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          setAudioElement(null);
-          URL.revokeObjectURL(audioUrl);
-        };
-
-        setAudioElement(audio);
-        await audio.play();
-        setIsLoadingTTS(false);
-      } catch (error) {
-        console.error("TTS error:", error);
-        setIsSpeaking(false);
-        setIsLoadingTTS(false);
-        setAudioElement(null);
-      }
-    }
-  };
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0;
-      }
-    };
-  }, [audioElement]);
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
@@ -121,53 +54,6 @@ export function MessageBubble({ message, onOpenSurah }: MessageBubbleProps) {
           }`}
         >
           <p className="text-sm md:text-base leading-relaxed">{message.text}</p>
-          
-          {/* TTS Button (only for AI messages) */}
-          {!isUser && (
-            <div className="absolute -right-10 top-0 opacity-0 group-hover:opacity-100 transition-opacity md:block hidden">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleSpeak}
-                disabled={isLoadingTTS}
-                className="h-8 w-8 text-gray-500 hover:text-teal-600 disabled:opacity-50"
-                title={isLoadingTTS ? "Wird geladen..." : isSpeaking ? "Vorlesen stoppen" : "Vorlesen"}
-              >
-                {isLoadingTTS ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : isSpeaking ? (
-                  <StopCircle className="w-5 h-5" />
-                ) : (
-                  <Volume2 className="w-5 h-5" />
-                )}
-              </Button>
-            </div>
-          )}
-          
-          {/* Mobile TTS Button (always visible on mobile inside bubble) */}
-          {!isUser && (
-            <div className="md:hidden mt-2 flex justify-end border-t border-gray-200 pt-2">
-               <button
-                onClick={handleSpeak}
-                disabled={isLoadingTTS}
-                className="flex items-center gap-1 text-xs text-gray-500 hover:text-teal-600 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoadingTTS ? (
-                  <>
-                    <Loader2 className="w-3 h-3 animate-spin" /> Lädt...
-                  </>
-                ) : isSpeaking ? (
-                  <>
-                    <StopCircle className="w-3 h-3" /> Stopp
-                  </>
-                ) : (
-                  <>
-                    <Volume2 className="w-3 h-3" /> Vorlesen
-                  </>
-                )}
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Sources display (only for AI responses) */}

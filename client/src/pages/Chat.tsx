@@ -11,7 +11,7 @@ import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 export default function Chat() {
   const { themeConfig } = useReadingTheme();
   const [inputValue, setInputValue] = useState("");
-  const { messages, isLoading, sendMessage, clearMessages } = useChat();
+  const { messages, isLoading, sendMessage, clearMessages, dailyRemaining, minuteRemaining } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -55,6 +55,9 @@ export default function Chat() {
         <div>
           <h1 className={`text-lg font-bold ${themeConfig.colors.text}`}>KI-Chat</h1>
           <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Stellen Sie Fragen zum Koran und Hadith</p>
+          <p className={`text-xs ${themeConfig.colors.textSecondary} mt-1`}>
+            💬 Noch {dailyRemaining} Nachrichten heute
+          </p>
         </div>
         <Button
           variant="ghost"

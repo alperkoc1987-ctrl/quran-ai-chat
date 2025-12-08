@@ -173,7 +173,7 @@
 - [ ] Add migration for rate_limits table
 - [ ] Implement rate limiting middleware (10 msgs/day, 5 msgs/minute)
 - [ ] Add rate limit check in chat API endpoint
-- [ ] Display remaining messages in chat UI
+- [x] Display remaining messages in chat UI
 - [ ] Show friendly error message when limit reached
 - [ ] Test rate limiting with multiple messages
 - [ ] Write vitest tests for rate limiting logic
@@ -189,3 +189,15 @@
 - [ ] Test Qibla accuracy with known direction (user testing required)
 - [ ] Test audio player overlay behavior (user testing required)
 - [ ] Commit and push to GitHub
+
+# Cost Optimization & Rate Limiting
+
+- [x] Remove TTS functionality completely (too expensive)
+- [x] Remove speaker icons from MessageBubble component
+- [x] Remove TTS API endpoint (/api/tts)
+- [x] Remove TTS-related imports and functions
+- [x] Implement rate limiting system (10 messages/day, 5/minute)
+- [x] Create rate limiting database helper functions
+- [x] Add rate limit tracking to chat API endpoint
+- [x] Display remaining messages in chat UI
+- [x] Show friendly error when rate limit reached
