@@ -10,14 +10,12 @@ import { useState, useEffect } from "react";
 import { LayoutGrid } from "lucide-react";
 
 interface WidgetPreferences {
-  showPrayerTimes: boolean;
   showAyatOfTheDay: boolean;
   showResumeReading: boolean;
 }
 
 export function WidgetSettings() {
   const [preferences, setPreferences] = useState<WidgetPreferences>({
-    showPrayerTimes: true,
     showAyatOfTheDay: true,
     showResumeReading: true,
   });
@@ -53,23 +51,6 @@ export function WidgetSettings() {
       </div>
 
       <div className="space-y-4">
-        {/* Prayer Times Widget */}
-        <div className="flex items-center justify-between py-3 border-b border-slate-700/50">
-          <div>
-            <Label htmlFor="prayer-times-widget" className="text-sm font-medium text-white cursor-pointer">
-              Gebetszeiten-Widget
-            </Label>
-            <p className="text-xs text-slate-400 mt-1">
-              Zeigt das nächste Gebet mit Countdown
-            </p>
-          </div>
-          <Switch
-            id="prayer-times-widget"
-            checked={preferences.showPrayerTimes}
-            onCheckedChange={(checked) => updatePreference("showPrayerTimes", checked)}
-          />
-        </div>
-
         {/* Ayat of the Day Widget */}
         <div className="flex items-center justify-between py-3 border-b border-slate-700/50">
           <div>
@@ -111,7 +92,6 @@ export function WidgetSettings() {
 // Hook to use widget preferences in other components
 export function useWidgetPreferences(): WidgetPreferences {
   const [preferences, setPreferences] = useState<WidgetPreferences>({
-    showPrayerTimes: true,
     showAyatOfTheDay: true,
     showResumeReading: true,
   });

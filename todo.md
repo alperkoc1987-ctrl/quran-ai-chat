@@ -160,3 +160,10 @@
 - [x] Add proper error handling and loading states to widget
 - [ ] Test navigation flow: Home → Prayer Times → Back → Home (user testing required)
 - [ ] Commit and push to GitHub
+
+## Widget Removal & Geolocation Fix - December 7, 2025 (Late Evening)
+- [x] Remove PrayerTimesWidget from home page (not working correctly)
+- [x] Remove widget customization settings from Settings page
+- [ ] Fix geolocation permission handling for Qibla and Prayer Times
+- [ ] Test geolocation on mobile devices
+- [ ] Commit and push to GitHub
