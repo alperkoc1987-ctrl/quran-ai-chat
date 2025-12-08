@@ -255,20 +255,29 @@ export default function Qibla() {
                   {/* Top Notch Marker */}
                   <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-4 bg-teal-400 rounded-full"></div>
                   
-                  {/* Qibla Direction Arrow - Rotates to point toward Kaaba */}
+                  {/* Compass Ring - Rotates based on device heading */}
                   <div 
-                    className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${relativeDirection}deg)` }}
+                    className="absolute inset-0 transition-transform duration-300 ease-out"
+                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
                   >
+                    {/* Kaaba Icon at calculated Qibla direction */}
+                    <div 
+                      className="absolute left-1/2 -translate-x-1/2"
+                      style={{ 
+                        transform: `rotate(${qiblaDirection}deg) translateY(-50%)`,
+                        top: '0'
+                      }}
+                    >
+                      <div className="text-4xl -rotate-90">🕋</div>
+                    </div>
+                  </div>
+
+                  {/* Device Direction Arrow - Fixed pointing up */}
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <div className="relative">
                       <div className="w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[100px] border-b-white drop-shadow-lg"></div>
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 w-3 h-3 bg-teal-400 rounded-full"></div>
                     </div>
-                  </div>
-
-                  {/* Kaaba Icon - Fixed at top (Qibla target) */}
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2">
-                    <div className="text-5xl">🕋</div>
                   </div>
                 </div>
               </div>

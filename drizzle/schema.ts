@@ -41,4 +41,25 @@ export const surahBookmarks = mysqlTable("surah_bookmarks", {
 export type SurahBookmark = typeof surahBookmarks.$inferSelect;
 export type InsertSurahBookmark = typeof surahBookmarks.$inferInsert;
 
+/**
+ * Chat rate limits table for tracking message usage
+ * Tracks both daily limits (10 messages/day) and per-minute limits (5 messages/minute)
+ */
+export const chatRateLimits = mysqlTable("chat_rate_limits", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  /** Total messages sent today */
+  dailyCount: int("dailyCount").default(0).notNull(),
+  /** Timestamp when daily counter was last reset */
+  dailyResetAt: timestamp("dailyResetAt").defaultNow().notNull(),
+  /** Messages sent in current minute */
+  minuteCount: int("minuteCount").default(0).notNull(),
+  /** Timestamp when minute counter was last reset */
+  minuteResetAt: timestamp("minuteResetAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ChatRateLimit = typeof chatRateLimits.$inferSelect;
+export type InsertChatRateLimit = typeof chatRateLimits.$inferInsert;
+
 // TODO: Add your tables here

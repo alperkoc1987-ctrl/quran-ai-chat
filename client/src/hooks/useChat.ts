@@ -12,17 +12,17 @@ import { chatFunctionDefinitions, executeChatFunction } from "@/lib/chatFunction
 // Simple local responses for greetings to ensure the bot always answers "Hi"
 const GREETING_KEYWORDS = ["hallo", "hi", "hey", "salam", "selam", "guten morgen", "guten tag", "guten abend"];
 const GREETING_RESPONSES = [
-  "Wa alaikum assalam! Wie kann ich Ihnen heute helfen?",
-  "Hallo! Ich bin hier, um Ihre Fragen zum Islam, Koran und den Hadithen zu beantworten.",
-  "Salam! Schön, dass Sie da sind. Was möchten Sie wissen?",
-  "Herzlich willkommen! Stellen Sie mir gerne eine Frage."
+  "Wa alaikum assalam! Wie kann ich dir heute helfen?",
+  "Hallo! Ich bin hier, um deine Fragen zum Islam, Koran und den Hadithen zu beantworten.",
+  "Salam! Schön, dass du da bist. Was möchtest du wissen?",
+  "Herzlich willkommen! Stell mir gerne eine Frage."
 ];
 
 export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: nanoid(),
-      text: "Assalamu alaikum! Ich bin Ihr KI-Assistent für den Koran und die Hadithe. Wie kann ich Ihnen heute helfen?",
+      text: "As-salamu alaikum! 🌙 Ich bin dein KI-Assistent für den Koran und die Hadithe. Wie kann ich dir heute helfen?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -160,7 +160,7 @@ export function useChat() {
     setMessages([
       {
         id: nanoid(),
-        text: "Assalamu alaikum! Ich bin Ihr KI-Assistent für den Koran und die Hadithe. Wie kann ich Ihnen heute helfen?",
+        text: "As-salamu alaikum! 🌙 Ich bin dein KI-Assistent für den Koran und die Hadithe. Wie kann ich dir heute helfen?",
         isUser: false,
         timestamp: new Date(),
       },

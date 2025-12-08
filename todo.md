@@ -167,3 +167,25 @@
 - [ ] Fix geolocation permission handling for Qibla and Prayer Times
 - [ ] Test geolocation on mobile devices
 - [ ] Commit and push to GitHub
+
+## Rate Limiting for AI Chat - December 7, 2025 (Night)
+- [ ] Create database schema for chat rate limiting (daily + per-minute counters)
+- [ ] Add migration for rate_limits table
+- [ ] Implement rate limiting middleware (10 msgs/day, 5 msgs/minute)
+- [ ] Add rate limit check in chat API endpoint
+- [ ] Display remaining messages in chat UI
+- [ ] Show friendly error message when limit reached
+- [ ] Test rate limiting with multiple messages
+- [ ] Write vitest tests for rate limiting logic
+- [ ] Commit and push to GitHub
+
+## Qibla & Audio Player Bug Fixes - December 7, 2025 (Night)
+- [x] Fix Qibla direction calculation (showing wrong direction)
+- [x] Debug compass rotation logic (arrow vs compass ring)
+- [x] Make audio player overlay auto-dismiss after 2 seconds
+- [x] Ensure audio continues playing when overlay disappears
+- [x] Change chat greeting from "Sie" to "Du" (informal)
+- [x] Add Islamic greeting "As-salamu alaikum" to welcome message
+- [ ] Test Qibla accuracy with known direction (user testing required)
+- [ ] Test audio player overlay behavior (user testing required)
+- [ ] Commit and push to GitHub

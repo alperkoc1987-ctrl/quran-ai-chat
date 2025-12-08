@@ -6,11 +6,27 @@
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import { Music, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export function AudioPlayerOverlay() {
   const { state, stop } = useAudioPlayer();
+  const [isVisible, setIsVisible] = useState(false);
 
-  if (!state.isPlaying || !state.surahName) {
+  // Show overlay when playback starts, hide after 2 seconds
+  useEffect(() => {
+    if (state.isPlaying && state.surahName) {
+      setIsVisible(true);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000); // Auto-dismiss after 2 seconds
+      
+      return () => clearTimeout(timer);
+    } else {
+      setIsVisible(false);
+    }
+  }, [state.isPlaying, state.surahName, state.currentVerseIndex]);
+
+  if (!state.isPlaying || !state.surahName || !isVisible) {
     return null;
   }
 
@@ -39,9 +55,9 @@ export function AudioPlayerOverlay() {
               </p>
             </div>
 
-            {/* Close Button */}
+            {/* Close Button - Only hides overlay, doesn't stop playback */}
             <button
-              onClick={stop}
+              onClick={() => setIsVisible(false)}
               className="w-8 h-8 rounded-full hover:bg-slate-800/50 flex items-center justify-center transition-colors flex-shrink-0"
             >
               <X className="w-5 h-5 text-slate-400 hover:text-white" />
