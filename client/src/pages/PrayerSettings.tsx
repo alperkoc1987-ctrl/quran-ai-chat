@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ArrowLeft, Bell, Clock, Volume2, VolumeX } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ArrowLeft, Bell, Clock, Volume2, VolumeX, Play, Square } from 'lucide-react';
 import { useLocation } from 'wouter';
 import {
   getPrayerSettings,
@@ -36,6 +36,8 @@ export default function PrayerSettings() {
   const [settings, setSettings] = useState<PrayerSettings>(getPrayerSettings());
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
   const [expandedPrayer, setExpandedPrayer] = useState<string | null>(null);
+  const [playingAdhan, setPlayingAdhan] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if ('Notification' in window) {
@@ -220,19 +222,47 @@ export default function PrayerSettings() {
                         <label className="block text-sm font-medium text-slate-300 mb-2">
                           Muezzin-Stimme
                         </label>
-                        <select
-                          value={prayerSettings.adhanVoice || 'mishary'}
-                          onChange={(e) =>
-                            updatePrayerSetting(prayer, 'adhanVoice', e.target.value)
-                          }
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                        >
+                        <div className="space-y-2">
                           {ADHAN_VOICES.map((voice) => (
-                            <option key={voice.value} value={voice.value}>
-                              {voice.label}
-                            </option>
+                            <div
+                              key={voice.value}
+                              className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all cursor-pointer ${
+                                prayerSettings.adhanVoice === voice.value
+                                  ? 'border-emerald-500 bg-emerald-500/10'
+                                  : 'border-slate-600 bg-slate-700/50 hover:border-slate-500'
+                              }`}
+                              onClick={() => updatePrayerSetting(prayer, 'adhanVoice', voice.value)}
+                            >
+                              <span className="text-white font-medium">{voice.label}</span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (playingAdhan === voice.value) {
+                                    audioRef.current?.pause();
+                                    setPlayingAdhan(null);
+                                  } else {
+                                    if (audioRef.current) {
+                                      audioRef.current.pause();
+                                    }
+                                    const audio = new Audio(`/sounds/adhan-${voice.value}.mp3`);
+                                    audio.volume = 0.5;
+                                    audio.play();
+                                    audioRef.current = audio;
+                                    setPlayingAdhan(voice.value);
+                                    audio.onended = () => setPlayingAdhan(null);
+                                  }
+                                }}
+                                className="p-2 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 transition-colors"
+                              >
+                                {playingAdhan === voice.value ? (
+                                  <Square className="w-4 h-4 text-emerald-400" />
+                                ) : (
+                                  <Play className="w-4 h-4 text-emerald-400" />
+                                )}
+                              </button>
+                            </div>
                           ))}
-                        </select>
+                        </div>
                       </div>
                     )}
 
