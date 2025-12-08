@@ -709,7 +709,7 @@ export default function PrayerTimes() {
                   key={minutes}
                   variant="outline"
                   onClick={() => selectedPrayerForAdjust && saveTimeAdjustment(selectedPrayerForAdjust, minutes)}
-                  className="h-12 text-slate-900 dark:text-slate-100 hover:bg-teal-50 dark:hover:bg-teal-900/30 border-slate-300 dark:border-slate-600"
+                  className="h-12 text-white hover:bg-teal-600 hover:text-white border-slate-600 bg-slate-700/50"
                 >
                   {minutes > 0 ? '+' : ''}{minutes} min
                 </Button>

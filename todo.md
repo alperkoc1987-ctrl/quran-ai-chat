@@ -264,3 +264,24 @@
   - [x] Compass needle/arrow rotates (shows device orientation)
   - [x] Add star/sun icon at top of compass ring (north indicator)
   - [x] Match teal color scheme from reference
+
+# Qibla Compass Redesign - December 8, 2025 (Morning)
+
+- [ ] Restore old Qibla compass design (white needle, dark background)
+- [ ] Kaaba icon positioned at edge of compass (rotates to show Qibla direction)
+- [ ] Make Kaaba icon larger and more visible
+- [ ] White compass needle rotates with device (always points north)
+- [ ] Add green glow effect around compass ring when aligned with Qibla (±5 degrees)
+- [ ] Add vibration feedback when aligned with Qibla
+- [ ] Show "Sie sind zur Qibla ausgerichtet" text when aligned
+- [ ] Test alignment detection accuracy
+
+# Critical Bug Fixes - December 8, 2025 (Morning) - Round 2
+
+- [x] Fix prayer times dialog button text colors (gray on white → white on dark)
+- [x] Fix KI-Chat API error ("momentan nicht verfügbar")
+- [x] Validate OpenAI API key in backend
+- [x] Restore old Qibla compass design (white needle, Kaaba at edge)
+- [x] Add green glow effect when aligned with Qibla
+- [x] Add vibration feedback when aligned
+- [ ] Test all fixes on Vercel deployment

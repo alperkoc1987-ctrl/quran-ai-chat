@@ -66,8 +66,19 @@ export async function handleChatRequest(req: Request, res: Response) {
     console.error("Chat API error:", error);
     console.error("Error details:", error.response?.data || error.message);
     
+    // User-friendly error message
+    let userMessage = "Es gab ein Problem bei der Verarbeitung Ihrer Anfrage.";
+    
+    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+      userMessage = "Die Verbindung zum KI-Service konnte nicht hergestellt werden.";
+    } else if (error.response?.status === 401) {
+      userMessage = "API-Authentifizierung fehlgeschlagen.";
+    } else if (error.response?.status === 429) {
+      userMessage = "Zu viele Anfragen. Bitte versuchen Sie es in ein paar Minuten erneut.";
+    }
+    
     return res.status(500).json({
-      error: "Failed to process chat request",
+      error: userMessage,
       details: error.message || "Unknown error",
     });
   }

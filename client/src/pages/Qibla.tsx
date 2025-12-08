@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, Compass as CompassIcon, MapPin, Loader2, Navigation } from "lucide-react";
+import { ArrowLeft, Compass as CompassIcon, MapPin, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function Qibla() {
@@ -138,13 +138,14 @@ export default function Qibla() {
     }
   }, [locationGranted]);
 
+  // Calculate relative direction (Kaaba position relative to device heading)
   const relativeDirection = qiblaDirection !== null ? (qiblaDirection - smoothedHeading + 360) % 360 : 0;
 
   // Vibration feedback when aligned with Qibla
   useEffect(() => {
     if (qiblaDirection === null) return;
 
-    // Check if arrow is pointing toward Qibla (±5° tolerance)
+    // Check if device is pointing toward Qibla (±5° tolerance)
     const isNowAligned = Math.abs(relativeDirection) < 5 || Math.abs(relativeDirection - 360) < 5;
     
     // Vibrate when becoming aligned (not continuously)
@@ -246,37 +247,40 @@ export default function Qibla() {
         {qiblaDirection !== null && (
           <div className="space-y-6">
             {/* Compass Display */}
-            <Card className="p-8 bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 border-teal-500/30">
+            <Card className={`p-8 transition-all duration-300 ${
+              isAligned 
+                ? 'bg-gradient-to-br from-emerald-900 via-slate-800 to-slate-900 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.5)]' 
+                : 'bg-slate-800/50 border-slate-700'
+            }`}>
               <div className="relative w-full max-w-sm mx-auto aspect-square">
-                {/* North Star Icon - Fixed at top */}
-                <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
-                  <svg className="w-12 h-12 text-amber-300" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="1" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-
-                {/* Compass Circle with dashed ring */}
-                <div className="absolute inset-0 rounded-full border-4 border-dashed border-amber-300/40 bg-gradient-to-br from-teal-800 via-teal-900 to-teal-950 shadow-2xl">
-                  {/* Inner solid circle */}
-                  <div className="absolute inset-4 rounded-full bg-gradient-to-br from-teal-800 via-teal-900 to-teal-950"></div>
+                {/* Compass Circle */}
+                <div className={`absolute inset-0 rounded-full border-4 transition-all duration-300 ${
+                  isAligned 
+                    ? 'border-emerald-400 shadow-[0_0_40px_rgba(16,185,129,0.6)]' 
+                    : 'border-slate-600'
+                } bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950`}>
                   
-                  {/* Kaaba Icon - Fixed in center, always upright */}
-                  <div className="absolute top-[15%] left-1/2 -translate-x-1/2 z-20">
-                    <svg className="w-16 h-16 text-amber-300" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2L4 6V12C4 16.5 7 20.5 12 22C17 20.5 20 16.5 20 12V6L12 2Z" stroke="currentColor" strokeWidth="1"/>
-                    </svg>
+                  {/* White Compass Needle - Rotates with device (always points north) */}
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
+                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
+                  >
+                    <div className="relative">
+                      {/* Needle pointing up */}
+                      <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[140px] border-b-white drop-shadow-2xl"></div>
+                      {/* Needle tip circle - teal color */}
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-5 h-5 bg-teal-400 rounded-full border-2 border-white shadow-lg"></div>
+                    </div>
                   </div>
 
-                  {/* Compass Needle - Rotates with device heading */}
+                  {/* Kaaba Icon - Rotates to show Qibla direction */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
                     style={{ transform: `rotate(${relativeDirection}deg)` }}
                   >
-                    <div className="relative">
-                      {/* Needle pointing up */}
-                      <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[120px] border-b-amber-200 drop-shadow-2xl"></div>
-                      {/* Needle tip circle */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-4 h-4 bg-amber-300 rounded-full border-2 border-amber-100"></div>
+                    {/* Kaaba positioned at top edge of compass */}
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+                      <div className="text-5xl">🕋</div>
                     </div>
                   </div>
                 </div>
@@ -285,21 +289,21 @@ export default function Qibla() {
               {/* Direction Info */}
               <div className="mt-8 text-center space-y-3">
                 {isAligned ? (
-                  <div className="py-4 px-6 bg-teal-500/20 border-2 border-teal-400 rounded-xl">
+                  <div className="py-4 px-6 bg-emerald-500/20 border-2 border-emerald-400 rounded-xl animate-pulse">
                     <p className="text-2xl font-bold text-white mb-1">
-                      Sie sind in Richtung Qibla ausgerichtet
+                      ✓ Sie sind zur Qibla ausgerichtet
                     </p>
-                    <p className="text-sm text-teal-200">
-                      ✓ Perfekt ausgerichtet
+                    <p className="text-sm text-emerald-200">
+                      Perfekt ausgerichtet für das Gebet
                     </p>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-sm text-teal-200">Qibla-Richtung</p>
+                    <p className="text-sm text-slate-400">Qibla-Richtung</p>
                     <p className="text-4xl font-bold text-white">
                       {Math.round(qiblaDirection)}°
                     </p>
-                    <p className="text-xs text-teal-300">
+                    <p className="text-xs text-slate-500">
                       von Norden (im Uhrzeigersinn)
                     </p>
                   </div>
@@ -331,6 +335,7 @@ export default function Qibla() {
                 <li>Der weiße Pfeil zeigt immer nach Norden</li>
                 <li>Die Kaaba 🕋 zeigt die Qibla-Richtung</li>
                 <li>Drehen Sie sich, bis die Kaaba oben am Pfeil ist</li>
+                <li>Bei perfekter Ausrichtung leuchtet der Kompass grün</li>
                 <li>Kalibrieren Sie Ihren Kompass bei Bedarf in den Geräteeinstellungen</li>
               </ul>
             </Card>
