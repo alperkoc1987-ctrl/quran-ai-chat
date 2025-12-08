@@ -361,3 +361,9 @@
 - [ ] Display: Position, Qibla Direction, Raw Heading, Corrected Heading, Needle Rotation
 - [ ] Make it visible on mobile devices
 - [ ] Get screenshot from user to diagnose the actual problem
+
+# URGENT - Needle Rotation Fix (December 8, 2025 - 13:05)
+
+- [ ] Negate needle rotation formula: -(correctedHeading - qiblaDirection)
+- [ ] Test that needle points UP when aligned with Qibla
+- [ ] Remove debug panel after testing
