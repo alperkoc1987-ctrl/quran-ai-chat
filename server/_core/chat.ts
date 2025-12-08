@@ -54,9 +54,9 @@ export async function handleChatRequest(req: Request, res: Response) {
       geminiMessages[0].parts[0].text = `${systemPrompt}\n\n${geminiMessages[0].parts[0].text}`;
     }
 
-    // Use Gemini 1.5 Flash (stable with higher free tier limits)
+    // Use Gemini 2.0 Flash Exp (free tier for testing, then switch to gemini-2.0-flash for production)
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash-latest",
+      model: "gemini-2.0-flash-exp",
       generationConfig: {
         maxOutputTokens: 800,
         temperature: 0.7,
@@ -64,8 +64,28 @@ export async function handleChatRequest(req: Request, res: Response) {
     });
 
     // Start chat session
+    // Gemini REQUIRES: history must alternate user-model-user-model and start with 'user'
+    // We need to build a clean history that follows this rule
+    
+    let history: any[] = [];
+    let expectUser = true; // First message in history must be 'user'
+    
+    // Process all messages except the last one (which we'll send separately)
+    for (let i = 0; i < geminiMessages.length - 1; i++) {
+      const msg = geminiMessages[i];
+      
+      if (expectUser && msg.role === 'user') {
+        history.push(msg);
+        expectUser = false; // Next should be 'model'
+      } else if (!expectUser && msg.role === 'model') {
+        history.push(msg);
+        expectUser = true; // Next should be 'user'
+      }
+      // Skip messages that don't fit the alternating pattern
+    }
+    
     const chat = model.startChat({
-      history: geminiMessages.slice(0, -1), // All messages except the last one
+      history: history,
     });
 
     // Send the last message

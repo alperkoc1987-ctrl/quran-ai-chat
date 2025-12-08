@@ -61,7 +61,7 @@ export function useChat() {
             !msg.isError && // Skip error messages (marked with isError flag)
             msg.text && // Filter out null/undefined/empty text
             msg.text.trim() && // Filter out whitespace-only messages
-            !msg.text.startsWith("Assalamu alaikum! Ich bin Ihr KI-Assistent") // Skip initial greeting
+            !msg.text.startsWith("As-salamu alaikum!") // Skip initial greeting
           )
           .map(msg => ({
             role: msg.isUser ? "user" : "assistant",

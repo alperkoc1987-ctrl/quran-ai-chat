@@ -400,12 +400,27 @@
 
 - [x] Change "Azrail" to "Malak al-Maut" in quiz question (authentic Islamic terminology)
 - [x] Auto-scroll already implemented (line 90 in Quiz.tsx)
-- [ ] Test quiz navigation
-- [ ] Save checkpoint
+- [x] Test quiz navigation
+- [x] Save checkpoint
 
 # Reading Time Tracking Fix (December 8, 2025 - 14:35)
 
 - [x] Debug reading time tracking (shows 0m despite reading 270 verses)
 - [x] Fix formatTime() function to show seconds when under 1 minute
-- [ ] Test reading time tracking
-- [ ] Save checkpoint with both quiz and reading time fixes
+- [x] Test reading time tracking
+- [x] Save checkpoint with both quiz and reading time fixes
+
+# Chat Not Working (December 8, 2025 - 18:49)
+
+- [ ] Debug why chat shows "KI-Chat ist momentan nicht verfügbar"
+- [ ] Check if GEMINI_API_KEY is properly set in production environment
+- [ ] Test chat endpoint locally with provided API key
+- [ ] Fix any configuration issues
+- [ ] Deploy and verify with user
+
+## AI Model Update - Gemini 2.0 Flash (December 2025)
+- [x] Update AI model from gemini-1.5-flash to gemini-2.0-flash-exp (free tier for testing)
+- [x] Test AI chat functionality with new model
+- [x] Verify chat responses are working correctly
+- [x] Fixed frontend greeting filter to properly exclude initial greeting
+- [x] Fixed backend history logic to ensure proper user-model alternation
