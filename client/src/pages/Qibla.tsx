@@ -258,22 +258,30 @@ export default function Qibla() {
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">W</div>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">E</div>
                   
-                  {/* Qibla Arrow */}
-                  <div 
-                    className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${relativeDirection}deg)` }}
-                  >
-                    <div className="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[120px] border-b-gradient-to-t from-emerald-600 to-teal-500 drop-shadow-lg">
-                      <Navigation className="w-8 h-8 text-white absolute -top-16 left-1/2 -translate-x-1/2" />
+                  {/* Phone Direction Arrow - Always points up */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="relative">
+                      <div className="w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[100px] border-b-white drop-shadow-lg"></div>
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 w-3 h-3 bg-teal-400 rounded-full"></div>
                     </div>
                   </div>
 
-                  {/* Kaaba Icon - Fixed at Qibla direction on compass edge */}
+                  {/* Kaaba Icon - Fixed at calculated Qibla direction on compass edge */}
                   <div 
-                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
-                    style={{ transform: `rotate(${relativeDirection}deg)`, transformOrigin: 'center calc(50vh - 8rem)' }}
+                    className="absolute w-full h-full"
+                    style={{ transform: `rotate(${qiblaDirection}deg)` }}
                   >
-                    <div className="text-4xl" style={{ transform: `rotate(${-relativeDirection}deg)` }}>🕋</div>
+                    <div className="absolute -top-6 left-1/2 -translate-x-1/2">
+                      <div className="text-5xl" style={{ transform: `rotate(${-qiblaDirection}deg)` }}>🕋</div>
+                    </div>
+                  </div>
+
+                  {/* Rotating compass ring to show device orientation */}
+                  <div 
+                    className="absolute inset-2 rounded-full border-2 border-dashed border-teal-500/30 transition-transform duration-300 ease-out"
+                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
+                  >
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-teal-400 rounded-full"></div>
                   </div>
                 </div>
               </div>
