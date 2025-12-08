@@ -314,3 +314,12 @@
 - [x] Update error handling for Gemini API
 - [ ] User needs to add GEMINI_API_KEY via webdev_request_secrets
 - [ ] Test chat with Gemini after API key is added
+
+# URGENT FIXES - December 8, 2025 (07:00)
+
+- [ ] Prayer times dialog: "Aktuelle Zeit" label is gray - make it white
+- [ ] Prayer times dialog: All button texts still gray - make them white
+- [ ] Qibla compass: Kaaba is at wrong position - should be fixed at Qibla direction (not rotating)
+- [ ] Qibla compass: No green highlight when aligned - fix alignment detection
+- [ ] Test all fixes in LOCAL browser before pushing to Vercel
+- [ ] Clear Vercel cache and force redeploy

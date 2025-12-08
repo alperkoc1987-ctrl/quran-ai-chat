@@ -689,7 +689,7 @@ export default function PrayerTimes() {
             {/* Current Adjustment */}
             {selectedPrayerForAdjust && (
               <div className="text-center p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
-                <p className={`text-sm ${themeConfig.colors.textSecondary} mb-1`}>Aktuelle Zeit</p>
+                <p className="text-sm text-slate-300 dark:text-slate-300 mb-1">Aktuelle Zeit</p>
                 <p className="text-3xl font-bold text-teal-600">
                   {getAdjustedTime(selectedPrayerForAdjust)}
                 </p>

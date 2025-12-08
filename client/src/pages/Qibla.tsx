@@ -275,10 +275,10 @@ export default function Qibla() {
                     </div>
                   </div>
 
-                  {/* Kaaba Icon - FIXED at Qibla direction (does not rotate with device) */}
+                  {/* Kaaba Icon - FIXED at Qibla direction relative to north */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${qiblaDirection}deg)` }}
+                    style={{ transform: `rotate(${qiblaDirection - smoothedHeading}deg)` }}
                   >
                     {/* Kaaba positioned at top edge of compass */}
                     <div className="absolute -top-8 left-1/2 -translate-x-1/2">
