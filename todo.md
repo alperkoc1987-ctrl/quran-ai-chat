@@ -394,4 +394,4 @@
 - [x] Show only favorited surahs when "Favoriten" tab is active
 - [x] Style tabs with teal color scheme
 - [ ] Test favorites functionality
-- [ ] Save checkpoint
+- [x] Save checkpoint
