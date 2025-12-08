@@ -377,5 +377,5 @@
 
 # Cleanup and Checkpoint (December 8, 2025 - 13:25)
 
-- [ ] Remove debug panel from Qibla page
+- [x] Remove debug panel from Qibla page
 - [ ] Save checkpoint with working compass
