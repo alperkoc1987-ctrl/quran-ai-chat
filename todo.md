@@ -367,3 +367,10 @@
 - [ ] Negate needle rotation formula: -(correctedHeading - qiblaDirection)
 - [ ] Test that needle points UP when aligned with Qibla
 - [ ] Remove debug panel after testing
+
+# URGENT - Revert Compass Logic (December 8, 2025 - 13:15)
+
+- [ ] Make Kaaba icon rotate with compass (like old design)
+- [ ] Make needle fixed pointing up
+- [ ] Remove debug panel
+- [ ] Test that Kaaba points to Qibla direction

@@ -305,7 +305,7 @@ export default function Qibla() {
                   <div><strong>Raw Heading:</strong> {smoothedHeading.toFixed(1)}°</div>
                   <div><strong>Magnetic Declination:</strong> {magneticDeclination.toFixed(1)}°</div>
                   <div><strong>Corrected Heading:</strong> {correctedHeading.toFixed(1)}°</div>
-                  <div><strong>Needle Rotation:</strong> {(-(correctedHeading - qiblaDirection)).toFixed(1)}°</div>
+                  <div><strong>Needle Rotation:</strong> {(qiblaDirection - correctedHeading).toFixed(1)}°</div>
                   <div><strong>Heading Diff:</strong> {headingDiff.toFixed(1)}° {isAligned ? '✅ ALIGNED' : '❌ NOT ALIGNED'}</div>
                 </div>
               </Card>
@@ -328,7 +328,7 @@ export default function Qibla() {
                   {/* White Compass Needle - Points toward Qibla direction */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${qiblaDirection !== null ? -(correctedHeading - qiblaDirection) : 0}deg)` }}
+                    style={{ transform: `rotate(${qiblaDirection !== null ? qiblaDirection - correctedHeading : 0}deg)` }}
                   >
                     <div className="relative">
                       {/* Needle pointing up */}
