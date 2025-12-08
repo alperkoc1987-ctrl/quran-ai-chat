@@ -165,8 +165,9 @@ export function useChat() {
               setMinuteRemaining((err as any).minuteRemaining);
             }
           } else {
-            // ALWAYS display the full error message from the backend for debugging
-            displayMessage = `❌ FEHLER:\n\n${errorMessage}\n\n(Dies ist eine Debug-Nachricht. Bitte schicken Sie diesen Text an den Entwickler!)`;
+            // Show friendly error message
+            displayMessage = `Entschuldigung, der KI-Chat ist momentan nicht verfügbar. Bitte versuche es später erneut.`;
+            console.error('[Chat Error]', errorMessage); // Log for debugging
           }
         }
 

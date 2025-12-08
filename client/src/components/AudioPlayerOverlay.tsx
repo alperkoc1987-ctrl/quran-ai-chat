@@ -12,19 +12,20 @@ export function AudioPlayerOverlay() {
   const { state, stop } = useAudioPlayer();
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show overlay when playback starts, hide after 2 seconds
+  // Show overlay when playback starts, hide after 3 seconds
+  // Only trigger on play/pause or surah change, NOT on verse change
   useEffect(() => {
     if (state.isPlaying && state.surahName) {
       setIsVisible(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
-      }, 2000); // Auto-dismiss after 2 seconds
+      }, 3000); // Auto-dismiss after 3 seconds
       
       return () => clearTimeout(timer);
     } else {
       setIsVisible(false);
     }
-  }, [state.isPlaying, state.surahName, state.currentVerseIndex]);
+  }, [state.isPlaying, state.surahName]); // Removed currentVerseIndex to prevent popup on every verse
 
   if (!state.isPlaying || !state.surahName || !isVisible) {
     return null;

@@ -252,3 +252,15 @@
 - [x] Show proper error messages when permission denied
 - [x] Qibla page already works correctly (no auto-load)
 - [ ] Test on Vercel deployment
+
+# Critical Bug Fixes - December 8, 2025 (Early Morning)
+
+- [x] Fix Chat API Error 500 (Debug message showing)
+- [x] Fix audio player: Should stay at top, not popup at every verse
+- [x] Fix prayer times adjustment dialog: Text colors too dark (unreadable)
+- [x] Fix Qibla: Add glow/highlight when aligned with Qibla direction
+- [x] Redesign Qibla compass to match reference design:
+  - [x] Kaaba icon stays centered/straight (not rotating)
+  - [x] Compass needle/arrow rotates (shows device orientation)
+  - [x] Add star/sun icon at top of compass ring (north indicator)
+  - [x] Match teal color scheme from reference

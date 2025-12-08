@@ -246,48 +246,64 @@ export default function Qibla() {
         {qiblaDirection !== null && (
           <div className="space-y-6">
             {/* Compass Display */}
-            <Card className="p-8 bg-slate-800/50 border-slate-700">
+            <Card className="p-8 bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 border-teal-500/30">
               <div className="relative w-full max-w-sm mx-auto aspect-square">
-                {/* Compass Circle */}
-                <div className={`absolute inset-0 rounded-full border-4 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 shadow-2xl transition-all duration-300 ${
-                  isAligned ? 'border-teal-500 shadow-teal-500/50' : 'border-slate-600'
-                }`}>
-                  {/* Top Notch Marker */}
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-4 bg-teal-400 rounded-full"></div>
+                {/* North Star Icon - Fixed at top */}
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
+                  <svg className="w-12 h-12 text-amber-300" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="1" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+
+                {/* Compass Circle with dashed ring */}
+                <div className="absolute inset-0 rounded-full border-4 border-dashed border-amber-300/40 bg-gradient-to-br from-teal-800 via-teal-900 to-teal-950 shadow-2xl">
+                  {/* Inner solid circle */}
+                  <div className="absolute inset-4 rounded-full bg-gradient-to-br from-teal-800 via-teal-900 to-teal-950"></div>
                   
-                  {/* Kaaba Icon - Fixed at Qibla direction */}
-                  <div 
-                    className="absolute left-1/2 -translate-x-1/2"
-                    style={{ 
-                      transform: `rotate(${qiblaDirection}deg) translateY(-50%)`,
-                      top: '0'
-                    }}
-                  >
-                    <div className="text-4xl -rotate-90">🕋</div>
+                  {/* Kaaba Icon - Fixed in center, always upright */}
+                  <div className="absolute top-[15%] left-1/2 -translate-x-1/2 z-20">
+                    <svg className="w-16 h-16 text-amber-300" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L4 6V12C4 16.5 7 20.5 12 22C17 20.5 20 16.5 20 12V6L12 2Z" stroke="currentColor" strokeWidth="1"/>
+                    </svg>
                   </div>
 
-                  {/* Device Direction Arrow - Rotates with device heading */}
+                  {/* Compass Needle - Rotates with device heading */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
+                    style={{ transform: `rotate(${relativeDirection}deg)` }}
                   >
                     <div className="relative">
-                      <div className="w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[100px] border-b-white drop-shadow-lg"></div>
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 w-3 h-3 bg-teal-400 rounded-full"></div>
+                      {/* Needle pointing up */}
+                      <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[120px] border-b-amber-200 drop-shadow-2xl"></div>
+                      {/* Needle tip circle */}
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-4 h-4 bg-amber-300 rounded-full border-2 border-amber-100"></div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Direction Info */}
-              <div className="mt-8 text-center space-y-2">
-                <p className="text-sm text-slate-400">Qibla-Richtung</p>
-                <p className="text-4xl font-bold text-white">
-                  {Math.round(qiblaDirection)}°
-                </p>
-                <p className="text-xs text-slate-400">
-                  von Norden (im Uhrzeigersinn)
-                </p>
+              <div className="mt-8 text-center space-y-3">
+                {isAligned ? (
+                  <div className="py-4 px-6 bg-teal-500/20 border-2 border-teal-400 rounded-xl">
+                    <p className="text-2xl font-bold text-white mb-1">
+                      Sie sind in Richtung Qibla ausgerichtet
+                    </p>
+                    <p className="text-sm text-teal-200">
+                      ✓ Perfekt ausgerichtet
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-sm text-teal-200">Qibla-Richtung</p>
+                    <p className="text-4xl font-bold text-white">
+                      {Math.round(qiblaDirection)}°
+                    </p>
+                    <p className="text-xs text-teal-300">
+                      von Norden (im Uhrzeigersinn)
+                    </p>
+                  </div>
+                )}
               </div>
             </Card>
 
