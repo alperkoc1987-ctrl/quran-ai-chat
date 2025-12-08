@@ -170,20 +170,6 @@ export default function Qibla() {
   // Apply magnetic declination correction to convert magnetic north to true north
   const correctedHeading = (smoothedHeading + magneticDeclination + 360) % 360;
   
-  // DEBUG LOGGING
-  useEffect(() => {
-    if (qiblaDirection !== null && userLocation) {
-      console.log('=== QIBLA COMPASS DEBUG ===');
-      console.log('User Location:', userLocation);
-      console.log('Qibla Direction (true north):', qiblaDirection.toFixed(1), '°');
-      console.log('Raw Compass Heading (magnetic):', smoothedHeading.toFixed(1), '°');
-      console.log('Magnetic Declination:', magneticDeclination.toFixed(1), '°');
-      console.log('Corrected Heading (true north):', correctedHeading.toFixed(1), '°');
-      console.log('Needle Rotation:', (qiblaDirection - correctedHeading).toFixed(1), '°');
-      console.log('========================');
-    }
-  }, [smoothedHeading, qiblaDirection, magneticDeclination, correctedHeading, userLocation]);
-  
   // Check if needle is pointing up (to Kaaba)
   // Needle rotation: correctedHeading - qiblaDirection
   // When device heading matches Qibla direction, needle points straight up = aligned
@@ -298,20 +284,6 @@ export default function Qibla() {
 
         {qiblaDirection !== null && (
           <div className="space-y-6">
-            {/* DEBUG PANEL - Remove after testing */}
-            {smoothedHeading !== null && (
-              <Card className="p-4 bg-yellow-900/30 border-yellow-600">
-                <div className="text-xs font-mono text-yellow-200 space-y-1">
-                  <div><strong>Position:</strong> {userLocation?.lat.toFixed(4)}, {userLocation?.lng.toFixed(4)}</div>
-                  <div><strong>Qibla Direction:</strong> {qiblaDirection.toFixed(1)}°</div>
-                  <div><strong>Raw Heading:</strong> {smoothedHeading.toFixed(1)}°</div>
-                  <div><strong>Magnetic Declination:</strong> {magneticDeclination.toFixed(1)}°</div>
-                  <div><strong>Corrected Heading:</strong> {correctedHeading.toFixed(1)}°</div>
-                  <div><strong>Needle Rotation:</strong> {(qiblaDirection - correctedHeading).toFixed(1)}°</div>
-                  <div><strong>Heading Diff:</strong> {headingDiff.toFixed(1)}° {isAligned ? '✅ ALIGNED' : '❌ NOT ALIGNED'}</div>
-                </div>
-              </Card>
-            )}
 
             {/* Compass Display */}
             <Card className={`p-8 transition-all duration-300 ${

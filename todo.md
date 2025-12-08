@@ -374,3 +374,8 @@
 - [ ] Make needle fixed pointing up
 - [ ] Remove debug panel
 - [ ] Test that Kaaba points to Qibla direction
+
+# Cleanup and Checkpoint (December 8, 2025 - 13:25)
+
+- [ ] Remove debug panel from Qibla page
+- [ ] Save checkpoint with working compass
