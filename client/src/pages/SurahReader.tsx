@@ -28,7 +28,7 @@ import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { getTranslationEdition } from "@/lib/translationEditions";
 import { toast } from "sonner";
 import { saveReadingProgress } from "@/lib/readingProgress";
-import { recordVerseRead } from "@/lib/statistics";
+import { recordVerseRead, recordReadingTime } from "@/lib/statistics";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { VerseNoteDialog } from "@/components/VerseNoteDialog";
 
@@ -100,6 +100,19 @@ export default function SurahReader() {
 
     loadSurah();
   }, [surahNumber, translationLanguage]);
+
+  // Track reading time with interval timer
+  useEffect(() => {
+    if (!surahInfo || !surahData) return;
+
+    // Record 10 seconds of reading time every 10 seconds
+    const timeTracker = setInterval(() => {
+      recordReadingTime(10); // 10 seconds
+    }, 10000); // Every 10 seconds
+
+    // Cleanup on unmount
+    return () => clearInterval(timeTracker);
+  }, [surahInfo, surahData]);
 
   // Save reading progress when user scrolls through verses
   useEffect(() => {
@@ -366,6 +379,13 @@ export default function SurahReader() {
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {surahInfo.englishNameTranslation} • {surahInfo.revelationType} • {surahInfo.numberOfAyahs} Verse
               </p>
+              {/* Subtle Audio Indicator */}
+              {audioPlayer.state.surahNumber === surahInfo?.number && audioPlayer.state.isPlaying && (
+                <p className="text-xs text-teal-600 dark:text-teal-400 mt-1 flex items-center gap-1">
+                  <Play className="w-3 h-3" />
+                  Wird abgespielt (Vers {audioPlayer.state.currentVerseIndex + 1}/{surahInfo.numberOfAyahs})
+                </p>
+              )}
             </div>
           </div>
           <Button
@@ -478,19 +498,6 @@ export default function SurahReader() {
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-slate-700">
                 <span className={`text-sm font-medium ${themeConfig.colors.verseNumber}`}>{verseNumber}</span>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-slate-600 hover:text-teal-600"
-                    onClick={() => playVerse(verseNumber)}
-                    title="Vers abspielen"
-                  >
-                    {isCurrentlyPlaying && audioPlayer.state.isPlaying ? (
-                      <Pause className="w-4 h-4" />
-                    ) : (
-                      <Play className="w-4 h-4" />
-                    )}
-                  </Button>
                   <BookmarkButton
                     surahNumber={surahInfo.number}
                     verseNumber={verseNumber}

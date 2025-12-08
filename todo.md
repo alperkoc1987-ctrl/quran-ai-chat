@@ -211,3 +211,12 @@
 - [x] Apply Classic theme colors (dark blue with teal accents)
 - [x] Show prayer names in German with Arabic names
 - [x] Add visual indicators for past/current/upcoming prayers
+
+# Audio Player & Reading Time Fixes
+
+- [x] Remove per-verse audio player popups
+- [x] Create single subtle audio indicator at top of page
+- [x] Show "Surah wird abgespielt" message instead of per-verse indicators
+- [x] Fix reading time tracking (currently shows "0m")
+- [x] Ensure minutes are correctly calculated and displayed
+- [x] Test reading time tracking with actual reading sessions
