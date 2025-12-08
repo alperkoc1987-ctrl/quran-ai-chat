@@ -2,11 +2,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "wouter";
-import { ArrowLeft, MapPin, Sunrise, Sun, Sunset, Moon, Clock, Loader2, Search, Navigation, Edit3, Edit } from "lucide-react";
+import { ArrowLeft, MapPin, Sunrise, Sun, Sunset, Moon, Clock, Loader2, Search, Navigation, Edit, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getPrayerSettings, savePrayerSettings, type PrayerSettings } from "@/lib/notificationService";
+import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 
 interface PrayerTimesData {
   Fajr: string;
@@ -27,6 +28,7 @@ interface CitySearchResult {
 }
 
 export default function PrayerTimes() {
+  const { themeConfig } = useReadingTheme();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimesData | null>(null);
@@ -36,9 +38,74 @@ export default function PrayerTimes() {
   const [searchResults, setSearchResults] = useState<CitySearchResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number } | null>(null);
-  const [showTimeAdjustDialog, setShowTimeAdjustDialog] = useState(false);
-  const [selectedPrayer, setSelectedPrayer] = useState<string | null>(null);
-  const [prayerSettings, setPrayerSettings] = useState<PrayerSettings>(getPrayerSettings());
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentPrayer, setCurrentPrayer] = useState<string | null>(null);
+  const [nextPrayer, setNextPrayer] = useState<string | null>(null);
+  const [timeUntilNext, setTimeUntilNext] = useState<string>("");
+
+  // Update current time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Determine current and next prayer
+  useEffect(() => {
+    if (!prayerTimes) return;
+
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    const prayerMinutes = prayerOrder.map(prayer => {
+      const [hours, minutes] = prayerTimes[prayer as keyof PrayerTimesData].split(':').map(Number);
+      return { name: prayer, minutes: hours * 60 + minutes };
+    });
+
+    // Find current and next prayer
+    let current = null;
+    let next = null;
+
+    for (let i = 0; i < prayerMinutes.length; i++) {
+      if (currentMinutes >= prayerMinutes[i].minutes) {
+        current = prayerMinutes[i].name;
+        next = i < prayerMinutes.length - 1 ? prayerMinutes[i + 1].name : prayerMinutes[0].name;
+      }
+    }
+
+    // If before Fajr, current is Isha from yesterday, next is Fajr
+    if (currentMinutes < prayerMinutes[0].minutes) {
+      current = 'Isha';
+      next = 'Fajr';
+    }
+
+    setCurrentPrayer(current);
+    setNextPrayer(next);
+
+    // Calculate time until next prayer
+    if (next) {
+      const nextPrayerData = prayerMinutes.find(p => p.name === next);
+      if (nextPrayerData) {
+        let minutesUntil = nextPrayerData.minutes - currentMinutes;
+        
+        // If next prayer is tomorrow (Fajr after Isha)
+        if (minutesUntil < 0) {
+          minutesUntil += 24 * 60;
+        }
+
+        const hours = Math.floor(minutesUntil / 60);
+        const mins = minutesUntil % 60;
+        
+        if (hours > 0) {
+          setTimeUntilNext(`${hours}h ${mins}min`);
+        } else {
+          setTimeUntilNext(`${mins} Minuten`);
+        }
+      }
+    }
+  }, [prayerTimes, currentTime]);
 
   // Load saved location preference on mount
   useEffect(() => {
@@ -54,7 +121,7 @@ export default function PrayerTimes() {
       const lon = parseFloat(savedLon);
       setCurrentLocation({ lat, lon });
       fetchPrayerTimes(lat, lon, savedCity, savedCountry || '');
-    } else if (savedMode === 'auto') {
+    } else {
       setLocationMode('auto');
       requestLocation();
     }
@@ -65,7 +132,6 @@ export default function PrayerTimes() {
       setLoading(true);
       setError(null);
 
-      // Using Aladhan API - free and reliable
       const response = await fetch(
         `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
       );
@@ -80,37 +146,23 @@ export default function PrayerTimes() {
         const timings = data.data.timings;
         const date = data.data.date.readable;
 
-        // If city/country not provided, try to get from API response or use reverse geocoding
         let finalCity = cityName;
         let finalCountry = countryName;
 
         if (!finalCity) {
-          // Try reverse geocoding with Aladhan API
           try {
-            const addressResponse = await fetch(
-              `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
+            const geoResponse = await fetch(
+              `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`
             );
-            const addressData = await addressResponse.json();
             
-            if (addressData.code === 200 && addressData.data?.meta) {
-              // Extract city from timezone or use a geocoding service
-              const timezone = addressData.data.meta.timezone;
-              
-              // Try to get city from geocoding API
-              const geoResponse = await fetch(
-                `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`
-              );
-              
-              if (geoResponse.ok) {
-                const geoData = await geoResponse.json();
-                if (geoData.address) {
-                  finalCity = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || timezone;
-                  finalCountry = geoData.address.country || '';
-                }
-              } else {
-                // Fallback to timezone
-                finalCity = timezone;
+            if (geoResponse.ok) {
+              const geoData = await geoResponse.json();
+              if (geoData.address) {
+                finalCity = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || data.data.meta?.timezone;
+                finalCountry = geoData.address.country || '';
               }
+            } else {
+              finalCity = data.data.meta?.timezone || "Unbekannt";
             }
           } catch (geoError) {
             console.error('Geocoding error:', geoError);
@@ -131,7 +183,6 @@ export default function PrayerTimes() {
         
         setPrayerTimes(prayerTimesData);
         
-        // Save to localStorage for chat function access
         localStorage.setItem('prayerTimes', JSON.stringify({
           timings: {
             Fajr: timings.Fajr,
@@ -204,7 +255,6 @@ export default function PrayerTimes() {
 
     setSearching(true);
     try {
-      // Use OpenStreetMap Nominatim for city search
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1`
       );
@@ -257,352 +307,282 @@ export default function PrayerTimes() {
   };
 
   const prayers = [
-    { name: "Fajr", label: "Fajr (Morgengebet)", icon: Sunrise, color: "from-orange-400 to-yellow-500" },
-    { name: "Dhuhr", label: "Dhuhr (Mittagsgebet)", icon: Sun, color: "from-yellow-400 to-orange-500" },
-    { name: "Asr", label: "Asr (Nachmittagsgebet)", icon: Sun, color: "from-amber-400 to-orange-600" },
-    { name: "Maghrib", label: "Maghrib (Abendgebet)", icon: Sunset, color: "from-orange-500 to-red-600" },
-    { name: "Isha", label: "Isha (Nachtgebet)", icon: Moon, color: "from-indigo-500 to-purple-600" }
+    { 
+      name: "Fajr", 
+      label: "Fajr", 
+      labelGerman: "Morgengebet",
+      icon: Sunrise, 
+      color: "bg-gradient-to-br from-orange-400 to-amber-500",
+      iconColor: "text-orange-600"
+    },
+    { 
+      name: "Dhuhr", 
+      label: "Dhuhr", 
+      labelGerman: "Mittagsgebet",
+      icon: Sun, 
+      color: "bg-gradient-to-br from-yellow-400 to-orange-400",
+      iconColor: "text-yellow-600"
+    },
+    { 
+      name: "Asr", 
+      label: "Asr", 
+      labelGerman: "Nachmittagsgebet",
+      icon: Sun, 
+      color: "bg-gradient-to-br from-amber-400 to-orange-500",
+      iconColor: "text-amber-600"
+    },
+    { 
+      name: "Maghrib", 
+      label: "Maghrib", 
+      labelGerman: "Abendgebet",
+      icon: Sunset, 
+      color: "bg-gradient-to-br from-orange-500 to-red-500",
+      iconColor: "text-orange-700"
+    },
+    { 
+      name: "Isha", 
+      label: "Isha", 
+      labelGerman: "Nachtgebet",
+      icon: Moon, 
+      color: "bg-gradient-to-br from-indigo-500 to-purple-600",
+      iconColor: "text-indigo-600"
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pb-20">
+    <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
       {/* Header */}
-      <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+      <header className={`${themeConfig.colors.backgroundSecondary}/80 backdrop-blur-sm border-b ${themeConfig.colors.border} sticky top-0 z-50`}>
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <button className="w-10 h-10 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors">
-                <ArrowLeft className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-              </button>
-            </Link>
-            <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white">Gebetszeiten</h1>
-              <p className="text-xs text-slate-600 dark:text-slate-400">Ihre lokalen Gebetszeiten</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link href="/">
+                <Button variant="ghost" size="icon">
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Gebetszeiten</h1>
+                <p className={`text-sm ${themeConfig.colors.textSecondary}`}>Ihre lokalen Gebetszeiten</p>
+              </div>
             </div>
           </div>
+
+          {/* Location Info */}
+          {prayerTimes && (
+            <div className={`mt-4 flex items-center justify-between ${themeConfig.colors.backgroundSecondary} rounded-lg p-3`}>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-teal-600" />
+                <span className={`text-sm font-medium ${themeConfig.colors.text}`}>
+                  {prayerTimes.city}{prayerTimes.country ? `, ${prayerTimes.country}` : ''}
+                </span>
+                <span className={`text-xs px-2 py-1 rounded-full ${locationMode === 'auto' ? 'bg-teal-100 text-teal-700' : 'bg-blue-100 text-blue-700'}`}>
+                  {locationMode === 'auto' ? 'Automatisch' : 'Manuell'}
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowCitySearch(true)}
+                className="text-teal-600 hover:text-teal-700"
+              >
+                <Edit className="w-4 h-4 mr-1" />
+                Ändern
+              </Button>
+            </div>
+          )}
+
+          {/* Current Date */}
+          {prayerTimes && (
+            <div className={`mt-2 flex items-center gap-2 ${themeConfig.colors.textSecondary} text-sm`}>
+              <Calendar className="w-4 h-4" />
+              <span>{currentTime.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6">
-        {!prayerTimes && !loading && (
-          <Card className="p-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <MapPin className="w-8 h-8 text-white" />
+      <div className="container mx-auto px-4 py-6">
+        {loading && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-12 h-12 animate-spin text-teal-600 mb-4" />
+            <p className={`${themeConfig.colors.textSecondary}`}>Gebetszeiten werden geladen...</p>
+          </div>
+        )}
+
+        {error && !loading && (
+          <Card className="p-6 text-center">
+            <p className="text-red-600 mb-4">{error}</p>
+            <Button onClick={requestLocation} className="bg-teal-600 hover:bg-teal-700">
+              <Navigation className="w-4 h-4 mr-2" />
+              Standort erneut anfordern
+            </Button>
+          </Card>
+        )}
+
+        {prayerTimes && !loading && (
+          <div className="space-y-4">
+            {/* Next Prayer Countdown Card */}
+            {nextPrayer && (
+              <Card className={`p-6 ${themeConfig.colors.card} border-2 border-teal-500 shadow-lg`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={`text-sm ${themeConfig.colors.textSecondary} mb-1`}>Nächstes Gebet</p>
+                    <h2 className={`text-2xl font-bold ${themeConfig.colors.text}`}>
+                      {prayers.find(p => p.name === nextPrayer)?.label}
+                    </h2>
+                    <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
+                      {prayers.find(p => p.name === nextPrayer)?.labelGerman}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Clock className="w-5 h-5 text-teal-600" />
+                      <span className="text-3xl font-bold text-teal-600">
+                        {prayerTimes[nextPrayer as keyof PrayerTimesData]}
+                      </span>
+                    </div>
+                    <p className="text-sm text-teal-600 font-medium">in {timeUntilNext}</p>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {/* Prayer Times List */}
+            <div className="space-y-3">
+              {prayers.map((prayer) => {
+                const Icon = prayer.icon;
+                const isCurrent = currentPrayer === prayer.name;
+                const isNext = nextPrayer === prayer.name;
+                
+                return (
+                  <Card
+                    key={prayer.name}
+                    className={`p-4 transition-all ${
+                      isCurrent 
+                        ? `${themeConfig.colors.card} border-2 border-teal-500 shadow-md` 
+                        : `${themeConfig.colors.card} ${themeConfig.colors.border}`
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        {/* Prayer Icon */}
+                        <div className={`w-14 h-14 rounded-xl ${prayer.color} flex items-center justify-center shadow-md`}>
+                          <Icon className="w-7 h-7 text-white" />
+                        </div>
+                        
+                        {/* Prayer Name */}
+                        <div>
+                          <h3 className={`text-lg font-bold ${themeConfig.colors.text}`}>
+                            {prayer.label}
+                          </h3>
+                          <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
+                            {prayer.labelGerman}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Prayer Time */}
+                      <div className="text-right">
+                        <div className={`text-2xl font-bold ${isCurrent ? 'text-teal-600' : themeConfig.colors.text}`}>
+                          {prayerTimes[prayer.name as keyof PrayerTimesData]}
+                        </div>
+                        {isCurrent && (
+                          <span className="text-xs text-teal-600 font-medium">Aktuell</span>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-              Standort wählen
-            </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-              Wählen Sie, wie Sie Ihren Standort festlegen möchten
+          </div>
+        )}
+
+        {/* Initial State - No Data */}
+        {!prayerTimes && !loading && !error && (
+          <Card className="p-8 text-center">
+            <Clock className="w-16 h-16 mx-auto mb-4 text-teal-600" />
+            <h2 className={`text-xl font-bold mb-2 ${themeConfig.colors.text}`}>Gebetszeiten laden</h2>
+            <p className={`${themeConfig.colors.textSecondary} mb-6`}>
+              Erlauben Sie den Standortzugriff, um Ihre lokalen Gebetszeiten zu sehen
             </p>
-            <div className="flex flex-col gap-3">
-              <Button
-                onClick={requestLocation}
-                disabled={loading}
-                className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Lädt...
-                  </>
-                ) : (
-                  <>
-                    <Navigation className="w-4 h-4 mr-2" />
-                    Automatisch erkennen (GPS)
-                  </>
-                )}
-              </Button>
-              <Button
-                onClick={() => setShowCitySearch(true)}
-                variant="outline"
-                className="border-2"
-              >
-                <Search className="w-4 h-4 mr-2" />
-                Stadt manuell eingeben
-              </Button>
-            </div>
+            <Button onClick={requestLocation} className="bg-teal-600 hover:bg-teal-700">
+              <Navigation className="w-4 h-4 mr-2" />
+              Standort aktivieren
+            </Button>
           </Card>
         )}
+      </div>
 
-        {error && (
-          <Card className="p-6 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 mb-4">
-            <p className="text-red-800 dark:text-red-300 text-sm mb-4">{error}</p>
-            <div className="flex gap-2">
-              <Button
-                onClick={requestLocation}
-                variant="outline"
-                size="sm"
-              >
-                Erneut versuchen
-              </Button>
-              <Button
-                onClick={() => setShowCitySearch(true)}
-                variant="outline"
-                size="sm"
-              >
-                Stadt eingeben
-              </Button>
-            </div>
-          </Card>
-        )}
+      {/* City Search Dialog */}
+      <Dialog open={showCitySearch} onOpenChange={setShowCitySearch}>
+        <DialogContent className={themeConfig.colors.card}>
+          <DialogHeader>
+            <DialogTitle className={themeConfig.colors.text}>Stadt auswählen</DialogTitle>
+            <DialogDescription className={themeConfig.colors.textSecondary}>
+              Suchen Sie nach Ihrer Stadt oder verwenden Sie automatische Standorterkennung
+            </DialogDescription>
+          </DialogHeader>
 
-        {loading && prayerTimes === null && (
-          <Card className="p-8 text-center">
-            <Loader2 className="w-12 h-12 animate-spin text-blue-500 mx-auto mb-4" />
-            <p className="text-slate-600 dark:text-slate-400">Gebetszeiten werden geladen...</p>
-          </Card>
-        )}
+          <div className="space-y-4">
+            {/* Auto Location Button */}
+            <Button
+              onClick={() => {
+                switchToAutoMode();
+                setShowCitySearch(false);
+              }}
+              className="w-full bg-teal-600 hover:bg-teal-700"
+            >
+              <Navigation className="w-4 h-4 mr-2" />
+              Automatische Standorterkennung
+            </Button>
 
-        {/* City Search Modal */}
-        {showCitySearch && (
-          <Card className="p-6 mb-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-slate-900 dark:text-white">Stadt suchen</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setShowCitySearch(false);
-                  setCitySearchQuery("");
-                  setSearchResults([]);
-                }}
-              >
-                Abbrechen
-              </Button>
-            </div>
+            {/* Manual Search */}
             <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Stadt eingeben (z.B. Mainz, Berlin, Frankfurt)"
+                placeholder="Stadt suchen..."
                 value={citySearchQuery}
                 onChange={(e) => {
                   setCitySearchQuery(e.target.value);
                   searchCity(e.target.value);
                 }}
-                className="pr-10"
+                className="pl-10"
               />
-              {searching && (
-                <Loader2 className="w-4 h-4 animate-spin absolute right-3 top-3 text-slate-400" />
-              )}
             </div>
+
+            {/* Search Results */}
+            {searching && (
+              <div className="flex justify-center py-4">
+                <Loader2 className="w-6 h-6 animate-spin text-teal-600" />
+              </div>
+            )}
+
             {searchResults.length > 0 && (
-              <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-64 overflow-y-auto">
                 {searchResults.map((result, index) => (
                   <button
                     key={index}
                     onClick={() => selectCity(result)}
-                    className="w-full text-left p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-700"
+                    className={`w-full text-left p-3 rounded-lg ${themeConfig.colors.backgroundSecondary} hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors`}
                   >
-                    <div className="font-medium text-slate-900 dark:text-white">{result.city}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">{result.country}</div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-teal-600" />
+                      <div>
+                        <p className={`font-medium ${themeConfig.colors.text}`}>{result.city}</p>
+                        <p className={`text-sm ${themeConfig.colors.textSecondary}`}>{result.country}</p>
+                      </div>
+                    </div>
                   </button>
                 ))}
               </div>
             )}
-          </Card>
-        )}
-
-        {prayerTimes && (
-          <div className="space-y-4">
-            {/* Date and Location */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                    <h3 className="font-semibold text-slate-900 dark:text-white">{prayerTimes.date}</h3>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                    <MapPin className="w-4 h-4" />
-                    <span>
-                      {prayerTimes.city}
-                      {prayerTimes.country && `, ${prayerTimes.country}`}
-                    </span>
-                    {locationMode === 'manual' && (
-                      <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded">
-                        Manuell
-                      </span>
-                    )}
-                    {locationMode === 'auto' && (
-                      <span className="ml-2 text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded">
-                        Automatisch
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowCitySearch(true)}
-                  className="text-blue-600 dark:text-blue-400"
-                >
-                  <Edit3 className="w-4 h-4" />
-                </Button>
-              </div>
-              {locationMode === 'manual' && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={switchToAutoMode}
-                  className="w-full mt-2"
-                >
-                  <Navigation className="w-4 h-4 mr-2" />
-                  Zu automatischer Erkennung wechseln
-                </Button>
-              )}
-            </Card>
-
-            {/* Prayer Times */}
-            {prayers.map((prayer) => {
-              const Icon = prayer.icon;
-              const baseTime = prayerTimes[prayer.name as keyof PrayerTimesData] as string;
-              const prayerKey = prayer.name.toLowerCase() as keyof PrayerSettings;
-              const adjustment = prayerSettings[prayerKey]?.timeAdjustment || 0;
-              
-              // Apply time adjustment
-              const [hours, minutes] = baseTime.split(':').map(Number);
-              const adjustedMinutes = minutes + adjustment;
-              const finalHours = (hours + Math.floor(adjustedMinutes / 60) + 24) % 24;
-              const finalMinutes = ((adjustedMinutes % 60) + 60) % 60;
-              const displayTime = `${String(finalHours).padStart(2, '0')}:${String(finalMinutes).padStart(2, '0')}`;
-              
-              return (
-                <Card 
-                  key={prayer.name} 
-                  className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-                  onClick={() => {
-                    setSelectedPrayer(prayer.name);
-                    setShowTimeAdjustDialog(true);
-                  }}
-                >
-                  <div className="p-5 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 bg-gradient-to-br ${prayer.color} rounded-xl flex items-center justify-center`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-slate-900 dark:text-white">{prayer.label}</h4>
-                        {adjustment !== 0 && (
-                          <p className="text-xs text-slate-500 dark:text-slate-400">
-                            {adjustment > 0 ? '+' : ''}{adjustment} min angepasst
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="text-right flex items-center gap-2">
-                      <div>
-                        <p className="text-2xl font-bold text-slate-900 dark:text-white">{displayTime}</p>
-                        {adjustment !== 0 && (
-                          <p className="text-xs text-slate-500 dark:text-slate-400">Original: {baseTime}</p>
-                        )}
-                      </div>
-                      <Edit className="w-4 h-4 text-slate-400" />
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
-
-            {/* Disclaimer */}
-            <Card className="p-4 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
-              <p className="text-xs text-amber-800 dark:text-amber-300">
-                <strong>Hinweis:</strong> Die Gebetszeiten werden basierend auf Ihrem Standort berechnet. 
-                Bitte überprüfen Sie die Zeiten mit Ihrer lokalen Moschee, da kleine Abweichungen möglich sind.
-                Tippen Sie auf eine Gebetszeit, um sie manuell anzupassen.
-              </p>
-            </Card>
           </div>
-        )}
-
-        {/* Time Adjustment Dialog */}
-        <Dialog open={showTimeAdjustDialog} onOpenChange={setShowTimeAdjustDialog}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Gebetszeit anpassen</DialogTitle>
-              <DialogDescription>
-                Passen Sie die Gebetszeit an Ihre lokalen Berechnungsmethoden an (±30 Minuten)
-              </DialogDescription>
-            </DialogHeader>
-            {selectedPrayer && (() => {
-              const prayerKey = selectedPrayer.toLowerCase() as keyof PrayerSettings;
-              const currentAdjustment = prayerSettings[prayerKey]?.timeAdjustment || 0;
-              const prayer = prayers.find(p => p.name === selectedPrayer);
-              
-              return (
-                <div className="space-y-4">
-                  <div className="text-center py-4">
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      {prayer?.label}
-                    </h3>
-                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                      {currentAdjustment > 0 ? '+' : ''}{currentAdjustment} Minuten
-                    </p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <input
-                      type="range"
-                      min="-30"
-                      max="30"
-                      value={currentAdjustment}
-                      onChange={(e) => {
-                        const newAdjustment = parseInt(e.target.value);
-                        const newSettings = {
-                          ...prayerSettings,
-                          [prayerKey]: {
-                            ...prayerSettings[prayerKey],
-                            timeAdjustment: newAdjustment,
-                          },
-                        };
-                        setPrayerSettings(newSettings);
-                        savePrayerSettings(newSettings);
-                      }}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
-                      <span>-30 min</span>
-                      <span>0</span>
-                      <span>+30 min</span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        const newSettings = {
-                          ...prayerSettings,
-                          [prayerKey]: {
-                            ...prayerSettings[prayerKey],
-                            timeAdjustment: 0,
-                          },
-                        };
-                        setPrayerSettings(newSettings);
-                        savePrayerSettings(newSettings);
-                        toast.success('Anpassung zurückgesetzt');
-                      }}
-                      className="flex-1"
-                    >
-                      Zurücksetzen
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setShowTimeAdjustDialog(false);
-                        toast.success('Gebetszeit angepasst');
-                      }}
-                      className="flex-1"
-                    >
-                      Fertig
-                    </Button>
-                  </div>
-                </div>
-              );
-            })()}
-          </DialogContent>
-        </Dialog>
-      </main>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

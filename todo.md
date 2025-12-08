@@ -201,3 +201,13 @@
 - [x] Add rate limit tracking to chat API endpoint
 - [x] Display remaining messages in chat UI
 - [x] Show friendly error when rate limit reached
+
+# Prayer Times Page Redesign
+
+- [x] Redesign prayer times page with modern card layout
+- [x] Add icons for each prayer (Fajr, Dhuhr, Asr, Maghrib, Isha)
+- [x] Highlight current prayer with special styling
+- [x] Add countdown timer showing time until next prayer
+- [x] Apply Classic theme colors (dark blue with teal accents)
+- [x] Show prayer names in German with Arabic names
+- [x] Add visual indicators for past/current/upcoming prayers
