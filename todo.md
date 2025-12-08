@@ -156,6 +156,7 @@
 - [ ] Commit and push to GitHub
 
 ## Bug Fixes - December 7, 2025 (Late Evening)
-- [ ] Fix PrayerTimesWidget crash when returning to home page
-- [ ] Add proper error handling and loading states to widget
-- [ ] Test navigation flow: Home → Prayer Times → Back → Home
+- [x] Fix PrayerTimesWidget crash when returning to home page
+- [x] Add proper error handling and loading states to widget
+- [ ] Test navigation flow: Home → Prayer Times → Back → Home (user testing required)
+- [ ] Commit and push to GitHub
