@@ -252,36 +252,23 @@ export default function Qibla() {
                 <div className={`absolute inset-0 rounded-full border-4 bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 shadow-2xl transition-all duration-300 ${
                   isAligned ? 'border-teal-500 shadow-teal-500/50' : 'border-slate-600'
                 }`}>
-                  {/* Cardinal Directions */}
-                  <div className="absolute top-4 left-1/2 -translate-x-1/2 text-sm font-bold text-teal-400">N</div>
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm font-bold text-slate-400">S</div>
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">W</div>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">E</div>
+                  {/* Top Notch Marker */}
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-4 bg-teal-400 rounded-full"></div>
                   
-                  {/* Phone Direction Arrow - Always points up */}
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Qibla Direction Arrow - Rotates to point toward Kaaba */}
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
+                    style={{ transform: `rotate(${relativeDirection}deg)` }}
+                  >
                     <div className="relative">
                       <div className="w-0 h-0 border-l-[25px] border-l-transparent border-r-[25px] border-r-transparent border-b-[100px] border-b-white drop-shadow-lg"></div>
                       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 w-3 h-3 bg-teal-400 rounded-full"></div>
                     </div>
                   </div>
 
-                  {/* Kaaba Icon - Fixed at calculated Qibla direction on compass edge */}
-                  <div 
-                    className="absolute w-full h-full"
-                    style={{ transform: `rotate(${qiblaDirection}deg)` }}
-                  >
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                      <div className="text-5xl" style={{ transform: `rotate(${-qiblaDirection}deg)` }}>🕋</div>
-                    </div>
-                  </div>
-
-                  {/* Rotating compass ring to show device orientation */}
-                  <div 
-                    className="absolute inset-2 rounded-full border-2 border-dashed border-teal-500/30 transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${-smoothedHeading}deg)` }}
-                  >
-                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-teal-400 rounded-full"></div>
+                  {/* Kaaba Icon - Fixed at top (Qibla target) */}
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+                    <div className="text-5xl">🕋</div>
                   </div>
                 </div>
               </div>
