@@ -395,3 +395,10 @@
 - [x] Style tabs with teal color scheme
 - [ ] Test favorites functionality
 - [x] Save checkpoint
+
+# Quiz Fixes (December 8, 2025 - 14:32)
+
+- [x] Change "Azrail" to "Malak al-Maut" in quiz question (authentic Islamic terminology)
+- [x] Auto-scroll already implemented (line 90 in Quiz.tsx)
+- [ ] Test quiz navigation
+- [ ] Save checkpoint

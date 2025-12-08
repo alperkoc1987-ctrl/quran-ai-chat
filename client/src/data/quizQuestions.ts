@@ -78,7 +78,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 9,
     question: "Welcher Engel brachte die Offenbarung zu Prophet Muhammad (ﷺ)?",
-    options: ["Mikail", "Israfil", "Jibril", "Azrail"],
+    options: ["Mikail", "Israfil", "Jibril", "Malak al-Maut"],
     correctAnswer: 2,
     explanation: "Der Engel Jibril (Gabriel) brachte die Offenbarungen von Allah zu Prophet Muhammad (ﷺ).",
     category: "Grundlagen"
@@ -246,7 +246,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 30,
     question: "Welcher Engel ist für das Blasen der Posaune am Tag des Gerichts zuständig?",
-    options: ["Jibril", "Mikail", "Israfil", "Azrail"],
+    options: ["Jibril", "Mikail", "Israfil", "Malak al-Maut"],
     correctAnswer: 2,
     explanation: "Der Engel Israfil wird die Posaune am Tag des Gerichts blasen.",
     category: "Grundlagen"
@@ -358,7 +358,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 44,
     question: "Welcher Engel ist für den Regen zuständig?",
-    options: ["Jibril", "Mikail", "Israfil", "Azrail"],
+    options: ["Jibril", "Mikail", "Israfil", "Malak al-Maut"],
     correctAnswer: 1,
     explanation: "Der Engel Mikail (Michael) ist für den Regen und die Versorgung zuständig.",
     category: "Grundlagen"
@@ -678,9 +678,9 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 84,
     question: "Welcher Engel ist für das Nehmen der Seelen zuständig?",
-    options: ["Jibril", "Mikail", "Israfil", "Azrail"],
+    options: ["Jibril", "Mikail", "Israfil", "Malak al-Maut"],
     correctAnswer: 3,
-    explanation: "Der Engel Azrail (auch Malak al-Maut genannt) ist für das Nehmen der Seelen zuständig.",
+    explanation: "Malak al-Maut (der Todesengel) ist für das Nehmen der Seelen zuständig. Dies ist der authentische Name aus dem Koran.",
     category: "Grundlagen"
   },
   {
