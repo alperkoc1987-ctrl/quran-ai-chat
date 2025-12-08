@@ -25,6 +25,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
   const [, navigate] = useLocation();
   const { state: audioState, playSurah, pause, resume } = useAudioPlayer();
 
@@ -161,11 +162,17 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
     }
   };
 
-  const filteredSurahs = surahs.filter(
+  // Filter by search query
+  let filteredSurahs = surahs.filter(
     (surah) =>
       surah.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       surah.number.toString().includes(searchQuery)
   );
+
+  // Filter by active tab
+  if (activeTab === 'favorites') {
+    filteredSurahs = filteredSurahs.filter(surah => favorites.has(surah.number));
+  }
 
   if (isLoading) {
     return (
@@ -181,6 +188,30 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
 
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
+      {/* Tabs */}
+      <div className="flex gap-2 p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+        <button
+          onClick={() => setActiveTab('all')}
+          className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+            activeTab === 'all'
+              ? 'bg-teal-600 text-white'
+              : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+        >
+          Alle
+        </button>
+        <button
+          onClick={() => setActiveTab('favorites')}
+          className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+            activeTab === 'favorites'
+              ? 'bg-teal-600 text-white'
+              : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+          }`}
+        >
+          Favoriten
+        </button>
+      </div>
+
       {/* Search Bar */}
       <div className="p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
         <div className="relative">

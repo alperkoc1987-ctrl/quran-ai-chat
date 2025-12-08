@@ -378,4 +378,20 @@
 # Cleanup and Checkpoint (December 8, 2025 - 13:25)
 
 - [x] Remove debug panel from Qibla page
-- [ ] Save checkpoint with working compass
+- [x] Save checkpoint with working compass
+
+# Text Readability Fixes (December 8, 2025 - 13:58)
+
+- [x] Fix "Aktuelle Zeit" text color in prayer time adjustment dialog (gray on white → dark)
+- [x] Fix "Erlauben Sie den Standortzugriff..." text color on Prayer Times page (gray on white → dark)
+- [x] Fix toast notifications transparency - make background opaque to prevent text overlap
+- [ ] Test all changes on mobile
+
+# Favorites Tabs Feature (December 8, 2025 - 14:05)
+
+- [x] Add tabs in Quran section: "Alle" | "Favoriten"
+- [x] Filter surah list based on selected tab
+- [x] Show only favorited surahs when "Favoriten" tab is active
+- [x] Style tabs with teal color scheme
+- [ ] Test favorites functionality
+- [ ] Save checkpoint

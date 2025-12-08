@@ -11,19 +11,19 @@ const Toaster = ({ ...props }: ToasterProps) => {
       position="bottom-center"
       toastOptions={{
         style: {
-          background: "hsl(var(--popover))",
-          color: "hsl(var(--popover-foreground))",
-          border: "2px solid hsl(var(--border))",
+          background: "rgb(15 23 42)", // Opaque dark background (slate-900)
+          color: "rgb(255 255 255)", // White text
+          border: "2px solid rgb(20 184 166)", // Teal border
           fontSize: "16px",
           fontWeight: "600",
           padding: "16px 24px",
           minWidth: "300px",
         },
         classNames: {
-          success: "bg-green-600 dark:bg-green-600 text-white dark:text-white border-green-700 dark:border-green-500 shadow-lg",
-          error: "bg-red-600 dark:bg-red-600 text-white dark:text-white border-red-700 dark:border-red-500 shadow-lg",
-          info: "bg-blue-600 dark:bg-blue-600 text-white dark:text-white border-blue-700 dark:border-blue-500 shadow-lg",
-          warning: "bg-yellow-600 dark:bg-yellow-600 text-white dark:text-white border-yellow-700 dark:border-yellow-500 shadow-lg",
+          success: "!bg-green-600 text-white border-green-700 shadow-lg",
+          error: "!bg-red-600 text-white border-red-700 shadow-lg",
+          info: "!bg-blue-600 text-white border-blue-700 shadow-lg",
+          warning: "!bg-yellow-600 text-white border-yellow-700 shadow-lg",
         },
       }}
       {...props}

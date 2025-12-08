@@ -596,7 +596,7 @@ export default function PrayerTimes() {
           <Card className="p-8 text-center">
             <Clock className="w-16 h-16 mx-auto mb-4 text-teal-600" />
             <h2 className={`text-xl font-bold mb-2 ${themeConfig.colors.text}`}>Gebetszeiten laden</h2>
-            <p className={`${themeConfig.colors.textSecondary} mb-6`}>
+            <p className="text-slate-700 dark:text-slate-300 mb-6">
               Erlauben Sie den Standortzugriff, um Ihre lokalen Gebetszeiten zu sehen
             </p>
             <Button onClick={requestLocation} className="bg-teal-600 hover:bg-teal-700">
@@ -689,7 +689,7 @@ export default function PrayerTimes() {
             {/* Current Adjustment */}
             {selectedPrayerForAdjust && (
               <div className="text-center p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
-                <p className="text-sm text-slate-300 dark:text-slate-300 mb-1">Aktuelle Zeit</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-1">Aktuelle Zeit</p>
                 <p className="text-3xl font-bold text-teal-600">
                   {getAdjustedTime(selectedPrayerForAdjust)}
                 </p>
