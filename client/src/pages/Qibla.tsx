@@ -183,9 +183,9 @@ export default function Qibla() {
   }, [smoothedHeading, qiblaDirection, magneticDeclination, correctedHeading, userLocation]);
   
   // Check if needle is pointing up (to Kaaba)
-  // Needle rotation: qiblaDirection - correctedHeading
-  // When this equals 0, needle points straight up = aligned
-  const needleAngle = qiblaDirection !== null ? ((qiblaDirection - correctedHeading + 360) % 360) : 0;
+  // Needle rotation: correctedHeading - qiblaDirection
+  // When device heading matches Qibla direction, needle points straight up = aligned
+  const needleAngle = qiblaDirection !== null ? ((correctedHeading - qiblaDirection + 360) % 360) : 0;
   // Normalize to -180 to 180 range
   const normalizedAngle = needleAngle > 180 ? needleAngle - 360 : needleAngle;
   const headingDiff = Math.abs(normalizedAngle);
@@ -313,7 +313,7 @@ export default function Qibla() {
                   {/* White Compass Needle - Points toward Qibla direction */}
                   <div 
                     className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${qiblaDirection !== null ? qiblaDirection - correctedHeading : 0}deg)` }}
+                    style={{ transform: `rotate(${qiblaDirection !== null ? correctedHeading - qiblaDirection : 0}deg)` }}
                   >
                     <div className="relative">
                       {/* Needle pointing up */}
