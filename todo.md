@@ -344,3 +344,20 @@
 - [x] Added geomagnetism library for magnetic declination correction
 - [x] Applied correction: correctedHeading = smoothedHeading + magneticDeclination
 - [x] Needle now points correctly when device faces Qibla
+
+# Qibla Compass Fix - December 8, 2025 (12:45)
+
+- [x] Fixed needle rotation direction (inverted formula: correctedHeading - qiblaDirection)
+- [x] Fixed alignment detection to match new rotation
+- [x] Improved smoothing algorithm
+- [x] Added debug logging
+- [ ] Test on Vercel deployment (user testing required)
+- [ ] Remove debug logs after confirmation
+- [ ] Commit and push to GitHub
+
+# URGENT - Visual Debug Panel (December 8, 2025 - 13:00)
+
+- [ ] Add on-screen debug panel showing all compass values
+- [ ] Display: Position, Qibla Direction, Raw Heading, Corrected Heading, Needle Rotation
+- [ ] Make it visible on mobile devices
+- [ ] Get screenshot from user to diagnose the actual problem

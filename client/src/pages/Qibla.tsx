@@ -296,6 +296,21 @@ export default function Qibla() {
 
         {qiblaDirection !== null && (
           <div className="space-y-6">
+            {/* DEBUG PANEL - Remove after testing */}
+            {smoothedHeading !== null && (
+              <Card className="p-4 bg-yellow-900/30 border-yellow-600">
+                <div className="text-xs font-mono text-yellow-200 space-y-1">
+                  <div><strong>Position:</strong> {userLocation?.lat.toFixed(4)}, {userLocation?.lng.toFixed(4)}</div>
+                  <div><strong>Qibla Direction:</strong> {qiblaDirection.toFixed(1)}°</div>
+                  <div><strong>Raw Heading:</strong> {smoothedHeading.toFixed(1)}°</div>
+                  <div><strong>Magnetic Declination:</strong> {magneticDeclination.toFixed(1)}°</div>
+                  <div><strong>Corrected Heading:</strong> {correctedHeading.toFixed(1)}°</div>
+                  <div><strong>Needle Rotation:</strong> {(correctedHeading - qiblaDirection).toFixed(1)}°</div>
+                  <div><strong>Heading Diff:</strong> {headingDiff.toFixed(1)}° {isAligned ? '✅ ALIGNED' : '❌ NOT ALIGNED'}</div>
+                </div>
+              </Card>
+            )}
+
             {/* Compass Display */}
             <Card className={`p-8 transition-all duration-300 ${
               isAligned 
