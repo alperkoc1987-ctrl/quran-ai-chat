@@ -138,17 +138,17 @@ export default function Qibla() {
     }
   }, [locationGranted]);
 
-  // Calculate how much the needle needs to rotate to point to Qibla
-  // Needle points north (0°), we want to check if it's pointing at Qibla direction
-  const needleToQiblaAngle = qiblaDirection !== null ? (qiblaDirection - smoothedHeading + 360) % 360 : 0;
+  // Check if device is pointing toward Qibla
+  // When smoothedHeading matches qiblaDirection, device faces Qibla (needle points up to Kaaba)
+  const headingDiff = qiblaDirection !== null ? Math.abs(((smoothedHeading - qiblaDirection + 540) % 360) - 180) : 180;
 
   // Vibration feedback when aligned with Qibla
   useEffect(() => {
     if (qiblaDirection === null) return;
 
-    // Check if needle is pointing toward Qibla (±5° tolerance)
-    // Needle is aligned when it points up (0°) and Qibla is also up
-    const isNowAligned = Math.abs(needleToQiblaAngle) < 5 || Math.abs(needleToQiblaAngle - 360) < 5;
+    // Check if device is pointing toward Qibla (±5° tolerance)
+    // Aligned when device heading matches Qibla direction (needle points up)
+    const isNowAligned = headingDiff < 5;
     
     // Vibrate when becoming aligned (not continuously)
     if (isNowAligned && !isAligned) {
@@ -158,7 +158,7 @@ export default function Qibla() {
     }
     
     setIsAligned(isNowAligned);
-  }, [needleToQiblaAngle, qiblaDirection, isAligned]);
+  }, [headingDiff, qiblaDirection, isAligned]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950">
@@ -275,15 +275,9 @@ export default function Qibla() {
                     </div>
                   </div>
 
-                  {/* Kaaba Icon - FIXED at Qibla direction relative to north */}
-                  <div 
-                    className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out"
-                    style={{ transform: `rotate(${qiblaDirection - smoothedHeading}deg)` }}
-                  >
-                    {/* Kaaba positioned at top edge of compass */}
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2">
-                      <div className="text-5xl">🕋</div>
-                    </div>
+                  {/* Kaaba Icon - ALWAYS at top (does NOT rotate) */}
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+                    <div className="text-5xl">🕋</div>
                   </div>
                 </div>
               </div>
