@@ -10,6 +10,7 @@ import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
 import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
+import { AudioPlayerOverlay } from "./components/AudioPlayerOverlay";
 import { ScrollToTop } from "./components/ScrollToTop";
 import NewHome from "./pages/NewHome";
 
@@ -81,6 +82,7 @@ function App() {
                 <TooltipProvider>
                 <Toaster />
                 <Router />
+                <AudioPlayerOverlay />
                 <MiniAudioPlayer />
                 <BottomNavigation />
               </TooltipProvider>

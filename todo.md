@@ -143,3 +143,11 @@
 - [x] Redesign compass with teal accents and modern dark theme
 - [ ] Test compass functionality on iOS Chrome/Safari (user testing required)
 - [ ] Commit and push to GitHub
+
+## Qibla & Audio Player Improvements - December 7, 2025 (Late Evening)
+- [x] Replace green dot with Kaaba icon in Qibla compass
+- [x] Add compass smoothing algorithm to prevent erratic movement
+- [x] Create halftransparent audio player overlay with Surah info when playing
+- [x] Add prayer times widget to home page
+- [ ] Test all changes on mobile
+- [ ] Commit and push to GitHub

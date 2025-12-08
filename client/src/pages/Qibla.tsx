@@ -9,6 +9,7 @@ export default function Qibla() {
   const [error, setError] = useState<string | null>(null);
   const [qiblaDirection, setQiblaDirection] = useState<number | null>(null);
   const [currentHeading, setCurrentHeading] = useState<number>(0);
+  const [smoothedHeading, setSmoothedHeading] = useState<number>(0);
   const [locationGranted, setLocationGranted] = useState(false);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [compassPermissionNeeded, setCompassPermissionNeeded] = useState(false);
@@ -79,6 +80,15 @@ export default function Qibla() {
       const handleOrientation = (event: DeviceOrientationEvent) => {
         if (event.alpha !== null) {
           setCurrentHeading(event.alpha);
+          // Smooth the compass rotation using exponential moving average
+          setSmoothedHeading(prev => {
+            const alpha = 0.15; // Smoothing factor (lower = smoother)
+            let diff = event.alpha! - prev;
+            // Handle 360° wrap-around
+            if (diff > 180) diff -= 360;
+            if (diff < -180) diff += 360;
+            return (prev + alpha * diff + 360) % 360;
+          });
         }
       };
 
@@ -123,7 +133,7 @@ export default function Qibla() {
     }
   }, [locationGranted]);
 
-  const relativeDirection = qiblaDirection !== null ? (qiblaDirection - currentHeading + 360) % 360 : 0;
+  const relativeDirection = qiblaDirection !== null ? (qiblaDirection - smoothedHeading + 360) % 360 : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950">
@@ -234,8 +244,10 @@ export default function Qibla() {
                     </div>
                   </div>
 
-                  {/* Center Dot */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-teal-500 rounded-full shadow-lg ring-4 ring-teal-500/30" />
+                  {/* Kaaba Icon */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center">
+                    <div className="text-3xl" style={{ transform: `rotate(${-relativeDirection}deg)` }}>🕋</div>
+                  </div>
                 </div>
               </div>
 
@@ -272,7 +284,7 @@ export default function Qibla() {
               <h3 className="font-semibold text-teal-300 mb-2">Anleitung:</h3>
               <ul className="text-sm text-teal-200 space-y-1 list-disc list-inside">
                 <li>Halten Sie Ihr Gerät flach (parallel zum Boden)</li>
-                <li>Der grüne Pfeil zeigt die Richtung zur Kaaba in Mekka</li>
+                <li>Der grüne Pfeil zeigt zur Kaaba 🕋 in Mekka</li>
                 <li>Drehen Sie sich, bis der Pfeil nach oben zeigt</li>
                 <li>Kalibrieren Sie Ihren Kompass bei Bedarf in den Geräteeinstellungen</li>
               </ul>
