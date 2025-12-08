@@ -154,3 +154,8 @@
 - [x] Create widget customization settings (show/hide widgets)
 - [ ] Test all changes on mobile
 - [ ] Commit and push to GitHub
+
+## Bug Fixes - December 7, 2025 (Late Evening)
+- [ ] Fix PrayerTimesWidget crash when returning to home page
+- [ ] Add proper error handling and loading states to widget
+- [ ] Test navigation flow: Home → Prayer Times → Back → Home

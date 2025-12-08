@@ -19,25 +19,26 @@ export function PrayerTimesWidget() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load prayer times from localStorage
-    const storedTimes = localStorage.getItem("prayerTimes");
-    if (storedTimes) {
-      try {
+    // Load prayer times from localStorage with error handling
+    try {
+      const storedTimes = localStorage.getItem("prayerTimes");
+      if (storedTimes) {
         const times = JSON.parse(storedTimes);
-        const timesArray: PrayerTime[] = [
-          { name: "Fajr", time: times.Fajr },
-          { name: "Dhuhr", time: times.Dhuhr },
-          { name: "Asr", time: times.Asr },
-          { name: "Maghrib", time: times.Maghrib },
-          { name: "Isha", time: times.Isha },
-        ];
-        setPrayerTimes(timesArray);
-        setLoading(false);
-      } catch (e) {
-        console.error("Error parsing prayer times:", e);
-        setLoading(false);
+        // Validate that all required prayer times exist
+        if (times && times.Fajr && times.Dhuhr && times.Asr && times.Maghrib && times.Isha) {
+          const timesArray: PrayerTime[] = [
+            { name: "Fajr", time: times.Fajr },
+            { name: "Dhuhr", time: times.Dhuhr },
+            { name: "Asr", time: times.Asr },
+            { name: "Maghrib", time: times.Maghrib },
+            { name: "Isha", time: times.Isha },
+          ];
+          setPrayerTimes(timesArray);
+        }
       }
-    } else {
+    } catch (e) {
+      console.error("Error loading prayer times:", e);
+    } finally {
       setLoading(false);
     }
   }, []);
@@ -46,22 +47,31 @@ export function PrayerTimesWidget() {
     if (prayerTimes.length === 0) return;
 
     const updateNextPrayer = () => {
-      const now = new Date();
-      const currentTime = now.getHours() * 60 + now.getMinutes();
+      try {
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
 
-      // Find next prayer
-      for (const prayer of prayerTimes) {
-        const [hours, minutes] = prayer.time.split(":").map(Number);
-        const prayerTimeInMinutes = hours * 60 + minutes;
+        // Find next prayer
+        for (const prayer of prayerTimes) {
+          if (!prayer || !prayer.time) continue;
+          const [hours, minutes] = prayer.time.split(":").map(Number);
+          if (isNaN(hours) || isNaN(minutes)) continue;
+          
+          const prayerTimeInMinutes = hours * 60 + minutes;
 
-        if (prayerTimeInMinutes > currentTime) {
-          setNextPrayer(prayer);
-          return;
+          if (prayerTimeInMinutes > currentTime) {
+            setNextPrayer(prayer);
+            return;
+          }
         }
-      }
 
-      // If no prayer found today, next is Fajr tomorrow
-      setNextPrayer(prayerTimes[0]);
+        // If no prayer found today, next is Fajr tomorrow
+        if (prayerTimes.length > 0 && prayerTimes[0]) {
+          setNextPrayer(prayerTimes[0]);
+        }
+      } catch (e) {
+        console.error("Error updating next prayer:", e);
+      }
     };
 
     updateNextPrayer();
@@ -74,23 +84,31 @@ export function PrayerTimesWidget() {
     if (!nextPrayer) return;
 
     const updateCountdown = () => {
-      const now = new Date();
-      const [hours, minutes] = nextPrayer.time.split(":").map(Number);
-      
-      let targetTime = new Date();
-      targetTime.setHours(hours, minutes, 0, 0);
+      try {
+        if (!nextPrayer || !nextPrayer.time) return;
+        
+        const now = new Date();
+        const [hours, minutes] = nextPrayer.time.split(":").map(Number);
+        
+        if (isNaN(hours) || isNaN(minutes)) return;
+        
+        let targetTime = new Date();
+        targetTime.setHours(hours, minutes, 0, 0);
 
-      // If target time is in the past, it's tomorrow
-      if (targetTime < now) {
-        targetTime.setDate(targetTime.getDate() + 1);
+        // If target time is in the past, it's tomorrow
+        if (targetTime < now) {
+          targetTime.setDate(targetTime.getDate() + 1);
+        }
+
+        const diff = targetTime.getTime() - now.getTime();
+        const hoursLeft = Math.floor(diff / (1000 * 60 * 60));
+        const minutesLeft = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secondsLeft = Math.floor((diff % (1000 * 60)) / 1000);
+
+        setCountdown(`${hoursLeft}:${minutesLeft.toString().padStart(2, "0")}:${secondsLeft.toString().padStart(2, "0")}`);
+      } catch (e) {
+        console.error("Error updating countdown:", e);
       }
-
-      const diff = targetTime.getTime() - now.getTime();
-      const hoursLeft = Math.floor(diff / (1000 * 60 * 60));
-      const minutesLeft = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const secondsLeft = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setCountdown(`${hoursLeft}:${minutesLeft.toString().padStart(2, "0")}:${secondsLeft.toString().padStart(2, "0")}`);
     };
 
     updateCountdown();
