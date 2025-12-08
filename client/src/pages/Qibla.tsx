@@ -83,16 +83,24 @@ export default function Qibla() {
           setCurrentHeading(event.alpha);
           // Smooth the compass rotation using exponential moving average
           setSmoothedHeading(prev => {
-            const alpha = 0.08; // Lower smoothing factor for more stability
-            let diff = event.alpha! - prev;
-            // Handle 360° wrap-around
+            const alpha = 0.15; // Smoothing factor
+            let newHeading = event.alpha!;
+            let diff = newHeading - prev;
+            
+            // Handle 360° wrap-around (shortest path)
             if (diff > 180) diff -= 360;
             if (diff < -180) diff += 360;
             
             // Dead zone: ignore very small changes to prevent jitter
-            if (Math.abs(diff) < 2) return prev;
+            if (Math.abs(diff) < 1.5) return prev;
             
-            return (prev + alpha * diff + 360) % 360;
+            // Apply smoothing
+            let result = prev + alpha * diff;
+            // Normalize to 0-360 range
+            if (result < 0) result += 360;
+            if (result >= 360) result -= 360;
+            
+            return result;
           });
         }
       };
@@ -140,7 +148,12 @@ export default function Qibla() {
 
   // Check if device is pointing toward Qibla
   // When smoothedHeading matches qiblaDirection, device faces Qibla (needle points up to Kaaba)
-  const headingDiff = qiblaDirection !== null ? Math.abs(((smoothedHeading - qiblaDirection + 540) % 360) - 180) : 180;
+  const headingDiff = qiblaDirection !== null ? (() => {
+    let diff = Math.abs(smoothedHeading - qiblaDirection);
+    // Take shortest angle (handle 360° wrap)
+    if (diff > 180) diff = 360 - diff;
+    return diff;
+  })() : 180;
 
   // Vibration feedback when aligned with Qibla
   useEffect(() => {

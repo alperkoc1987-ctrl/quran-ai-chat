@@ -323,3 +323,9 @@
 - [ ] Qibla compass: No green highlight when aligned - fix alignment detection
 - [ ] Test all fixes in LOCAL browser before pushing to Vercel
 - [ ] Clear Vercel cache and force redeploy
+
+# Qibla Compass Bugs - December 8, 2025 (07:18)
+
+- [ ] Green highlight not showing when aligned with Qibla
+- [ ] Needle rotates 360° quickly when pointing to Kaaba (0°/360° jump issue)
+- [ ] Fix rotation smoothing to prevent jumps at 0° boundary

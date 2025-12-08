@@ -54,9 +54,9 @@ export async function handleChatRequest(req: Request, res: Response) {
       geminiMessages[0].parts[0].text = `${systemPrompt}\n\n${geminiMessages[0].parts[0].text}`;
     }
 
-    // Use Gemini 2.0 Flash (fast and cost-effective)
+    // Use Gemini 1.5 Flash (stable with higher free tier limits)
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-1.5-flash-latest",
       generationConfig: {
         maxOutputTokens: 800,
         temperature: 0.7,
