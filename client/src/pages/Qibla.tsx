@@ -92,12 +92,14 @@ export default function Qibla() {
   const requestCompassPermission = async () => {
     if ('DeviceOrientationEvent' in window) {
       const handleOrientation = (event: DeviceOrientationEvent) => {
-        if (event.alpha !== null) {
-          setCurrentHeading(event.alpha);
+        // iOS provides webkitCompassHeading (true north), Android provides alpha (magnetic north)
+        const compassHeading = (event as any).webkitCompassHeading ?? event.alpha;
+        if (compassHeading !== null) {
+          setCurrentHeading(compassHeading);
           // Smooth the compass rotation using exponential moving average
           setSmoothedHeading(prev => {
             const alpha = 0.2; // Smoothing factor (increased for better responsiveness)
-            let newHeading = event.alpha!;
+            let newHeading = compassHeading;
             
             // Normalize both values to 0-360
             newHeading = ((newHeading % 360) + 360) % 360;
