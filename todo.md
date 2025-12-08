@@ -402,3 +402,10 @@
 - [x] Auto-scroll already implemented (line 90 in Quiz.tsx)
 - [ ] Test quiz navigation
 - [ ] Save checkpoint
+
+# Reading Time Tracking Fix (December 8, 2025 - 14:35)
+
+- [x] Debug reading time tracking (shows 0m despite reading 270 verses)
+- [x] Fix formatTime() function to show seconds when under 1 minute
+- [ ] Test reading time tracking
+- [ ] Save checkpoint with both quiz and reading time fixes
