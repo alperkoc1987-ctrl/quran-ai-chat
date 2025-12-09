@@ -4,7 +4,6 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { checkAndIncrementRateLimit } from '../server/db';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST requests
@@ -13,24 +12,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Rate limiting check
-    // Use IP address as user identifier for anonymous users
-    const userId = req.headers['x-forwarded-for'] as string || req.socket?.remoteAddress || 'anonymous';
-    const rateLimit = await checkAndIncrementRateLimit(userId);
-    
-    if (!rateLimit.allowed) {
-      return res.status(429).json({ 
-        error: rateLimit.reason,
-        dailyRemaining: rateLimit.dailyRemaining,
-        minuteRemaining: rateLimit.minuteRemaining,
-        resetTime: rateLimit.resetTime,
-      });
-    }
-    
-    // Add rate limit info to response headers
-    res.setHeader('X-RateLimit-Daily-Remaining', rateLimit.dailyRemaining.toString());
-    res.setHeader('X-RateLimit-Minute-Remaining', rateLimit.minuteRemaining.toString());
-
     const { messages } = req.body;
 
     if (!messages || !Array.isArray(messages)) {
