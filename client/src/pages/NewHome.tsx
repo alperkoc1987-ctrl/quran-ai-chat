@@ -13,9 +13,11 @@ import { PrayerTimesWidget } from "@/components/PrayerTimesWidget";
 import { useWidgetPreferences } from "@/components/WidgetSettings";
 import { PushToTalkButton } from "@/components/PushToTalkButton";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function NewHome() {
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const widgetPrefs = useWidgetPreferences();
   const [chatExpanded, setChatExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -154,7 +156,7 @@ export default function NewHome() {
   const categories = [
     {
       id: "quran",
-      title: "Der Koran",
+      title: t.home.categories.quran,
       description: "Lesen Sie den heiligen Koran",
       icon: BookOpen,
       link: "/quran",
@@ -162,7 +164,7 @@ export default function NewHome() {
     },
     {
       id: "duas",
-      title: "Duas",
+      title: t.home.categories.duas,
       description: "Bittgebete für jede Lebenslage",
       icon: HandHeart,
       link: "/duas",
@@ -170,7 +172,7 @@ export default function NewHome() {
     },
     {
       id: "prayer-times",
-      title: "Gebetszeiten",
+      title: t.home.categories.prayerTimes,
       description: "Finden Sie Ihre lokalen Gebetszeiten",
       icon: Clock,
       link: "/prayer-times",
@@ -178,7 +180,7 @@ export default function NewHome() {
     },
     {
       id: "qibla",
-      title: "Qibla-Richtung",
+      title: t.home.categories.qibla,
       description: "Finden Sie die Richtung nach Mekka",
       icon: Compass,
       link: "/qibla",
@@ -186,7 +188,7 @@ export default function NewHome() {
     },
     {
       id: "stories",
-      title: "Geschichten",
+      title: t.home.categories.stories,
       description: "Prophetengeschichten aus dem Koran",
       icon: Scroll,
       link: "/stories",
@@ -194,7 +196,7 @@ export default function NewHome() {
     },
     {
       id: "quiz",
-      title: "Quiz",
+      title: t.home.categories.quiz,
       description: "Teste dein islamisches Wissen",
       icon: Brain,
       link: "/quiz",
@@ -202,7 +204,7 @@ export default function NewHome() {
     },
     {
       id: "statistics",
-      title: "Fortschritt",
+      title: t.home.categories.progress,
       description: "Fortschritt & Lesezeiten",
       icon: BarChart,
       link: "/statistics",
@@ -219,7 +221,7 @@ export default function NewHome() {
     },
     {
       id: "dhikr",
-      title: "Dhikr & Adhkar",
+      title: t.home.categories.dhikr,
       description: "Erinnerungen mit Zähler",
       icon: Sparkles,
       link: "/dhikr",
@@ -251,8 +253,8 @@ export default function NewHome() {
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Koran & Hadith KI-Chat</h1>
-                <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Ihr islamischer Begleiter</p>
+                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>{t.home.title}</h1>
+                <p className={`text-xs ${themeConfig.colors.textSecondary}`}>{t.home.subtitle}</p>
               </div>
             </div>
           </div>
@@ -285,8 +287,8 @@ export default function NewHome() {
                 <MessageSquare className="w-5 h-5 text-purple-600" />
               </div>
               <div className="text-left">
-                <h3 className="font-semibold text-sm">KI-Assistent</h3>
-                <p className="text-xs opacity-90">Stellen Sie Fragen zum Koran und Hadith</p>
+                <h3 className="font-semibold text-sm">{t.home.aiChat.title}</h3>
+                <p className="text-xs opacity-90">{t.home.aiChat.subtitle}</p>
               </div>
             </div>
             {chatExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -313,7 +315,7 @@ export default function NewHome() {
               {/* Input */}
               <div className={`border-t ${themeConfig.colors.border} p-4`}>
                 <p className={`text-xs ${themeConfig.colors.textMuted} mb-2`}>
-                  Fragen Sie nach Versen, Duas oder islamischen Themen
+                  {t.home.aiChat.placeholder}
                 </p>
                 <div className="flex gap-2">
                   <Input

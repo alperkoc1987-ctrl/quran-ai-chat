@@ -29,7 +29,7 @@ export default function Settings() {
   const { theme, toggleTheme } = useTheme();
   const { showTransliteration, setShowTransliteration } = useTransliteration();
   const { language: translationLanguage, setLanguage: setTranslationLanguage } = useTranslationLanguage();
-  const { language: appLanguage, setLanguage: setAppLanguage } = useLanguage();
+  const { language: appLanguage, setLanguage: setAppLanguage, t } = useLanguage();
   
   // Reciter selection state
   const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
@@ -95,7 +95,7 @@ export default function Settings() {
             <ArrowLeft className="w-6 h-6 text-slate-300" />
           </button>
           <h1 className="text-2xl font-bold text-white">
-            Einstellungen
+            {t.settings.title}
           </h1>
         </div>
       </div>
