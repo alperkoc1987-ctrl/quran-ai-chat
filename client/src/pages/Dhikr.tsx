@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card";
 import { DhikrCounter } from "@/components/DhikrCounter";
 import { ADHKAR, DHIKR_CATEGORIES, getDhikrByCategory, type DhikrCategory, type Dhikr } from "@/data/adhkar";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CATEGORY_ICONS = {
   morning: Sunrise,
@@ -24,6 +25,7 @@ const CATEGORY_ICONS = {
 export default function Dhikr() {
   const [, setLocation] = useLocation();
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<DhikrCategory | null>(null);
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr | null>(null);
   const [showTapHint, setShowTapHint] = useState(true);
@@ -112,8 +114,8 @@ export default function Dhikr() {
                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-lg z-10 animate-pulse">
                   <div className="text-center p-4">
                     <Hand className="w-8 h-8 text-cyan-400 mx-auto mb-2" />
-                    <p className="text-white font-semibold text-sm">Tippe auf die Karte,</p>
-                    <p className="text-cyan-300 text-xs">um den Dhikr-Zähler zu starten</p>
+                    <p className="text-white font-semibold text-sm">{t.dhikr.counter.tap}</p>
+                    <p className="text-cyan-300 text-xs">{t.dhikr.counter.title}</p>
                   </div>
                 </div>
               )}
@@ -139,7 +141,7 @@ export default function Dhikr() {
               {/* Reward Preview */}
               <div className="mt-3 pt-3 border-t border-slate-700">
                 <div className="text-xs font-semibold text-cyan-400 mb-1">
-                  Belohnung:
+                  {t.dhikr.reward}:
                 </div>
                 <div className="text-xs text-slate-300 line-clamp-2">
                   {dhikr.reward}
@@ -165,8 +167,8 @@ export default function Dhikr() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold">Dhikr & Adhkar</h1>
-            <p className="text-teal-100 text-sm">Authentische Erinnerungen nach Ahlul Sunnah</p>
+            <h1 className="text-2xl font-bold">{t.dhikr.title}</h1>
+            <p className="text-teal-100 text-sm">{t.home.categories.dhikr}</p>
           </div>
         </div>
       </div>

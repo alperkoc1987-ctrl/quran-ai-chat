@@ -12,12 +12,14 @@ import { LayoutGrid } from "lucide-react";
 interface WidgetPreferences {
   showAyatOfTheDay: boolean;
   showResumeReading: boolean;
+  showPrayerTimes: boolean;
 }
 
 export function WidgetSettings() {
   const [preferences, setPreferences] = useState<WidgetPreferences>({
     showAyatOfTheDay: true,
     showResumeReading: true,
+    showPrayerTimes: true,
   });
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export function WidgetSettings() {
         </div>
 
         {/* Resume Reading Widget */}
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between py-3 border-b border-slate-700/50">
           <div>
             <Label htmlFor="resume-reading-widget" className="text-sm font-medium text-white cursor-pointer">
               Lesen fortsetzen
@@ -84,6 +86,23 @@ export function WidgetSettings() {
             onCheckedChange={(checked) => updatePreference("showResumeReading", checked)}
           />
         </div>
+
+        {/* Prayer Times Widget */}
+        <div className="flex items-center justify-between py-3">
+          <div>
+            <Label htmlFor="prayer-times-widget" className="text-sm font-medium text-white cursor-pointer">
+              Gebetszeiten
+            </Label>
+            <p className="text-xs text-slate-400 mt-1">
+              Zeigt Countdown bis zum nächsten Gebet
+            </p>
+          </div>
+          <Switch
+            id="prayer-times-widget"
+            checked={preferences.showPrayerTimes}
+            onCheckedChange={(checked) => updatePreference("showPrayerTimes", checked)}
+          />
+        </div>
       </div>
     </Card>
   );
@@ -94,6 +113,7 @@ export function useWidgetPreferences(): WidgetPreferences {
   const [preferences, setPreferences] = useState<WidgetPreferences>({
     showAyatOfTheDay: true,
     showResumeReading: true,
+    showPrayerTimes: true,
   });
 
   useEffect(() => {

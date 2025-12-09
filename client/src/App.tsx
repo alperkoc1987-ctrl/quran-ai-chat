@@ -8,10 +8,12 @@ import { TransliterationProvider } from "./contexts/TransliterationContext";
 import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
 import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
 import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
 import { AudioPlayerOverlay } from "./components/AudioPlayerOverlay";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { AutoSyncTranslation } from "./components/AutoSyncTranslation";
 import NewHome from "./pages/NewHome";
 
 import Quran from "./pages/Quran";
@@ -71,15 +73,17 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        switchable={true}
-      >
-        <TransliterationProvider>
+      <LanguageProvider>
+        <ThemeProvider
+          defaultTheme="light"
+          switchable={true}
+        >
+          <TransliterationProvider>
           <TranslationLanguageProvider>
             <ReadingThemeProvider>
               <AudioPlayerProvider>
                 <TooltipProvider>
+                <AutoSyncTranslation />
                 <Toaster />
                 <Router />
                 <AudioPlayerOverlay />
@@ -89,8 +93,9 @@ function App() {
             </AudioPlayerProvider>
             </ReadingThemeProvider>
           </TranslationLanguageProvider>
-        </TransliterationProvider>
-      </ThemeProvider>
+          </TransliterationProvider>
+        </ThemeProvider>
+      </LanguageProvider>
     </ErrorBoundary>
   );
 }
