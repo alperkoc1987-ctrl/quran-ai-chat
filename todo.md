@@ -444,3 +444,7 @@
 - [x] Widget only appears when prayer times are configured
 - [x] Click on widget navigates to prayer times page
 - [x] Add toggle in Widget-Anpassung settings
+
+- [x] Fix prayer times widget to read correct localStorage format
+- [x] Widget not displaying despite prayer times being configured
+- [ ] Fix city name to show "Worms" instead of "Europe/Berlin"

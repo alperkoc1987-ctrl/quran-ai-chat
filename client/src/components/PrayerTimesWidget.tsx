@@ -23,15 +23,17 @@ export function PrayerTimesWidget() {
     try {
       const storedTimes = localStorage.getItem("prayerTimes");
       if (storedTimes) {
-        const times = JSON.parse(storedTimes);
+        const data = JSON.parse(storedTimes);
+        // Check if data has timings object (new format)
+        const times = data.timings || data;
         // Validate that all required prayer times exist
         if (times && times.Fajr && times.Dhuhr && times.Asr && times.Maghrib && times.Isha) {
           const timesArray: PrayerTime[] = [
-            { name: "Fajr", time: times.Fajr },
-            { name: "Dhuhr", time: times.Dhuhr },
-            { name: "Asr", time: times.Asr },
-            { name: "Maghrib", time: times.Maghrib },
-            { name: "Isha", time: times.Isha },
+            { name: "Fajr", time: times.Fajr.split(' ')[0] },
+            { name: "Dhuhr", time: times.Dhuhr.split(' ')[0] },
+            { name: "Asr", time: times.Asr.split(' ')[0] },
+            { name: "Maghrib", time: times.Maghrib.split(' ')[0] },
+            { name: "Isha", time: times.Isha.split(' ')[0] },
           ];
           setPrayerTimes(timesArray);
         }
