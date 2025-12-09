@@ -469,3 +469,14 @@
 - [x] Translate Quran page - search, tabs, buttons
 - [ ] Test all 7 languages on live site
 - [ ] Push to GitHub
+
+## Final Cleanup & Polish (December 2025)
+
+- [x] Remove debug texts from Settings page ("Applied to both Vercel API...")
+- [x] Remove debug timestamp texts
+- [ ] Complete Prayer Times page translation
+- [ ] Complete Qibla page translation
+- [ ] Complete Settings page translation
+- [ ] Fix text contrast issues (black text on dark backgrounds)
+- [ ] Test all 7 languages thoroughly
+- [ ] Push to GitHub and verify deployment
