@@ -11,6 +11,7 @@ import { useTranslationLanguage, type TranslationLanguage } from "@/contexts/Tra
 import { ReadingThemeSelector } from "@/components/ReadingThemeSelector";
 import { WidgetSettings } from "@/components/WidgetSettings";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
 import {
@@ -28,6 +29,7 @@ export default function Settings() {
   const { theme, toggleTheme } = useTheme();
   const { showTransliteration, setShowTransliteration } = useTransliteration();
   const { language: translationLanguage, setLanguage: setTranslationLanguage } = useTranslationLanguage();
+  const { language: appLanguage, setLanguage: setAppLanguage } = useLanguage();
   
   // Reciter selection state
   const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
@@ -100,6 +102,52 @@ export default function Settings() {
 
       {/* Settings Content */}
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+        {/* App Language Setting */}
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
+          <div className="flex items-center gap-4 mb-4">
+            <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                App-Sprache
+              </h2>
+              <p className="text-sm text-slate-300">
+                Wähle die Sprache für die gesamte App
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
+            <button onClick={() => setAppLanguage("de")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "de" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇩🇪</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">Deutsch</div>
+            </button>
+            <button onClick={() => setAppLanguage("tr")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "tr" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇹🇷</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">Türkçe</div>
+            </button>
+            <button onClick={() => setAppLanguage("en")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "en" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇬🇧</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">English</div>
+            </button>
+            <button onClick={() => setAppLanguage("ar")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "ar" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇸🇦</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">العربية</div>
+            </button>
+            <button onClick={() => setAppLanguage("fr")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "fr" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇫🇷</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">Français</div>
+            </button>
+            <button onClick={() => setAppLanguage("id")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "id" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇮🇩</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">Indonesia</div>
+            </button>
+            <button onClick={() => setAppLanguage("ur")} className={`p-3 rounded-lg border-2 transition-all ${appLanguage === "ur" ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20" : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"}`}>
+              <div className="text-2xl mb-1">🇵🇰</div>
+              <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">اردو</div>
+            </button>
+          </div>
+        </div>
+
         {/* Dark Mode Setting */}
         <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
           <div className="flex items-center justify-between">
