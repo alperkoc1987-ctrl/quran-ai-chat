@@ -536,6 +536,23 @@ export default function SurahReader() {
               key={ayah.number}
               id={`verse-${verseNumber}`}
               data-verse-number={verseNumber}
+              ref={(el) => {
+                // Scroll to verse immediately after it's rendered if it matches target
+                if (el && targetVerseNumber === verseNumber && !highlightedVerse) {
+                  console.log('[SurahReader] Verse element rendered, scrolling to:', verseNumber);
+                  // Small delay to ensure layout is complete
+                  requestAnimationFrame(() => {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    setTimeout(() => {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      if (shouldHighlight) {
+                        setHighlightedVerse(verseNumber);
+                        setTimeout(() => setHighlightedVerse(null), 3000);
+                      }
+                    }, 100);
+                  });
+                }
+              }}
               className={`${themeConfig.colors.card} rounded-lg p-6 shadow-sm border transition-all duration-500 ${
                 highlightedVerse === verseNumber 
                   ? "border-teal-500 ring-4 ring-teal-400/50 dark:ring-teal-500/50"
