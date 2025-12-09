@@ -217,17 +217,47 @@ export default function PrayerTimes() {
 
         if (!finalCity) {
           try {
-            const geoResponse = await fetch(
-              `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`
-            );
+            // Try multiple geocoding APIs for better reliability
+            let geoSuccess = false;
             
-            if (geoResponse.ok) {
-              const geoData = await geoResponse.json();
-              if (geoData.address) {
-                finalCity = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || data.data.meta?.timezone;
-                finalCountry = geoData.address.country || '';
+            // Try Nominatim first (OpenStreetMap)
+            try {
+              const nominatimResponse = await Promise.race([
+                fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&addressdetails=1`),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+              ]) as Response;
+              
+              if (nominatimResponse.ok) {
+                const nominatimData = await nominatimResponse.json();
+                if (nominatimData.address) {
+                  finalCity = nominatimData.address.city || nominatimData.address.town || nominatimData.address.village || nominatimData.address.municipality;
+                  finalCountry = nominatimData.address.country || '';
+                  geoSuccess = true;
+                }
               }
-            } else {
+            } catch (nominatimError) {
+              console.log('Nominatim failed, trying backup...');
+            }
+            
+            // If Nominatim failed, try geocode.maps.co as backup
+            if (!geoSuccess) {
+              const geoResponse = await Promise.race([
+                fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000))
+              ]) as Response;
+              
+              if (geoResponse.ok) {
+                const geoData = await geoResponse.json();
+                if (geoData.address) {
+                  finalCity = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.municipality;
+                  finalCountry = geoData.address.country || '';
+                  geoSuccess = true;
+                }
+              }
+            }
+            
+            // If both failed, use timezone as last resort
+            if (!geoSuccess) {
               finalCity = data.data.meta?.timezone || "Unbekannt";
             }
           } catch (geoError) {
