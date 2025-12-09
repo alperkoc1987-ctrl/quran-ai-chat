@@ -435,3 +435,5 @@
 - [ ] Update system prompt to prevent AI from inventing questions user didn't ask
 - [ ] Test with simple inputs like "Test" or "Hallo"
 - [ ] Deploy to Vercel
+
+- [ ] Fix Ayat des Tages "Vers lesen" button to jump to specific verse instead of surah start
