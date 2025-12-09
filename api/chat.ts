@@ -34,7 +34,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Convert OpenAI-style messages to Gemini format
-    const systemPrompt = "Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage.";
+    const systemPrompt = `Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage.
+
+WICHTIG: Antworte NUR auf die tatsächliche Frage des Nutzers. Erfinde KEINE Fragen, die der Nutzer nicht gestellt hat. Wenn der Nutzer nur "Test" oder "Hallo" schreibt, antworte kurz und frage, wie du helfen kannst - erfinde NICHT, dass der Nutzer nach deinem Befinden gefragt hat.`;
     
     const geminiMessages = messages.map((msg: any) => ({
       role: msg.role === 'assistant' ? 'model' : 'user',

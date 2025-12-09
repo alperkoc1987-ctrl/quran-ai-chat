@@ -430,3 +430,8 @@
 - [x] Remove database dependency from Vercel function
 - [x] Test Vercel deployment
 - [x] Verify chat works on live site
+
+## AI System Prompt Fix - Prevent Hallucination
+- [ ] Update system prompt to prevent AI from inventing questions user didn't ask
+- [ ] Test with simple inputs like "Test" or "Hallo"
+- [ ] Deploy to Vercel
