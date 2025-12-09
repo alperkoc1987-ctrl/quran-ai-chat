@@ -108,10 +108,10 @@ export default function Settings() {
             <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                {t.settings.appLanguage.title}
+                App-Sprache
               </h2>
               <p className="text-sm text-slate-300">
-                {t.settings.appLanguage.description}
+                Wähle die Sprache für die gesamte App
               </p>
             </div>
           </div>
@@ -159,10 +159,10 @@ export default function Settings() {
               )}
               <div>
                 <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
-                  {t.settings.darkMode.title}
+                  Dunkler Modus
                 </h2>
                 <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
-                  {t.settings.darkMode.description}
+                  Aktiviere den dunklen Modus für bessere Lesbarkeit bei Nacht
                 </p>
               </div>
             </div>
@@ -188,10 +188,10 @@ export default function Settings() {
               <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
               <div>
                 <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
-                  {t.settings.transliteration.title}
+                  Transliteration
                 </h2>
                 <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
-                  {t.settings.transliteration.description}
+                  Zeige lateinische Umschrift unter arabischem Text
                 </p>
               </div>
             </div>
@@ -216,10 +216,10 @@ export default function Settings() {
             <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                {t.settings.translationLanguage.title}
+                Übersetzungssprache
               </h2>
               <p className="text-sm text-slate-300">
-                {t.settings.translationLanguage.description}
+                Wähle die Sprache für Koran-Übersetzungen
               </p>
             </div>
           </div>
@@ -285,10 +285,10 @@ export default function Settings() {
             <Palette className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                {t.settings.readingTheme.title}
+                Lese-Ansicht
               </h2>
               <p className="text-sm text-slate-300">
-                {t.settings.readingTheme.description}
+                Wähle ein Theme für eine angenehme Leseerfahrung
               </p>
             </div>
           </div>
@@ -301,10 +301,10 @@ export default function Settings() {
             <Music className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                {t.settings.reciter.title}
+                Rezitator auswählen
               </h2>
               <p className="text-sm text-slate-300">
-                {t.settings.reciter.description}
+                Wähle deinen bevorzugten Koran-Rezitator
               </p>
             </div>
           </div>

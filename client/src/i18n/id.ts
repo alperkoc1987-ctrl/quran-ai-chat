@@ -47,15 +47,11 @@ export const id: Translation = {
   },
   settings: {
     title: "Pengaturan",
-    appLanguage: { title: "Bahasa Aplikasi", description: "Pilih bahasa untuk seluruh aplikasi" },
-    darkMode: { title: "Mode Gelap", description: "Aktifkan mode gelap untuk keterbacaan lebih baik di malam hari" },
-    transliteration: { title: "Transliterasi", description: "Tampilkan tulisan Latin di bawah teks Arab" },
-    translationLanguage: { title: "Bahasa Terjemahan", description: "Pilih bahasa untuk terjemahan Al-Qur'an" },
-    readingTheme: { title: "Tampilan Baca", description: "Pilih tema untuk pengalaman membaca yang nyaman" },
-    reciter: { title: "Pilih Qari", description: "Pilih qari Al-Qur'an favorit Anda" },
     language: { title: "Bahasa", subtitle: "Pilih bahasa aplikasi", german: "Jerman", turkish: "Turki", english: "Inggris" },
     translation: { title: "Terjemahan Al-Qur'an", subtitle: "Pilih bahasa terjemahan" },
+    transliteration: { title: "Tampilkan Transliterasi", subtitle: "Transkripsi Latin antara Arab dan terjemahan" },
     theme: { title: "Tema Bacaan", subtitle: "Pilih tema bacaan favorit Anda", modern: "Modern (Hijau Mint)", classic: "Klasik (Biru Gelap)", sepia: "Sepia (Krem)", dark: "Gelap" },
+    reciter: { title: "Qari", subtitle: "Pilih qari Al-Qur'an favorit Anda" },
     notifications: { title: "Notifikasi", subtitle: "Waktu shalat dan pengingat", enable: "Aktifkan Notifikasi", dailyVerse: "Ayat Harian", readingReminder: "Pengingat Membaca" },
     widgets: { title: "Widget", subtitle: "Sesuaikan layar beranda", prayerTimes: "Tampilkan Widget Waktu Shalat" },
     about: { title: "Tentang", version: "Versi", developer: "Pengembang" }

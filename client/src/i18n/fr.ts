@@ -191,12 +191,6 @@ export const fr: Translation = {
   },
   settings: {
     title: "Paramètres",
-    appLanguage: { title: "Langue de l'application", description: "Choisir la langue pour toute l'application" },
-    darkMode: { title: "Mode sombre", description: "Activer le mode sombre pour une meilleure lisibilité la nuit" },
-    transliteration: { title: "Translittération", description: "Afficher l'écriture latine sous le texte arabe" },
-    translationLanguage: { title: "Langue de traduction", description: "Choisir la langue pour les traductions du Coran" },
-    readingTheme: { title: "Thème de lecture", description: "Choisir un thème pour une expérience de lecture confortable" },
-    reciter: { title: "Sélectionner le récitateur", description: "Choisir votre récitateur du Coran préféré" },
     language: {
       title: "Langue",
       subtitle: "Sélectionner la langue de l'application",
@@ -208,6 +202,10 @@ export const fr: Translation = {
       title: "Traduction du Coran",
       subtitle: "Sélectionner la langue de traduction",
     },
+    transliteration: {
+      title: "Afficher la translittération",
+      subtitle: "Transcription latine entre l'arabe et la traduction",
+    },
     theme: {
       title: "Thème de lecture",
       subtitle: "Choisissez votre thème de lecture préféré",
@@ -215,6 +213,10 @@ export const fr: Translation = {
       classic: "Classique (Bleu foncé)",
       sepia: "Sépia (Beige)",
       dark: "Sombre",
+    },
+    reciter: {
+      title: "Récitateur",
+      subtitle: "Choisissez votre récitateur du Coran préféré",
     },
     notifications: {
       title: "Notifications",

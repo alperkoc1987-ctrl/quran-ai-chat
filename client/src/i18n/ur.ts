@@ -47,15 +47,11 @@ export const ur: Translation = {
   },
   settings: {
     title: "ترتیبات",
-    appLanguage: { title: "ایپ کی زبان", description: "پوری ایپ کے لیے زبان منتخب کریں" },
-    darkMode: { title: "ڈارک موڈ", description: "رات کو بہتر پڑھنے کے لیے ڈارک موڈ فعال کریں" },
-    transliteration: { title: "نقل حرفی", description: "عربی متن کے نیچے لاطینی رسم الخط دکھائیں" },
-    translationLanguage: { title: "ترجمہ کی زبان", description: "قرآن کے تراجم کے لیے زبان منتخب کریں" },
-    readingTheme: { title: "پڑھنے کا منظر", description: "آرام دہ پڑھنے کے تجربے کے لیے ایک تھیم منتخب کریں" },
-    reciter: { title: "قاری منتخب کریں", description: "اپنے پسندیدہ قرآن قاری کو منتخب کریں" },
     language: { title: "زبان", subtitle: "ایپ کی زبان منتخب کریں", german: "جرمن", turkish: "ترکی", english: "انگریزی" },
     translation: { title: "قرآن کا ترجمہ", subtitle: "ترجمے کی زبان منتخب کریں" },
+    transliteration: { title: "نقل حرفی دکھائیں", subtitle: "عربی اور ترجمے کے درمیان لاطینی نقل" },
     theme: { title: "پڑھنے کی تھیم", subtitle: "اپنی پسندیدہ پڑھنے کی تھیم منتخب کریں", modern: "جدید (منٹ گرین)", classic: "کلاسک (گہرا نیلا)", sepia: "سیپیا (بیج)", dark: "گہرا" },
+    reciter: { title: "قاری", subtitle: "اپنا پسندیدہ قرآن قاری منتخب کریں" },
     notifications: { title: "اطلاعات", subtitle: "نماز کے اوقات اور یاد دہانیاں", enable: "اطلاعات فعال کریں", dailyVerse: "روزانہ آیت", readingReminder: "پڑھنے کی یاد دہانی" },
     widgets: { title: "ویجٹس", subtitle: "ہوم اسکرین کو حسب ضرورت بنائیں", prayerTimes: "نماز کے اوقات کا ویجٹ دکھائیں" },
     about: { title: "کے بارے میں", version: "ورژن", developer: "ڈویلپر" }

@@ -208,30 +208,6 @@ export const tr: Translation = {
   // Settings
   settings: {
     title: "Ayarlar",
-    appLanguage: {
-      title: "Uygulama Dili",
-      description: "Tüm uygulama için dil seçin",
-    },
-    darkMode: {
-      title: "Karanlık Mod",
-      description: "Gece daha iyi okunabilirlik için karanlık modu etkinleştirin",
-    },
-    transliteration: {
-      title: "Transliterasyon",
-      description: "Arapça metnin altında Latin harfleriyle yazılışı göster",
-    },
-    translationLanguage: {
-      title: "Çeviri Dili",
-      description: "Kuran çevirileri için dil seçin",
-    },
-    readingTheme: {
-      title: "Okuma Görünümü",
-      description: "Rahat bir okuma deneyimi için bir tema seçin",
-    },
-    reciter: {
-      title: "Okuyucu Seç",
-      description: "Tercih ettiğiniz Kuran okuyucusunu seçin",
-    },
     language: {
       title: "Dil",
       subtitle: "Uygulama dilini seçin",
@@ -243,6 +219,10 @@ export const tr: Translation = {
       title: "Kuran Çevirisi",
       subtitle: "Çeviri dilini seçin",
     },
+    transliteration: {
+      title: "Okunuşu Göster",
+      subtitle: "Arapça ve çeviri arasında Latin harfleriyle okunuş",
+    },
     theme: {
       title: "Okuma Teması",
       subtitle: "Tercih ettiğiniz okuma temasını seçin",
@@ -250,6 +230,10 @@ export const tr: Translation = {
       classic: "Klasik (Koyu Mavi)",
       sepia: "Sepya (Bej)",
       dark: "Koyu",
+    },
+    reciter: {
+      title: "Okuyucu",
+      subtitle: "Tercih ettiğiniz Kuran okuyucusunu seçin",
     },
     notifications: {
       title: "Bildirimler",

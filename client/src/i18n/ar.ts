@@ -208,12 +208,6 @@ export const ar: Translation = {
   // Settings
   settings: {
     title: "الإعدادات",
-    appLanguage: { title: "لغة التطبيق", description: "اختر اللغة للتطبيق بأكمله" },
-    darkMode: { title: "الوضع الداكن", description: "تفعيل الوضع الداكن لقراءة أفضل في الليل" },
-    transliteration: { title: "النسخ الصوتي", description: "عرض النص اللاتيني تحت النص العربي" },
-    translationLanguage: { title: "لغة الترجمة", description: "اختر اللغة لترجمات القرآن" },
-    readingTheme: { title: "مظهر القراءة", description: "اختر سمة لتجربة قراءة مريحة" },
-    reciter: { title: "اختر القارئ", description: "اختر قارئ القرآن المفضل لديك" },
     language: {
       title: "اللغة",
       subtitle: "اختر لغة التطبيق",
@@ -225,6 +219,10 @@ export const ar: Translation = {
       title: "ترجمة القرآن",
       subtitle: "اختر لغة الترجمة",
     },
+    transliteration: {
+      title: "إظهار النطق",
+      subtitle: "النطق بالحروف اللاتينية بين العربية والترجمة",
+    },
     theme: {
       title: "موضوع القراءة",
       subtitle: "اختر موضوع القراءة المفضل لديك",
@@ -232,6 +230,10 @@ export const ar: Translation = {
       classic: "كلاسيكي (أزرق داكن)",
       sepia: "بني فاتح",
       dark: "داكن",
+    },
+    reciter: {
+      title: "القارئ",
+      subtitle: "اختر قارئ القرآن المفضل لديك",
     },
     notifications: {
       title: "الإشعارات",
