@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-export type TranslationLanguage = "de" | "en" | "tr" | "ar";
+export type TranslationLanguage = "de" | "en" | "tr" | "ar" | "fr" | "id" | "ur";
 
 interface TranslationLanguageContextType {
   language: TranslationLanguage;
@@ -38,7 +38,7 @@ export function TranslationLanguageProvider({ children }: { children: ReactNode 
     // Try to load from localStorage first
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("translationLanguage") as TranslationLanguage;
-      if (saved && ["de", "en", "tr", "ar"].includes(saved)) {
+      if (saved && ["de", "en", "tr", "ar", "fr", "id", "ur"].includes(saved)) {
         return saved;
       }
     }

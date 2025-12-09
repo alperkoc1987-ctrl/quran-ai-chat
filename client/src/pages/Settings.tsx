@@ -225,6 +225,42 @@ export default function Settings() {
               <div className="font-semibold text-gray-900 dark:text-gray-100">عربي</div>
               <div className="text-xs text-gray-600 dark:text-gray-400">Nur Arabisch</div>
             </button>
+
+            <button
+              onClick={() => setTranslationLanguage("fr")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "fr"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇫🇷</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">Français</div>
+            </button>
+
+            <button
+              onClick={() => setTranslationLanguage("id")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "id"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇮🇩</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">Indonesia</div>
+            </button>
+
+            <button
+              onClick={() => setTranslationLanguage("ur")}
+              className={`p-4 rounded-lg border-2 transition-all ${
+                translationLanguage === "ur"
+                  ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
+                  : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
+              }`}
+            >
+              <div className="text-2xl mb-2">🇵🇰</div>
+              <div className="font-semibold text-gray-900 dark:text-gray-100">اردو</div>
+            </button>
           </div>
         </div>
 
