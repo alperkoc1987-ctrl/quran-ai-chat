@@ -7,8 +7,8 @@ export function AyatOfTheDay() {
   const ayat = getTodaysAyat();
   const [, navigate] = useLocation();
 
-  const handleNavigateToVerse = () => {
-    navigate(`/surah/${ayat.surahNumber}?verse=${ayat.verseNumber}&highlight=true`);
+  const handleNavigateToSurah = () => {
+    navigate(`/surah/${ayat.surahNumber}`);
   };
 
   return (
@@ -45,10 +45,10 @@ export function AyatOfTheDay() {
             Sure {ayat.surahName} ({ayat.surahNumber}:{ayat.verseNumber})
           </div>
           <button
-            onClick={handleNavigateToVerse}
+            onClick={handleNavigateToSurah}
             className="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
           >
-            <span>Vers lesen</span>
+            <span>Zur Surah</span>
             <ExternalLink className="w-4 h-4" />
           </button>
         </div>

@@ -8,15 +8,17 @@
 - [ ] Test changes on live site
 - [x] Commit and push to GitHub
 
-## Multi-Language Support (Next Priority)
-- [ ] Create i18n translation system with language context
-- [ ] Implement automatic language detection based on device language
-- [ ] Create translation files for German, English, Turkish, and Arabic
-- [ ] Translate all UI texts (buttons, labels, menus, navigation)
-- [ ] Add language selector to Settings page (4 languages with flags)
-- [ ] Implement instant language switching without app restart
-- [ ] Store language preference in localStorage
-- [ ] Test all 4 languages thoroughly
+## Multi-Language Support (Completed - December 2025)
+- [x] Create i18n translation system with language context
+- [x] Implement automatic language detection based on device language
+- [x] Create translation files for 7 languages (German, Turkish, English, Arabic, French, Indonesian, Urdu)
+- [x] Translate all UI texts (buttons, labels, menus, navigation)
+- [x] Add language selector to Settings page (7 languages with flags)
+- [x] Implement instant language switching without app restart
+- [x] Store language preference in localStorage
+- [x] Add localized AI chat greetings for each language
+- [x] Update BottomNavigation with translations
+- [ ] Test all 7 languages thoroughly
 - [ ] Commit and push changes to GitHub
 
 ## Previous Completed Features
@@ -430,3 +432,70 @@
 - [x] Remove database dependency from Vercel function
 - [x] Test Vercel deployment
 - [x] Verify chat works on live site
+
+- [x] Change Ayat des Tages button from "Vers lesen" to "Zur Surah" (simpler, more reliable)
+
+- [ ] Implement offline functionality with service worker caching
+- [ ] Cache Quran API responses for offline reading
+- [ ] Cache static assets (CSS, JS, images)
+- [ ] Show offline indicator when no internet connection
+- [ ] Test offline mode by disabling network
+
+- [x] Create prayer times countdown widget for home page
+- [x] Show "X Minuten bis [Nächstes Gebet]" with real-time countdown
+- [x] Widget only appears when prayer times are configured
+- [x] Click on widget navigates to prayer times page
+- [x] Add toggle in Widget-Anpassung settings
+
+- [x] Fix prayer times widget to read correct localStorage format
+- [x] Widget not displaying despite prayer times being configured
+- [x] Fix city name to show actual city instead of "Europe/Berlin"
+
+- [x] Implement dynamic city name detection using reverse geocoding
+- [x] Support any location worldwide, not hardcoded cities
+- [x] Use Nominatim + geocode.maps.co as fallback for reliability
+
+- [x] Swap order: Prayer times widget first, then KI-Assistent
+
+## Translate All Components to 7 Languages (December 2025)
+
+- [x] Translate Home page (NewHome.tsx) - title, categories, widgets
+- [x] Translate Dhikr page - header, buttons, counter
+- [ ] Translate Dhikr list page - categories, titles (data file)
+- [x] Translate Settings page - header (partial)
+- [ ] Translate Prayer Times page - prayer names, buttons, dialogs
+- [ ] Translate Qibla page - title, instructions, status messages
+- [ ] Translate Duas page - categories, labels
+- [x] Translate Quran page - search, tabs, buttons
+- [ ] Test all 7 languages on live site
+- [ ] Push to GitHub
+
+## Final Cleanup & Polish (December 2025)
+
+- [x] Remove debug texts from Settings page ("Applied to both Vercel API...")
+- [x] Remove debug timestamp texts
+- [ ] Complete Prayer Times page translation
+- [ ] Complete Qibla page translation
+- [ ] Complete Settings page translation
+- [ ] Fix text contrast issues (black text on dark backgrounds)
+- [ ] Test all 7 languages thoroughly
+- [ ] Push to GitHub and verify deployment
+
+## Complete All Remaining Translations (December 2025)
+
+- [ ] Translate Settings page completely (all options, labels, descriptions)
+- [ ] Translate Duas page header and categories
+- [ ] Translate Dhikr categories in data file (adhkar.ts)
+- [ ] Translate Progress page (Fortschritt)
+- [ ] Translate Qibla page completely
+- [ ] Translate Prayer Times widget on Home page
+- [ ] Test all 7 languages on all pages
+- [ ] Push final version to GitHub
+
+## Settings Page Translation - December 9, 2025
+- [x] Translate Settings page completely (all options, labels, descriptions)
+- [x] Add missing translation keys to all 7 languages
+- [x] Fix TypeScript errors in translation files
+- [x] Remove duplicate entries in translation files
+- [ ] Test Settings page in all 7 languages
+- [ ] Commit and push to GitHub
