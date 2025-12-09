@@ -226,7 +226,10 @@ export default function Settings() {
 
           <div className="grid grid-cols-2 gap-3 mt-4">
             <button
-              onClick={() => setTranslationLanguage("de")}
+              onClick={() => {
+                setTranslationLanguage("de");
+                localStorage.setItem("translationLanguageManuallySet", "true");
+              }}
               className={`p-4 rounded-lg border-2 transition-all ${
                 translationLanguage === "de"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
@@ -238,7 +241,10 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={() => setTranslationLanguage("en")}
+              onClick={() => {
+                setTranslationLanguage("en");
+                localStorage.setItem("translationLanguageManuallySet", "true");
+              }}
               className={`p-4 rounded-lg border-2 transition-all ${
                 translationLanguage === "en"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
@@ -250,7 +256,10 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={() => setTranslationLanguage("tr")}
+              onClick={() => {
+                setTranslationLanguage("tr");
+                localStorage.setItem("translationLanguageManuallySet", "true");
+              }}
               className={`p-4 rounded-lg border-2 transition-all ${
                 translationLanguage === "tr"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
@@ -262,7 +271,10 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={() => setTranslationLanguage("ar")}
+              onClick={() => {
+                setTranslationLanguage("ar");
+                localStorage.setItem("translationLanguageManuallySet", "true");
+              }}
               className={`p-4 rounded-lg border-2 transition-all ${
                 translationLanguage === "ar"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
