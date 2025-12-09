@@ -430,3 +430,5 @@
 - [x] Remove database dependency from Vercel function
 - [x] Test Vercel deployment
 - [x] Verify chat works on live site
+
+- [x] Change Ayat des Tages button from "Vers lesen" to "Zur Surah" (simpler, more reliable)
