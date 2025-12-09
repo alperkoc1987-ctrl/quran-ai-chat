@@ -208,6 +208,30 @@ export const en: Translation = {
   // Settings
   settings: {
     title: "Settings",
+    appLanguage: {
+      title: "App Language",
+      description: "Choose language for the entire app",
+    },
+    darkMode: {
+      title: "Dark Mode",
+      description: "Enable dark mode for better readability at night",
+    },
+    transliteration: {
+      title: "Transliteration",
+      description: "Show Latin script under Arabic text",
+    },
+    translationLanguage: {
+      title: "Translation Language",
+      description: "Choose language for Quran translations",
+    },
+    readingTheme: {
+      title: "Reading View",
+      description: "Choose a theme for a comfortable reading experience",
+    },
+    reciter: {
+      title: "Select Reciter",
+      description: "Choose your preferred Quran reciter",
+    },
     language: {
       title: "Language",
       subtitle: "Select app language",
@@ -219,10 +243,6 @@ export const en: Translation = {
       title: "Quran Translation",
       subtitle: "Select translation language",
     },
-    transliteration: {
-      title: "Show Transliteration",
-      subtitle: "Latin transcription between Arabic and translation",
-    },
     theme: {
       title: "Reading Theme",
       subtitle: "Choose your preferred reading theme",
@@ -230,10 +250,6 @@ export const en: Translation = {
       classic: "Classic (Dark Blue)",
       sepia: "Sepia (Beige)",
       dark: "Dark",
-    },
-    reciter: {
-      title: "Reciter",
-      subtitle: "Choose your preferred Quran reciter",
     },
     notifications: {
       title: "Notifications",

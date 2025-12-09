@@ -206,6 +206,30 @@ export const de = {
   // Settings
   settings: {
     title: "Einstellungen",
+    appLanguage: {
+      title: "App-Sprache",
+      description: "Wähle die Sprache für die gesamte App",
+    },
+    darkMode: {
+      title: "Dunkler Modus",
+      description: "Aktiviere den dunklen Modus für bessere Lesbarkeit bei Nacht",
+    },
+    transliteration: {
+      title: "Transliteration",
+      description: "Zeige lateinische Umschrift unter arabischem Text",
+    },
+    translationLanguage: {
+      title: "Übersetzungssprache",
+      description: "Wähle die Sprache für Koran-Übersetzungen",
+    },
+    readingTheme: {
+      title: "Lese-Ansicht",
+      description: "Wähle ein Theme für eine angenehme Leseerfahrung",
+    },
+    reciter: {
+      title: "Rezitator auswählen",
+      description: "Wähle deinen bevorzugten Koran-Rezitator",
+    },
     language: {
       title: "Sprache",
       subtitle: "App-Sprache wählen",
@@ -217,10 +241,6 @@ export const de = {
       title: "Koran-Übersetzung",
       subtitle: "Übersetzungssprache wählen",
     },
-    transliteration: {
-      title: "Transliteration anzeigen",
-      subtitle: "Lateinische Umschrift zwischen Arabisch und Übersetzung",
-    },
     theme: {
       title: "Lesethema",
       subtitle: "Wählen Sie Ihr bevorzugtes Lesethema",
@@ -228,10 +248,6 @@ export const de = {
       classic: "Klassisch (Dunkelblau)",
       sepia: "Sepia (Beige)",
       dark: "Dunkel",
-    },
-    reciter: {
-      title: "Rezitator",
-      subtitle: "Wählen Sie Ihren bevorzugten Rezitator",
     },
     notifications: {
       title: "Benachrichtigungen",
