@@ -162,40 +162,24 @@ export default function SurahReader() {
 
     console.log('[SurahReader] Data loaded, attempting verse scroll to:', targetVerseNumber);
 
-    // Retry mechanism to ensure verse is found even if rendering is slow
-    let attempts = 0;
-    const maxAttempts = 5;
-    
-    const tryScrollToVerse = () => {
-      attempts++;
+    // Wait for DOM to be fully rendered
+    const scrollTimer = setTimeout(() => {
       const element = document.getElementById(`verse-${targetVerseNumber}`);
-      console.log(`[SurahReader] Attempt ${attempts}/${maxAttempts} - Looking for element: verse-${targetVerseNumber}, found:`, !!element);
+      console.log('[SurahReader] Looking for element:', `verse-${targetVerseNumber}`, 'found:', !!element);
       
       if (element) {
         console.log('[SurahReader] Scrolling to verse:', targetVerseNumber);
-        // Scroll to top first to ensure smooth animation
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Then scroll to verse
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          
-          if (shouldHighlight) {
-            console.log('[SurahReader] Highlighting verse:', targetVerseNumber);
-            setHighlightedVerse(targetVerseNumber);
-            setTimeout(() => setHighlightedVerse(null), 3000);
-          }
-        }, 100);
-      } else if (attempts < maxAttempts) {
-        console.log('[SurahReader] Verse not found yet, retrying in 300ms...');
-        setTimeout(tryScrollToVerse, 300);
+        if (shouldHighlight) {
+          console.log('[SurahReader] Highlighting verse:', targetVerseNumber);
+          setHighlightedVerse(targetVerseNumber);
+          setTimeout(() => setHighlightedVerse(null), 3000);
+        }
       } else {
-        console.error('[SurahReader] Verse element not found after', maxAttempts, 'attempts:', `verse-${targetVerseNumber}`);
+        console.error('[SurahReader] Verse element not found:', `verse-${targetVerseNumber}`);
       }
-    };
-    
-    // Start first attempt after initial delay
-    const scrollTimer = setTimeout(tryScrollToVerse, 500);
+    }, 800); // Longer delay to ensure all verses are rendered
 
     return () => clearTimeout(scrollTimer);
   }, [isLoading, surahData, surahInfo, targetVerseNumber, shouldHighlight]); // Trigger when data or target changes
@@ -536,23 +520,6 @@ export default function SurahReader() {
               key={ayah.number}
               id={`verse-${verseNumber}`}
               data-verse-number={verseNumber}
-              ref={(el) => {
-                // Scroll to verse immediately after it's rendered if it matches target
-                if (el && targetVerseNumber === verseNumber && !highlightedVerse) {
-                  console.log('[SurahReader] Verse element rendered, scrolling to:', verseNumber);
-                  // Small delay to ensure layout is complete
-                  requestAnimationFrame(() => {
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                    setTimeout(() => {
-                      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      if (shouldHighlight) {
-                        setHighlightedVerse(verseNumber);
-                        setTimeout(() => setHighlightedVerse(null), 3000);
-                      }
-                    }, 100);
-                  });
-                }
-              }}
               className={`${themeConfig.colors.card} rounded-lg p-6 shadow-sm border transition-all duration-500 ${
                 highlightedVerse === verseNumber 
                   ? "border-teal-500 ring-4 ring-teal-400/50 dark:ring-teal-500/50"

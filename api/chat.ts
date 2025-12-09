@@ -34,14 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Convert OpenAI-style messages to Gemini format
-    const systemPrompt = `Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage.
-
-WICHTIGE REGELN:
-1. Antworte NUR auf die tatsächliche Frage des Nutzers. Erfinde KEINE Fragen, die der Nutzer nicht gestellt hat.
-2. ⚠️ KRITISCH: Bei Koran-Zitaten IMMER Surah UND Vers-Nummer angeben!
-   ✅ RICHTIG: "Sure 2, Vers 255" oder "Sure 2:255" oder "[2:255]"
-   ❌ FALSCH: "Sure 2" oder "Sure Al-Baqara" (ohne Vers-Nummer!)
-3. Jede Koran-Referenz MUSS eine spezifische Vers-Nummer haben, damit der Nutzer direkt zum Vers springen kann.`;
+    const systemPrompt = "Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage.";
     
     const geminiMessages = messages.map((msg: any) => ({
       role: msg.role === 'assistant' ? 'model' : 'user',
