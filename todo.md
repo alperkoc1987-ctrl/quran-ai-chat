@@ -447,4 +447,8 @@
 
 - [x] Fix prayer times widget to read correct localStorage format
 - [x] Widget not displaying despite prayer times being configured
-- [ ] Fix city name to show "Worms" instead of "Europe/Berlin"
+- [x] Fix city name to show actual city instead of "Europe/Berlin"
+
+- [x] Implement dynamic city name detection using reverse geocoding
+- [x] Support any location worldwide, not hardcoded cities
+- [x] Use Nominatim + geocode.maps.co as fallback for reliability
