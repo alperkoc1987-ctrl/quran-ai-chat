@@ -438,3 +438,9 @@
 - [ ] Cache static assets (CSS, JS, images)
 - [ ] Show offline indicator when no internet connection
 - [ ] Test offline mode by disabling network
+
+- [x] Create prayer times countdown widget for home page
+- [x] Show "X Minuten bis [Nächstes Gebet]" with real-time countdown
+- [x] Widget only appears when prayer times are configured
+- [x] Click on widget navigates to prayer times page
+- [x] Add toggle in Widget-Anpassung settings

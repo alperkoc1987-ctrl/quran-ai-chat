@@ -9,6 +9,7 @@ import { MessageBubble } from "@/components/MessageBubble";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResumeReadingCard } from "@/components/ResumeReadingCard";
 import { AyatOfTheDay } from "@/components/AyatOfTheDay";
+import { PrayerTimesWidget } from "@/components/PrayerTimesWidget";
 import { useWidgetPreferences } from "@/components/WidgetSettings";
 import { PushToTalkButton } from "@/components/PushToTalkButton";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
@@ -356,6 +357,13 @@ export default function NewHome() {
             );
           })}
         </div>
+
+        {/* Prayer Times Widget */}
+        {widgetPrefs.showPrayerTimes && (
+          <div className="mt-8">
+            <PrayerTimesWidget />
+          </div>
+        )}
 
         {/* Ayat des Tages */}
         {widgetPrefs.showAyatOfTheDay && (
