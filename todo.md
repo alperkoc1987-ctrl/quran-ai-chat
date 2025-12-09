@@ -426,6 +426,7 @@
 - [x] Fixed backend history logic to ensure proper user-model alternation
 
 ## Vercel API Fix - Use Gemini instead of OpenAI
-- [ ] Rewrite /api/chat.ts to use Gemini 2.0 Flash
-- [ ] Test Vercel deployment
-- [ ] Verify chat works on live site
+- [x] Rewrite /api/chat.ts to use Gemini 2.0 Flash
+- [x] Remove database dependency from Vercel function
+- [x] Test Vercel deployment
+- [x] Verify chat works on live site
