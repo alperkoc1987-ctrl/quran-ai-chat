@@ -460,12 +460,12 @@
 ## Translate All Components to 7 Languages (December 2025)
 
 - [x] Translate Home page (NewHome.tsx) - title, categories, widgets
-- [ ] Translate Dhikr page - header, buttons, counter
-- [ ] Translate Dhikr list page - categories, titles
+- [x] Translate Dhikr page - header, buttons, counter
+- [ ] Translate Dhikr list page - categories, titles (data file)
 - [x] Translate Settings page - header (partial)
 - [ ] Translate Prayer Times page - prayer names, buttons, dialogs
 - [ ] Translate Qibla page - title, instructions, status messages
 - [ ] Translate Duas page - categories, labels
-- [ ] Translate Quran page - search, tabs, buttons
+- [x] Translate Quran page - search, tabs, buttons
 - [ ] Test all 7 languages on live site
 - [ ] Push to GitHub
