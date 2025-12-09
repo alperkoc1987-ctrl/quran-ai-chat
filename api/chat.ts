@@ -1,8 +1,9 @@
 /**
- * Vercel Serverless Function for OpenAI Chat API
+ * Vercel Serverless Function for Gemini Chat API
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { checkAndIncrementRateLimit } from '../server/db';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -29,108 +30,104 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Add rate limit info to response headers
     res.setHeader('X-RateLimit-Daily-Remaining', rateLimit.dailyRemaining.toString());
     res.setHeader('X-RateLimit-Minute-Remaining', rateLimit.minuteRemaining.toString());
-    let { apiKey, messages, model = "gpt-4o-mini", temperature = 0.7, max_tokens = 3000, functions, function_call } = req.body;
 
-    // FALLBACK: Use environment variable API keys if no API key is provided in request
-    if (!apiKey || apiKey.trim() === "") {
-      // First try user's OpenAI API key
-      if (process.env.OPENAI_API_KEY) {
-        console.log("Using OPENAI_API_KEY from environment");
-        apiKey = process.env.OPENAI_API_KEY;
-      }
-      // Fallback to Manus Built-in Forge API
-      else if (process.env.BUILT_IN_FORGE_API_KEY) {
-        console.log("Using Manus Built-in Forge API");
-        apiKey = process.env.BUILT_IN_FORGE_API_KEY;
-      }
-    }
+    const { messages } = req.body;
 
-    if (!apiKey) {
-      console.error("Error: Missing API Key in request and no fallback available");
-      return res.status(400).json({ error: "API Key is required. Please check your settings." });
-    }
-
-    console.log(`Attempting to connect to LLM API with key ending in ...${apiKey.slice(-4)}`);
-
-    // Enhanced System Prompt to encourage structured JSON output for citations
-    const systemMessage = {
-      role: "system",
-      content: `Du bist ein freundlicher islamischer Begleiter, der dem Nutzer auf Augenhöhe begegnet. 
-      Sprich den Nutzer immer mit "du" an (informell, nie "Sie").
-      
-      WICHTIG ZUR BEGRÜSSUNG:
-      - Begrüße den Nutzer NICHT mit "As-salamu alaikum" oder "Salamu Aleykum"
-      - Der Nutzer hat bereits eine Begrüßung beim App-Start erhalten
-      - Antworte direkt auf die Frage ohne Begrüßung
-      - Sei freundlich, aber komm sofort zur Sache
-      
-      WICHTIG: Halte deine Antworten kurz und prägnant (2-4 Sätze). Vermeide lange Texte.
-      Gib nur die wichtigsten Informationen. Sei knackig und auf den Punkt.
-      
-      Wenn du Verse aus dem Koran zitierst, gib IMMER die Suren-Nummer und Vers-Nummer an.
-      Format für Zitate: [Sure:Vers] (z.B. [2:255]).
-      
-      Wenn der Nutzer nach einem Dua fragt, antworte kurz und einfühlsam.
-      Zitiere den arabischen Text (wenn möglich), die Übersetzung und die Quelle.
-      
-      Sei natürlich, warm und unterstützend in deiner Kommunikation.`
-    };
-
-    // Add system message if not present
-    const enhancedMessages = [systemMessage, ...messages];
-
-    // Determine API URL based on which key is being used
-    let apiUrl;
-    if (apiKey === process.env.BUILT_IN_FORGE_API_KEY) {
-      apiUrl = "https://forge.manus.ai/v1/chat/completions";
-    } else {
-      // Always use real OpenAI API for OPENAI_API_KEY
-      apiUrl = "https://api.openai.com/v1/chat/completions";
-    }
-
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model,
-        messages: enhancedMessages,
-        temperature,
-        max_tokens,
-        ...(functions && { functions }),
-        ...(function_call && { function_call }),
-      }),
-    });
-
-    console.log("OpenAI Response Status:", response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("OpenAI API Error Body:", errorText);
-      
-      let errorJson;
-      try {
-        errorJson = JSON.parse(errorText);
-      } catch (e) {
-        errorJson = { error: { message: errorText } };
-      }
-
-      return res.status(response.status).json({ 
-        error: `OpenAI Error (${response.status}): ${errorJson.error?.message || "Unknown error"}` 
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({
+        error: "Missing required field: messages array",
       });
     }
 
-    const data = await response.json();
-    console.log("OpenAI Response received successfully.");
+    console.log(`Chat request with ${messages.length} messages`);
 
-    return res.status(200).json(data);
+    // Get Gemini API key from environment
+    const apiKey = process.env.GEMINI_API_KEY;
+    
+    if (!apiKey) {
+      console.error("Error: Missing GEMINI_API_KEY in environment");
+      return res.status(500).json({ 
+        error: "Es gab ein Problem bei der Verarbeitung Ihrer Anfrage.",
+        details: "GEMINI_API_KEY not configured"
+      });
+    }
+
+    // Convert OpenAI-style messages to Gemini format
+    const systemPrompt = "Du bist ein hilfreicher islamischer Assistent. Antworte prägnant und informativ. Fasse dich kurz, aber erkläre wichtige religiöse Konzepte vollständig. Antworte in der Sprache der Frage.";
+    
+    const geminiMessages = messages.map((msg: any) => ({
+      role: msg.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: msg.content }],
+    }));
+
+    // Initialize Gemini
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: systemPrompt,
+      generationConfig: {
+        temperature: 0.7,
+      }
+    });
+
+    // Build proper history for Gemini (must alternate user-model-user-model)
+    let history: any[] = [];
+    let expectUser = true; // First message in history must be 'user'
+    
+    // Process all messages except the last one (which we'll send separately)
+    for (let i = 0; i < geminiMessages.length - 1; i++) {
+      const msg = geminiMessages[i];
+      
+      if (expectUser && msg.role === 'user') {
+        history.push(msg);
+        expectUser = false; // Next should be 'model'
+      } else if (!expectUser && msg.role === 'model') {
+        history.push(msg);
+        expectUser = true; // Next should be 'user'
+      }
+      // Skip messages that don't fit the alternating pattern
+    }
+    
+    const chat = model.startChat({
+      history: history,
+    });
+
+    // Send the last message
+    const lastMessage = geminiMessages[geminiMessages.length - 1];
+    const result = await chat.sendMessage(lastMessage.parts[0].text);
+    const response = result.response;
+    const text = response.text();
+
+    console.log('Gemini response received successfully');
+
+    // Return in OpenAI-compatible format
+    return res.status(200).json({
+      id: `chatcmpl-${Date.now()}`,
+      object: "chat.completion",
+      created: Math.floor(Date.now() / 1000),
+      model: "gemini-2.0-flash-exp",
+      choices: [
+        {
+          index: 0,
+          message: {
+            role: "assistant",
+            content: text,
+          },
+          finish_reason: "stop",
+        },
+      ],
+      usage: {
+        prompt_tokens: 0,
+        completion_tokens: 0,
+        total_tokens: 0,
+      },
+    });
 
   } catch (error: any) {
-    console.error("Unhandled Server Error:", error);
+    console.error("Gemini API Error:", error);
     return res.status(500).json({ 
-      error: `Internal Server Error: ${error.message}`,
+      error: "Es gab ein Problem bei der Verarbeitung Ihrer Anfrage.",
+      details: error.message,
     });
   }
 }

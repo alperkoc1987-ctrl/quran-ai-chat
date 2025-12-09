@@ -424,3 +424,8 @@
 - [x] Verify chat responses are working correctly
 - [x] Fixed frontend greeting filter to properly exclude initial greeting
 - [x] Fixed backend history logic to ensure proper user-model alternation
+
+## Vercel API Fix - Use Gemini instead of OpenAI
+- [ ] Rewrite /api/chat.ts to use Gemini 2.0 Flash
+- [ ] Test Vercel deployment
+- [ ] Verify chat works on live site
