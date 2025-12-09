@@ -216,69 +216,23 @@ export default function PrayerTimes() {
         let finalCountry = countryName;
 
         if (!finalCity) {
-          // Try Nominatim first (OpenStreetMap)
           try {
-            const nominatimController = new AbortController();
-            const nominatimTimeout = setTimeout(() => nominatimController.abort(), 5000);
-            
-            const nominatimResponse = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
-              { 
-                signal: nominatimController.signal,
-                headers: { 'User-Agent': 'QuranAIChat/1.0' }
-              }
+            const geoResponse = await fetch(
+              `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`
             );
-            clearTimeout(nominatimTimeout);
             
-            if (nominatimResponse.ok) {
-              const nominatimData = await nominatimResponse.json();
-              if (nominatimData.address) {
-                finalCity = nominatimData.address.city || 
-                           nominatimData.address.town || 
-                           nominatimData.address.village || 
-                           nominatimData.address.municipality ||
-                           nominatimData.address.county;
-                finalCountry = nominatimData.address.country || '';
-                console.log('[Nominatim] City detected:', finalCity);
+            if (geoResponse.ok) {
+              const geoData = await geoResponse.json();
+              if (geoData.address) {
+                finalCity = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || data.data.meta?.timezone;
+                finalCountry = geoData.address.country || '';
               }
+            } else {
+              finalCity = data.data.meta?.timezone || "Unbekannt";
             }
-          } catch (nominatimError) {
-            console.warn('[Nominatim] Failed, trying fallback:', nominatimError);
-          }
-
-          // Fallback to geocode.maps.co if Nominatim failed
-          if (!finalCity) {
-            try {
-              const geocodeController = new AbortController();
-              const geocodeTimeout = setTimeout(() => geocodeController.abort(), 5000);
-              
-              const geoResponse = await fetch(
-                `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`,
-                { signal: geocodeController.signal }
-              );
-              clearTimeout(geocodeTimeout);
-              
-              if (geoResponse.ok) {
-                const geoData = await geoResponse.json();
-                if (geoData.address) {
-                  finalCity = geoData.address.city || 
-                             geoData.address.town || 
-                             geoData.address.village || 
-                             geoData.address.municipality ||
-                             geoData.address.county;
-                  finalCountry = geoData.address.country || '';
-                  console.log('[Geocode.maps.co] City detected:', finalCity);
-                }
-              }
-            } catch (geoError) {
-              console.warn('[Geocode.maps.co] Failed:', geoError);
-            }
-          }
-
-          // Last resort: use timezone
-          if (!finalCity) {
+          } catch (geoError) {
+            console.error('Geocoding error:', geoError);
             finalCity = data.data.meta?.timezone || "Unbekannt";
-            console.log('[Fallback] Using timezone:', finalCity);
           }
         }
 
