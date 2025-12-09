@@ -432,3 +432,9 @@
 - [x] Verify chat works on live site
 
 - [x] Change Ayat des Tages button from "Vers lesen" to "Zur Surah" (simpler, more reliable)
+
+- [ ] Implement offline functionality with service worker caching
+- [ ] Cache Quran API responses for offline reading
+- [ ] Cache static assets (CSS, JS, images)
+- [ ] Show offline indicator when no internet connection
+- [ ] Test offline mode by disabling network
