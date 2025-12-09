@@ -452,3 +452,5 @@
 - [x] Implement dynamic city name detection using reverse geocoding
 - [x] Support any location worldwide, not hardcoded cities
 - [x] Use Nominatim + geocode.maps.co as fallback for reliability
+
+- [x] Swap order: Prayer times widget first, then KI-Assistent

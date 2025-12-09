@@ -266,6 +266,13 @@ export default function NewHome() {
         </div>
       )}
 
+      {/* Prayer Times Widget */}
+      {widgetPrefs.showPrayerTimes && (
+        <div className="container mx-auto px-4 mt-4">
+          <PrayerTimesWidget />
+        </div>
+      )}
+
       {/* KI-Assistent Section */}
       <div className="container mx-auto px-4 mt-4">
         <Card className={`overflow-hidden border-0 bg-transparent shadow-none rounded-3xl`}>
@@ -357,13 +364,6 @@ export default function NewHome() {
             );
           })}
         </div>
-
-        {/* Prayer Times Widget */}
-        {widgetPrefs.showPrayerTimes && (
-          <div className="mt-8">
-            <PrayerTimesWidget />
-          </div>
-        )}
 
         {/* Ayat des Tages */}
         {widgetPrefs.showAyatOfTheDay && (
