@@ -153,4 +153,3 @@ Diese Anwendung generiert Antworten mit Hilfe von KI. Die Antworten dienen nur z
 ## Support
 
 Für Fragen oder Probleme öffnen Sie bitte ein Issue im Repository.
-# Multi-Language Support
