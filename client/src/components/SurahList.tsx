@@ -12,7 +12,6 @@ import { CircularProgress } from "@/components/CircularProgress";
 import { getSurahProgress } from "@/lib/readingProgress";
 import { useLocation } from "wouter";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
-import { useLanguage } from "@/contexts/LanguageContext";
 // Removed tRPC import - using localStorage instead
 
 interface SurahListProps {
@@ -21,7 +20,6 @@ interface SurahListProps {
 }
 
 export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps) {
-  const { t } = useLanguage();
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +27,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
   const [, navigate] = useLocation();
-  const { state: audioState, playSurah, pause, resume} = useAudioPlayer();
+  const { state: audioState, playSurah, pause, resume } = useAudioPlayer();
 
   useEffect(() => {
     const loadSurahs = async () => {
@@ -200,7 +198,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
               : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
           }`}
         >
-          {t.quran.tabs.all}
+          Alle
         </button>
         <button
           onClick={() => setActiveTab('favorites')}
@@ -210,7 +208,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
               : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
           }`}
         >
-          {t.quran.tabs.favorites}
+          Favoriten
         </button>
       </div>
 
@@ -219,7 +217,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
         <div className="relative">
           <input
             type="text"
-            placeholder={t.quran.search}
+            placeholder="Surah oder Wort suchen (Enter drücken)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
@@ -274,7 +272,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
                       {surah.number}. {surah.englishName}
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {t.quran.verses.replace('{{count}}', surah.numberOfAyahs.toString())}
+                      {surah.numberOfAyahs} Verse
                     </p>
                   </div>
                 </div>

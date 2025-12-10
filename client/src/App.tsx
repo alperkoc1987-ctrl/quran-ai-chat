@@ -8,7 +8,6 @@ import { TransliterationProvider } from "./contexts/TransliterationContext";
 import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
 import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
 import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
-import { LanguageProvider } from "./contexts/LanguageContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
 import { AudioPlayerOverlay } from "./components/AudioPlayerOverlay";
@@ -72,12 +71,11 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <LanguageProvider>
-        <ThemeProvider
-          defaultTheme="light"
-          switchable={true}
-        >
-          <TransliterationProvider>
+      <ThemeProvider
+        defaultTheme="light"
+        switchable={true}
+      >
+        <TransliterationProvider>
           <TranslationLanguageProvider>
             <ReadingThemeProvider>
               <AudioPlayerProvider>
@@ -91,9 +89,8 @@ function App() {
             </AudioPlayerProvider>
             </ReadingThemeProvider>
           </TranslationLanguageProvider>
-          </TransliterationProvider>
-        </ThemeProvider>
-      </LanguageProvider>
+        </TransliterationProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
