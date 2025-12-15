@@ -13,9 +13,11 @@ import { PrayerTimesWidget } from "@/components/PrayerTimesWidget";
 import { useWidgetPreferences } from "@/components/WidgetSettings";
 import { PushToTalkButton } from "@/components/PushToTalkButton";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function NewHome() {
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const widgetPrefs = useWidgetPreferences();
   const [chatExpanded, setChatExpanded] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -154,56 +156,56 @@ export default function NewHome() {
   const categories = [
     {
       id: "quran",
-      title: "Der Koran",
-      description: "Lesen Sie den heiligen Koran",
+      title: t("theQuranTitle"),
+      description: t("theQuranDesc"),
       icon: BookOpen,
       link: "/quran",
       gradient: "from-emerald-500 to-teal-600"
     },
     {
       id: "duas",
-      title: "Duas",
-      description: "Bittgebete für jede Lebenslage",
+      title: t("duasTitle"),
+      description: t("duasDesc"),
       icon: HandHeart,
       link: "/duas",
       gradient: "from-purple-500 to-pink-600"
     },
     {
       id: "prayer-times",
-      title: "Gebetszeiten",
-      description: "Finden Sie Ihre lokalen Gebetszeiten",
+      title: t("prayerTimesTitle"),
+      description: t("prayerTimesDesc"),
       icon: Clock,
       link: "/prayer-times",
       gradient: "from-blue-500 to-cyan-600"
     },
     {
       id: "qibla",
-      title: "Qibla-Richtung",
-      description: "Finden Sie die Richtung nach Mekka",
+      title: t("qiblaTitle"),
+      description: t("qiblaDesc"),
       icon: Compass,
       link: "/qibla",
       gradient: "from-orange-500 to-red-600"
     },
     {
       id: "stories",
-      title: "Geschichten",
-      description: "Prophetengeschichten aus dem Koran",
+      title: t("storiesTitle"),
+      description: t("storiesDesc"),
       icon: Scroll,
       link: "/stories",
       gradient: "from-amber-500 to-yellow-600"
     },
     {
       id: "quiz",
-      title: "Quiz",
-      description: "Teste dein islamisches Wissen",
+      title: t("quizTitle"),
+      description: t("quizDesc"),
       icon: Brain,
       link: "/quiz",
       gradient: "from-purple-500 to-pink-600"
     },
     {
       id: "statistics",
-      title: "Fortschritt",
-      description: "Fortschritt & Lesezeiten",
+      title: t("progressTitle"),
+      description: t("progressDesc"),
       icon: BarChart,
       link: "/statistics",
       gradient: "from-blue-500 to-cyan-600"
@@ -211,24 +213,24 @@ export default function NewHome() {
 
     {
       id: "bookmarks",
-      title: "Lesezeichen",
-      description: "Gespeicherte Verse & Notizen",
+      title: t("bookmarksTitle"),
+      description: t("bookmarksDesc"),
       icon: Bookmark,
       link: "/bookmarks",
       gradient: "from-teal-500 to-emerald-600"
     },
     {
       id: "dhikr",
-      title: "Dhikr & Adhkar",
-      description: "Erinnerungen mit Zähler",
+      title: t("dhikrTitle"),
+      description: t("dhikrDesc"),
       icon: Sparkles,
       link: "/dhikr",
       gradient: "from-amber-500 to-orange-600"
     },
     {
       id: "settings",
-      title: "Einstellungen",
-      description: "Dark Mode, Rezitator & mehr",
+      title: t("settingsTitle"),
+      description: t("settingsDesc"),
       icon: SettingsIcon,
       link: "/settings",
       gradient: "from-slate-500 to-slate-700"
@@ -251,8 +253,8 @@ export default function NewHome() {
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Koran & Hadith KI-Chat</h1>
-                <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Ihr islamischer Begleiter</p>
+                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>{t("appTitle")}</h1>
+                <p className={`text-xs ${themeConfig.colors.textSecondary}`}>{t("appSubtitle")}</p>
               </div>
             </div>
           </div>

@@ -1,37 +1,39 @@
 import { Home, BookOpen, HandHeart, Sparkles, Settings } from "lucide-react";
 import { useLocation } from "wouter";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function BottomNavigation() {
   const [location, navigate] = useLocation();
+  const { t } = useLanguage();
 
   const navItems = [
     {
       id: "home",
-      label: "Home",
+      label: t("home"),
       icon: Home,
       path: "/",
     },
     {
       id: "quran",
-      label: "Koran",
+      label: t("quran"),
       icon: BookOpen,
       path: "/quran",
     },
     {
       id: "duas",
-      label: "Duas",
+      label: t("duas"),
       icon: HandHeart,
       path: "/duas",
     },
     {
       id: "dhikr",
-      label: "Dhikr",
+      label: t("dhikr"),
       icon: Sparkles,
       path: "/dhikr",
     },
     {
       id: "settings",
-      label: "Einstellungen",
+      label: t("settings"),
       icon: Settings,
       path: "/settings",
     },

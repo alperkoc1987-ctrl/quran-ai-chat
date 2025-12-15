@@ -5,9 +5,11 @@ import { Surah } from "@/lib/types";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Quran() {
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const [, navigate] = useLocation();
 
   const handleSelectSurah = (surah: Surah) => {
@@ -33,10 +35,10 @@ export default function Quran() {
             </div>
             <div>
               <h1 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
-                Der Koran
+                {t("theQuranTitle")}
               </h1>
               <p className={`text-xs ${themeConfig.colors.textSecondary}`}>
-                Lesen Sie den heiligen Koran
+                {t("theQuranDesc")}
               </p>
             </div>
           </div>

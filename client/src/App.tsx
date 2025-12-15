@@ -8,6 +8,7 @@ import { TransliterationProvider } from "./contexts/TransliterationContext";
 import { TranslationLanguageProvider } from "./contexts/TranslationLanguageContext";
 import { AudioPlayerProvider } from "./contexts/AudioPlayerContext";
 import { ReadingThemeProvider } from "./contexts/ReadingThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { MiniAudioPlayer } from "./components/MiniAudioPlayer";
 import { AudioPlayerOverlay } from "./components/AudioPlayerOverlay";
@@ -75,6 +76,7 @@ function App() {
         defaultTheme="light"
         switchable={true}
       >
+        <LanguageProvider>
         <TransliterationProvider>
           <TranslationLanguageProvider>
             <ReadingThemeProvider>
@@ -90,6 +92,7 @@ function App() {
             </ReadingThemeProvider>
           </TranslationLanguageProvider>
         </TransliterationProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

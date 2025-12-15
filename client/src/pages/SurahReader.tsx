@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useTransliteration } from "@/contexts/TransliterationContext";
-import { useTranslationLanguage } from "@/contexts/TranslationLanguageContext";
+import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { getTranslationEdition } from "@/lib/translationEditions";
@@ -44,8 +44,19 @@ export default function SurahReader() {
   const [highlightedVerse, setHighlightedVerse] = useState<number | null>(null);
 
   const { showTransliteration } = useTransliteration();
-  const { language: translationLanguage } = useTranslationLanguage();
+  const { language } = useLanguage();
   const audioPlayer = useAudioPlayer();
+  
+  // Map UI language to Quran translation edition
+  const getEditionForLanguage = (lang: Language): string => {
+    const mapping: Record<Language, string> = {
+      de: "de.bubenheim",
+      en: "en.sahih",
+      tr: "tr.diyanet",
+      ar: "quran-uthmani", // Arabic only - no translation
+    };
+    return mapping[lang];
+  };
   const { themeConfig } = useReadingTheme();
   const [surahData, setSurahData] = useState<SurahWithAyahs | null>(null);
   const [translationData, setTranslationData] = useState<SurahWithAyahs | null>(null);
@@ -82,8 +93,8 @@ export default function SurahReader() {
         }
         setSurahInfo(surah);
 
-        // Fetch complete Surah data with selected translation language
-        const translationEdition = getTranslationEdition(translationLanguage);
+        // Fetch complete Surah data with UI language
+        const translationEdition = getEditionForLanguage(language);
         const data = await fetchSurahComplete(
           surahNumber,
           translationEdition,
@@ -103,7 +114,7 @@ export default function SurahReader() {
     };
 
     loadSurah();
-  }, [surahNumber, translationLanguage]);
+  }, [surahNumber, language]);
 
   // Track reading time with interval timer
   useEffect(() => {
@@ -540,8 +551,8 @@ export default function SurahReader() {
                 </p>
               )}
 
-              {/* German Translation */}
-              {translation && (
+              {/* Translation (based on UI language) */}
+              {translation && language !== "ar" && (
                 <p className={`${themeConfig.colors.translation} leading-relaxed`}>
                   {translation.text}
                 </p>

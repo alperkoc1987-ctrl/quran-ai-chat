@@ -7,10 +7,11 @@ import { ArrowLeft, Moon, Sun, Languages, Music, Bell, Compass, Info, Shield, Pa
 import { useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTransliteration } from "@/contexts/TransliterationContext";
-import { useTranslationLanguage, type TranslationLanguage } from "@/contexts/TranslationLanguageContext";
+// TranslationLanguageContext removed - using LanguageContext instead
 import { ReadingThemeSelector } from "@/components/ReadingThemeSelector";
 import { WidgetSettings } from "@/components/WidgetSettings";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
 import { RECITERS, ReciterKey } from "@/lib/audio";
 import {
@@ -24,10 +25,11 @@ import {
 
 export default function Settings() {
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { showTransliteration, setShowTransliteration } = useTransliteration();
-  const { language: translationLanguage, setLanguage: setTranslationLanguage } = useTranslationLanguage();
+  const { language, setLanguage } = useLanguage();
   
   // Reciter selection state
   const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
@@ -93,7 +95,7 @@ export default function Settings() {
             <ArrowLeft className="w-6 h-6 text-slate-300" />
           </button>
           <h1 className="text-2xl font-bold text-white">
-            Einstellungen
+            {t("settings")}
           </h1>
         </div>
       </div>
@@ -111,7 +113,7 @@ export default function Settings() {
               )}
               <div>
                 <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
-                  Dunkler Modus
+                  {t("darkMode")}
                 </h2>
                 <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                   Aktiviere den dunklen Modus für bessere Lesbarkeit bei Nacht
@@ -140,7 +142,7 @@ export default function Settings() {
               <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
               <div>
                 <h2 className={`text-lg font-semibold ${themeConfig.colors.text}`}>
-                  Transliteration
+                  {t("transliteration")}
                 </h2>
                 <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                   Zeige lateinische Umschrift unter arabischem Text
@@ -168,7 +170,7 @@ export default function Settings() {
             <Languages className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                Übersetzungssprache
+                {t("translationLanguage")}
               </h2>
               <p className="text-sm text-slate-300">
                 Wähle die Sprache für Koran-Übersetzungen
@@ -178,9 +180,9 @@ export default function Settings() {
 
           <div className="grid grid-cols-2 gap-3 mt-4">
             <button
-              onClick={() => setTranslationLanguage("de")}
+              onClick={() => setLanguage("de")}
               className={`p-4 rounded-lg border-2 transition-all ${
-                translationLanguage === "de"
+                language === "de"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
                   : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
               }`}
@@ -190,9 +192,9 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={() => setTranslationLanguage("en")}
+              onClick={() => setLanguage("en")}
               className={`p-4 rounded-lg border-2 transition-all ${
-                translationLanguage === "en"
+                language === "en"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
                   : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
               }`}
@@ -202,9 +204,9 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={() => setTranslationLanguage("tr")}
+              onClick={() => setLanguage("tr")}
               className={`p-4 rounded-lg border-2 transition-all ${
-                translationLanguage === "tr"
+                language === "tr"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
                   : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
               }`}
@@ -214,9 +216,9 @@ export default function Settings() {
             </button>
 
             <button
-              onClick={() => setTranslationLanguage("ar")}
+              onClick={() => setLanguage("ar")}
               className={`p-4 rounded-lg border-2 transition-all ${
-                translationLanguage === "ar"
+                language === "ar"
                   ? "border-teal-600 bg-teal-50 dark:bg-teal-900/20"
                   : "border-gray-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-700"
               }`}
