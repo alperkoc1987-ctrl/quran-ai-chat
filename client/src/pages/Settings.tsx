@@ -25,11 +25,10 @@ import {
 
 export default function Settings() {
   const { themeConfig } = useReadingTheme();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { showTransliteration, setShowTransliteration } = useTransliteration();
-  const { language, setLanguage } = useLanguage();
   
   // Reciter selection state
   const [selectedReciter, setSelectedReciter] = useState<ReciterKey>("mishary");
