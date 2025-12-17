@@ -454,3 +454,20 @@
 - [x] Use Nominatim + geocode.maps.co as fallback for reliability
 
 - [x] Swap order: Prayer times widget first, then KI-Assistent
+
+
+## Full UI Translation - December 16, 2025
+- [ ] Audit current translation coverage across all pages
+- [ ] Add missing translations to LanguageContext dictionaries
+- [ ] Update Settings page with full translations
+- [ ] Update Quran page with full translations
+- [ ] Update Dhikr page with full translations
+- [ ] Update Duas page with full translations
+- [ ] Update Prayer Times page with full translations
+- [ ] Update Qibla page with full translations
+- [ ] Update Quiz page with full translations
+- [ ] Update Statistics/Fortschritt page with full translations
+- [ ] Update Prophet Stories page with full translations
+- [ ] Update Bookmarks page with full translations
+- [ ] Update KI-Chat page with full translations
+- [ ] Test all pages in all 4 languages
