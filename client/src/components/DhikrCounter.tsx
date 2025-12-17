@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { RotateCcw, Check } from "lucide-react";
 import { Dhikr } from "@/data/adhkar";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DhikrCounterProps {
   dhikr: Dhikr;
@@ -17,6 +18,7 @@ interface DhikrCounterProps {
 }
 
 export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
+  const { t } = useLanguage();
   const [count, setCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -37,7 +39,7 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
       // Check if completed
       if (count + 1 === dhikr.count) {
         setIsCompleted(true);
-        toast.success("Dhikr abgeschlossen! 🎉", {
+        toast.success(t("dhikrCompleted"), {
           description: `${dhikr.count}x ${dhikr.transliteration}`,
         });
         
@@ -77,7 +79,7 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
           {count}
         </div>
         <div className="text-sm text-slate-400">
-          von {dhikr.count}
+          {t("of")} {dhikr.count}
         </div>
 
         {/* Progress Bar */}
@@ -103,10 +105,10 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
           {isCompleted ? (
             <>
               <Check className="w-6 h-6 mr-2" />
-              Abgeschlossen
+              {t("completed")}
             </>
           ) : (
-            "Tap zum Zählen"
+            t("tapToCount")
           )}
         </Button>
 
@@ -124,7 +126,7 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
       <div className="mt-6 space-y-4">
         <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
           <div className="text-xs font-semibold text-green-800 dark:text-green-400 mb-1">
-            Belohnung (Fadl)
+            {t("rewardFadl")}
           </div>
           <div className="text-sm text-green-900 dark:text-green-300">
             {dhikr.reward}
@@ -133,13 +135,13 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
 
         <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
           <div className="text-xs font-semibold text-blue-800 dark:text-blue-400 mb-1">
-            Hadith
+            {t("hadithLabel")}
           </div>
           <div className="text-sm text-blue-900 dark:text-blue-300 mb-2">
             {dhikr.hadith}
           </div>
           <div className="text-xs text-blue-700 dark:text-blue-400 font-medium">
-            Quelle: {dhikr.source}
+            {t("source")} {dhikr.source}
           </div>
         </div>
       </div>

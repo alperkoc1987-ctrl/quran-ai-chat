@@ -127,6 +127,15 @@ const translations = {
     afterWuduDesc: "Dhikr nach der rituellen Waschung",
     generalDhikr: "Allgemeine Dhikr",
     generalDhikrDesc: "Erinnerungen für jede Zeit und Gelegenheit",
+    
+    // Dhikr Counter
+    dhikrCompleted: "Dhikr abgeschlossen! 🎉",
+    of: "von",
+    completed: "Abgeschlossen",
+    tapToCount: "Tap zum Zählen",
+    rewardFadl: "Belohnung (Fadl)",
+    hadithLabel: "Hadith",
+    source: "Quelle:",
   },
   en: {
     // Navigation
@@ -250,6 +259,15 @@ const translations = {
     afterWuduDesc: "Dhikr after ritual ablution",
     generalDhikr: "General Dhikr",
     generalDhikrDesc: "Reminders for any time and occasion",
+    
+    // Dhikr Counter
+    dhikrCompleted: "Dhikr completed! 🎉",
+    of: "of",
+    completed: "Completed",
+    tapToCount: "Tap to Count",
+    rewardFadl: "Reward (Fadl)",
+    hadithLabel: "Hadith",
+    source: "Source:",
   },
   tr: {
     // Navigation
@@ -373,6 +391,15 @@ const translations = {
     afterWuduDesc: "Abdest aldıktan sonra zikirler",
     generalDhikr: "Genel Zikirler",
     generalDhikrDesc: "Her zaman ve fırsat için zikirler",
+    
+    // Dhikr Counter
+    dhikrCompleted: "Zikir tamamlandı! 🎉",
+    of: "/ ",
+    completed: "Tamamlandı",
+    tapToCount: "Saymak için Dokun",
+    rewardFadl: "Ödül (Fadl)",
+    hadithLabel: "Hadis",
+    source: "Kaynak:",
   },
   ar: {
     // Navigation
@@ -496,6 +523,15 @@ const translations = {
     afterWuduDesc: "أذكار بعد الوضوء",
     generalDhikr: "أذكار عامة",
     generalDhikrDesc: "أذكار لكل وقت ومناسبة",
+    
+    // Dhikr Counter
+    dhikrCompleted: "تم إكمال الذكر! 🎉",
+    of: "من",
+    completed: "مكتمل",
+    tapToCount: "اضغط للعد",
+    rewardFadl: "الأجر (الفضل)",
+    hadithLabel: "الحديث",
+    source: "المصدر:",
   },
 };
 

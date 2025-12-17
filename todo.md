@@ -471,3 +471,11 @@
 - [ ] Update Bookmarks page with full translations
 - [ ] Update KI-Chat page with full translations
 - [ ] Test all pages in all 4 languages
+
+## Dhikr Translation Fix - December 17, 2025
+- [x] Identify all hardcoded German strings in Dhikr components
+- [x] Add missing translation keys to LanguageContext (de/en/tr/ar)
+- [x] Replace all hardcoded strings with t() function
+- [x] Verify TypeScript check passes
+- [ ] Test all 4 languages in Dhikr overview and detail view
+- [ ] Save checkpoint and push to GitHub
