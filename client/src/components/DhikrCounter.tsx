@@ -18,7 +18,7 @@ interface DhikrCounterProps {
 }
 
 export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [count, setCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -69,7 +69,7 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
           {dhikr.transliteration}
         </div>
         <div className="text-xs md:text-sm text-slate-300">
-          {dhikr.translation}
+          {dhikr.translation[language]}
         </div>
       </div>
 
@@ -129,7 +129,7 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
             {t("rewardFadl")}
           </div>
           <div className="text-sm text-green-900 dark:text-green-300">
-            {dhikr.reward}
+            {dhikr.reward[language]}
           </div>
         </div>
 
@@ -138,10 +138,10 @@ export function DhikrCounter({ dhikr, onComplete }: DhikrCounterProps) {
             {t("hadithLabel")}
           </div>
           <div className="text-sm text-blue-900 dark:text-blue-300 mb-2">
-            {dhikr.hadith}
+            {dhikr.hadith[language]}
           </div>
           <div className="text-xs text-blue-700 dark:text-blue-400 font-medium">
-            {t("source")} {dhikr.source}
+            {t("source")} {dhikr.source[language]}
           </div>
         </div>
       </div>

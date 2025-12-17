@@ -9,7 +9,7 @@ import { ArrowLeft, Sunrise, Sunset, HandHeart, Moon, Droplet, Sparkles, Hand } 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DhikrCounter } from "@/components/DhikrCounter";
-import { ADHKAR, DHIKR_CATEGORIES, getDhikrByCategory, type DhikrCategory, type Dhikr } from "@/data/adhkar";
+import { ADHKAR, getCategoryNameKey, getCategoryDescKey, type DhikrCategory, type Dhikr } from "@/data/adhkar";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -22,10 +22,25 @@ const CATEGORY_ICONS = {
   general: Sparkles,
 };
 
+// Helper function to get Dhikr by category
+function getDhikrByCategory(category: DhikrCategory): Dhikr[] {
+  return ADHKAR.filter(dhikr => dhikr.category === category);
+}
+
+// Define Dhikr categories
+const DHIKR_CATEGORIES: DhikrCategory[] = [
+  "morning",
+  "evening",
+  "after_prayer",
+  "before_sleep",
+  "after_wudu",
+  "general"
+];
+
 export default function Dhikr() {
   const [, setLocation] = useLocation();
   const { themeConfig } = useReadingTheme();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<DhikrCategory | null>(null);
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr | null>(null);
   const [showTapHint, setShowTapHint] = useState(true);
@@ -59,7 +74,7 @@ export default function Dhikr() {
             <div>
               <h1 className="text-xl font-bold">{selectedDhikr.title}</h1>
               <p className="text-teal-100 text-sm">
-                {t(DHIKR_CATEGORIES[selectedDhikr.category].nameKey)}
+                {t(getCategoryNameKey(selectedDhikr.category))}
               </p>
             </div>
           </div>
@@ -81,7 +96,8 @@ export default function Dhikr() {
   // If a category is selected, show Dhikr list
   if (selectedCategory) {
     const adhkar = getDhikrByCategory(selectedCategory);
-    const category = DHIKR_CATEGORIES[selectedCategory];
+    const categoryNameKey = getCategoryNameKey(selectedCategory);
+    const categoryDescKey = getCategoryDescKey(selectedCategory);
 
     return (
       <div className={`min-h-screen ${themeConfig.colors.background} pb-32`}>
@@ -95,8 +111,8 @@ export default function Dhikr() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold">{t(category.nameKey)}</h1>
-              <p className="text-teal-100 text-sm">{t(category.descKey)}</p>
+              <h1 className="text-2xl font-bold">{t(categoryNameKey)}</h1>
+              <p className="text-teal-100 text-sm">{t(categoryDescKey)}</p>
             </div>
           </div>
         </div>
@@ -125,7 +141,7 @@ export default function Dhikr() {
                     {dhikr.transliteration}
                   </div>
                   <div className="text-sm text-slate-300 line-clamp-2">
-                    {dhikr.translation}
+                    {dhikr.translation[language]}
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-1">
@@ -144,7 +160,7 @@ export default function Dhikr() {
                   {t("reward")}
                 </div>
                 <div className="text-xs text-slate-300 line-clamp-2">
-                  {dhikr.reward}
+                  {dhikr.reward[language]}
                 </div>
               </div>
             </Card>
@@ -176,15 +192,17 @@ export default function Dhikr() {
       {/* Categories Grid */}
       <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Object.entries(DHIKR_CATEGORIES).map(([key, category]) => {
-            const Icon = CATEGORY_ICONS[key as DhikrCategory];
-            const count = getDhikrByCategory(key as DhikrCategory).length;
+          {DHIKR_CATEGORIES.map((category) => {
+            const Icon = CATEGORY_ICONS[category];
+            const count = getDhikrByCategory(category).length;
+            const nameKey = getCategoryNameKey(category);
+            const descKey = getCategoryDescKey(category);
 
             return (
               <Card
-                key={key}
+                key={category}
                 className={`p-6 cursor-pointer hover:shadow-lg transition-all hover:scale-105 ${themeConfig.colors.card} border ${themeConfig.colors.border}`}
-                onClick={() => setSelectedCategory(key as DhikrCategory)}
+                onClick={() => setSelectedCategory(category)}
               >
                 <div className="flex items-center gap-4 mb-3">
                   <div className="bg-gradient-to-br from-teal-400 to-emerald-500 p-3 rounded-lg">
@@ -192,7 +210,7 @@ export default function Dhikr() {
                   </div>
                   <div className="flex-1">
                     <h3 className={`font-semibold text-lg ${themeConfig.colors.text}`}>
-                      {t(category.nameKey)}
+                      {t(nameKey)}
                     </h3>
                     <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
                       {count} {t("adhkarCount")}
@@ -200,7 +218,7 @@ export default function Dhikr() {
                   </div>
                 </div>
                 <p className={`text-sm ${themeConfig.colors.textMuted}`}>
-                  {t(category.descKey)}
+                  {t(descKey)}
                 </p>
               </Card>
             );

@@ -2,18 +2,27 @@
  * adhkar.ts
  * Authentic Adhkar (remembrances) with Hadiths following Ahlul Sunnah
  * Sources: Sahih Bukhari, Sahih Muslim, Abu Dawud, Tirmidhi, Ibn Majah
+ * 
+ * Multilingual support: German (de), English (en), Turkish (tr), Arabic (ar)
  */
+
+export interface DhikrTranslations {
+  de: string;
+  en: string;
+  tr: string;
+  ar: string;
+}
 
 export interface Dhikr {
   id: string;
   category: DhikrCategory;
   arabic: string;
   transliteration: string;
-  translation: string;
+  translation: DhikrTranslations;
   count: number; // Recommended repetitions
-  hadith: string;
-  source: string; // Hadith reference
-  reward: string; // Fadl/Benefit
+  hadith: DhikrTranslations;
+  source: DhikrTranslations; // Hadith reference
+  reward: DhikrTranslations; // Fadl/Benefit
   audioUrl?: string;
   title?: string; // Display title for list and header (e.g., "Ayat al-Kursi", "Letzte 2 Verse Al-Baqarah")
   shortName?: string; // Deprecated: use title instead
@@ -34,11 +43,31 @@ export const ADHKAR: Dhikr[] = [
     category: "morning",
     arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
     transliteration: "Allahu la ilaha illa Huwa, Al-Hayyul-Qayyum. La ta'khudhuhu sinatun wa la nawm. Lahu ma fis-samawati wa ma fil-ard. Man dhal-ladhi yashfa'u 'indahu illa bi-idhnih. Ya'lamu ma bayna aydihim wa ma khalfahum, wa la yuhituna bishay'im-min 'ilmihi illa bima sha'a. Wasi'a Kursiyyuhus-samawati wal-ard, wa la ya'uduhu hifdhuhuma. Wa Huwal-'Aliyyul-'Adhim.",
-    translation: "Allah - es gibt keinen Gott außer Ihm, dem Lebendigen, dem Beständigen. Ihn überkommt weder Schlummer noch Schlaf. Ihm gehört, was in den Himmeln und was auf der Erde ist. Wer ist es denn, der bei Ihm Fürsprache einlegen könnte - außer mit Seiner Erlaubnis? Er weiß, was vor ihnen und was hinter ihnen liegt, doch sie umfassen nichts von Seinem Wissen - außer, was Er will. Sein Thronschemel umfasst die Himmel und die Erde, und ihre Behütung beschwert Ihn nicht. Er ist der Erhabene und Allgewaltige.",
+    translation: {
+      de: "Allah - es gibt keinen Gott außer Ihm, dem Lebendigen, dem Beständigen. Ihn überkommt weder Schlummer noch Schlaf. Ihm gehört, was in den Himmeln und was auf der Erde ist. Wer ist es denn, der bei Ihm Fürsprache einlegen könnte - außer mit Seiner Erlaubnis? Er weiß, was vor ihnen und was hinter ihnen liegt, doch sie umfassen nichts von Seinem Wissen - außer, was Er will. Sein Thronschemel umfasst die Himmel und die Erde, und ihre Behütung beschwert Ihn nicht. Er ist der Erhabene und Allgewaltige.",
+      en: "Allah - there is no deity except Him, the Ever-Living, the Sustainer of existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Throne extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.",
+      tr: "Allah, O'ndan başka ilah yoktur. Diri ve Kayyum olan O'dur. O'nu ne uyuklama tutar ne de uyku. Göklerde ve yerde ne varsa hepsi O'nundur. İzni olmadan O'nun katında kim şefaat edebilir? O, kulların önlerindeki ve arkalarındaki her şeyi bilir. Onlar, O'nun ilminden, kendisinin dilediği kadarından başka bir şeyi kavrayamazlar. O'nun Kürsüsü gökleri ve yeri kaplayıp kuşatmıştır. Onların korunması O'na güç gelmez. O, yüceler yücesi ve pek büyüktür.",
+      ar: "الله لا إله إلا هو الحي القيوم، لا تأخذه سنة ولا نوم، له ما في السماوات وما في الأرض، من ذا الذي يشفع عنده إلا بإذنه، يعلم ما بين أيديهم وما خلفهم، ولا يحيطون بشيء من علمه إلا بما شاء، وسع كرسيه السماوات والأرض، ولا يؤوده حفظهما، وهو العلي العظيم."
+    },
     count: 1,
-    hadith: "Wer Ayat al-Kursi nach jedem Pflichtgebet rezitiert, dem steht nichts im Wege zum Paradies außer dem Tod.",
-    source: "An-Nasa'i in Al-Kubra (9928), authentifiziert von Al-Albani",
-    reward: "Schutz bis zum nächsten Gebet, Eintritt ins Paradies",
+    hadith: {
+      de: "Wer Ayat al-Kursi nach jedem Pflichtgebet rezitiert, dem steht nichts im Wege zum Paradies außer dem Tod.",
+      en: "Whoever recites Ayat al-Kursi after every obligatory prayer, nothing stands between him and Paradise except death.",
+      tr: "Her farz namazdan sonra Ayetel Kürsi'yi okuyan kimse ile Cennet arasında ölümden başka bir engel yoktur.",
+      ar: "من قرأ آية الكرسي دبر كل صلاة مكتوبة لم يمنعه من دخول الجنة إلا أن يموت."
+    },
+    source: {
+      de: "An-Nasa'i in Al-Kubra (9928), authentifiziert von Al-Albani",
+      en: "An-Nasa'i in Al-Kubra (9928), authenticated by Al-Albani",
+      tr: "Nesei, El-Kübra'da (9928), El-Albani tarafından sahih kabul edilmiştir",
+      ar: "النسائي في الكبرى (9928)، صححه الألباني"
+    },
+    reward: {
+      de: "Schutz bis zum nächsten Gebet, Eintritt ins Paradies",
+      en: "Protection until the next prayer, entry into Paradise",
+      tr: "Bir sonraki namaza kadar koruma, Cennete giriş",
+      ar: "الحماية حتى الصلاة التالية، دخول الجنة"
+    },
     title: "Ayat al-Kursi",
   },
   {
@@ -46,288 +75,226 @@ export const ADHKAR: Dhikr[] = [
     category: "morning",
     arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
     transliteration: "Subhan Allahi wa bihamdihi",
-    translation: "Gepriesen sei Allah und Ihm gebührt alles Lob",
+    translation: {
+      de: "Gepriesen sei Allah und Ihm gebührt alles Lob",
+      en: "Glory be to Allah and praise be to Him",
+      tr: "Allah'ı tüm eksikliklerden tenzih ederim ve O'na hamd ederim",
+      ar: "سبحان الله وبحمده"
+    },
     count: 100,
-    hadith: "Wer 100 Mal am Tag sagt: 'Subhan Allahi wa bihamdihi', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
-    source: "Sahih Bukhari 6405, Sahih Muslim 2691",
-    reward: "Vergebung aller Sünden, selbst wenn sie wie Meeresschaum sind",
+    hadith: {
+      de: "Wer 100 Mal am Tag sagt: 'Subhan Allahi wa bihamdihi', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
+      en: "Whoever says 'Subhan Allahi wa bihamdihi' 100 times a day, his sins will be forgiven even if they are like the foam of the sea.",
+      tr: "Günde 100 kez 'Sübhanallahi ve bihamdihi' diyen kimsenin günahları, deniz köpüğü kadar olsa bile bağışlanır.",
+      ar: "من قال: سبحان الله وبحمده، في يوم مائة مرة، حطت خطاياه وإن كانت مثل زبد البحر."
+    },
+    source: {
+      de: "Sahih Bukhari 6405, Sahih Muslim 2691",
+      en: "Sahih Bukhari 6405, Sahih Muslim 2691",
+      tr: "Sahih Buhari 6405, Sahih Muslim 2691",
+      ar: "صحيح البخاري 6405، صحيح مسلم 2691"
+    },
+    reward: {
+      de: "Vergebung aller Sünden, selbst wenn sie wie Meeresschaum sind",
+      en: "Forgiveness of all sins, even if they are like sea foam",
+      tr: "Deniz köpüğü kadar olsa bile tüm günahların bağışlanması",
+      ar: "مغفرة جميع الذنوب ولو كانت مثل زبد البحر"
+    },
     title: "Tasbih 100x",
-  },
-  {
-    id: "morning_subhanallah_azim",
-    category: "morning",
-    arabic: "سُبْحَانَ اللَّهِ الْعَظِيمِ وَبِحَمْدِهِ",
-    transliteration: "Subhan Allahil-Azim wa bihamdihi",
-    translation: "Gepriesen sei Allah, der Allmächtige, und Ihm gebührt alles Lob",
-    count: 100,
-    hadith: "Zwei Worte, die leicht auf der Zunge sind, schwer in der Waage und geliebt vom Barmherzigen: Subhan Allahil-Azim wa bihamdihi, Subhan Allahil-Azim.",
-    source: "Sahih Bukhari 6406, Sahih Muslim 2694",
-    reward: "Schwer in der Waage am Tag des Gerichts, geliebt von Allah",
-    title: "Tasbih Al-Azim 100x",
   },
   {
     id: "morning_la_ilaha_illallah",
     category: "morning",
     arabic: "لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ",
     transliteration: "La ilaha illallahu wahdahu la sharika lah, lahul-mulku wa lahul-hamd, wa Huwa 'ala kulli shay'in Qadir",
-    translation: "Es gibt keinen Gott außer Allah allein, Er hat keinen Partner. Ihm gehört die Herrschaft und Ihm gebührt alles Lob, und Er hat Macht über alle Dinge",
+    translation: {
+      de: "Es gibt keinen Gott außer Allah allein, Er hat keinen Partner. Ihm gehört die Herrschaft und Ihm gebührt alles Lob, und Er hat Macht über alle Dinge",
+      en: "There is no deity except Allah alone, He has no partner. To Him belongs sovereignty and to Him belongs all praise, and He has power over all things",
+      tr: "Allah'tan başka ilah yoktur, O tektir, ortağı yoktur. Mülk O'nundur, hamd O'nadır ve O her şeye kadirdir",
+      ar: "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير"
+    },
     count: 100,
-    hadith: "Wer dies 100 Mal am Tag sagt, erhält die Belohnung, als hätte er 100 Sklaven befreit, und 100 gute Taten werden für ihn aufgeschrieben, und 100 schlechte Taten werden von ihm gelöscht, und es ist ein Schutz vor dem Satan für diesen Tag.",
-    source: "Sahih Bukhari 3293, Sahih Muslim 2691",
-    reward: "Belohnung wie 100 befreite Sklaven, 100 Hasanat, Schutz vor Satan",
+    hadith: {
+      de: "Wer dies 100 Mal am Tag sagt, erhält die Belohnung, als hätte er 100 Sklaven befreit, und 100 gute Taten werden für ihn aufgeschrieben, und 100 schlechte Taten werden von ihm gelöscht, und es ist ein Schutz vor dem Satan für diesen Tag.",
+      en: "Whoever says this 100 times a day will have the reward of freeing 100 slaves, and 100 good deeds will be recorded for him, and 100 bad deeds will be erased from him, and it will be a protection from Satan for that day.",
+      tr: "Bunu günde 100 kez söyleyen kimse, 100 köle azat etmiş gibi sevap kazanır, 100 iyilik yazılır, 100 kötülüğü silinir ve o gün Şeytan'dan korunur.",
+      ar: "من قالها مائة مرة في يوم كانت له عدل عشر رقاب، وكتبت له مائة حسنة، ومحيت عنه مائة سيئة، وكانت له حرزاً من الشيطان يومه ذلك."
+    },
+    source: {
+      de: "Sahih Bukhari 3293, Sahih Muslim 2691",
+      en: "Sahih Bukhari 3293, Sahih Muslim 2691",
+      tr: "Sahih Buhari 3293, Sahih Muslim 2691",
+      ar: "صحيح البخاري 3293، صحيح مسلم 2691"
+    },
+    reward: {
+      de: "Belohnung wie 100 befreite Sklaven, 100 Hasanat, Schutz vor Satan",
+      en: "Reward like freeing 100 slaves, 100 good deeds, protection from Satan",
+      tr: "100 köle azat etme sevabı, 100 sevap, Şeytan'dan korunma",
+      ar: "أجر كعتق مائة رقبة، مائة حسنة، حماية من الشيطان"
+    },
     title: "Tahlil 100x",
   },
   
-  // Evening Adhkar
+  // After Prayer Adhkar
   {
-    id: "evening_ayat_kursi",
-    category: "evening",
-    arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
-    transliteration: "Allahu la ilaha illa Huwa, Al-Hayyul-Qayyum. La ta'khudhuhu sinatun wa la nawm. Lahu ma fis-samawati wa ma fil-ard. Man dhal-ladhi yashfa'u 'indahu illa bi-idhnih. Ya'lamu ma bayna aydihim wa ma khalfahum, wa la yuhituna bishay'im-min 'ilmihi illa bima sha'a. Wasi'a Kursiyyuhus-samawati wal-ard, wa la ya'uduhu hifdhuhuma. Wa Huwal-'Aliyyul-'Adhim.",
-    translation: "Allah - es gibt keinen Gott außer Ihm, dem Lebendigen, dem Beständigen. Ihn überkommt weder Schlummer noch Schlaf. Ihm gehört, was in den Himmeln und was auf der Erde ist. Wer ist es denn, der bei Ihm Fürsprache einlegen könnte - außer mit Seiner Erlaubnis? Er weiß, was vor ihnen und was hinter ihnen liegt, doch sie umfassen nichts von Seinem Wissen - außer, was Er will. Sein Thronschemel umfasst die Himmel und die Erde, und ihre Behütung beschwert Ihn nicht. Er ist der Erhabene und Allgewaltige.",
-    count: 1,
-    hadith: "Wer Ayat al-Kursi vor dem Schlafengehen rezitiert, wird von Allah beschützt und der Satan wird sich ihm nicht nähern bis zum Morgen.",
-    source: "Sahih Bukhari 2311",
-    reward: "Schutz vor Satan die ganze Nacht",
-    title: "Ayat al-Kursi",
-  },
-  {
-    id: "evening_last_two_ayat_baqarah",
-    category: "evening",
-    arabic: "آمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ ۚ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ ۚ وَقَالُوا سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ ۝ لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ۖ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا ۚ أَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ",
-    transliteration: "Amana ar-Rasulu bima unzila ilayhi min Rabbihi wal-mu'minun. Kullun amana billahi wa mala'ikatihi wa kutubihi wa rusulihi la nufarriqu bayna ahadin min rusulihi wa qalu sami'na wa ata'na ghufranaka Rabbana wa ilaykal-masir. La yukallifullahu nafsan illa wus'aha. Laha ma kasabat wa 'alayha mak-tasabat. Rabbana la tu'akhidhna in nasina aw akhta'na. Rabbana wa la tahmil 'alayna isran kama hamaltahu 'alal-ladhina min qablina. Rabbana wa la tuhammilna ma la taqata lana bihi wa'fu 'anna waghfir lana warhamna anta mawlana fansurna 'alal-qawmil-kafirin.",
-    translation: "Der Gesandte glaubt an das, was zu ihm von seinem Herrn herabgesandt wurde, und ebenso die Gläubigen. Alle glauben an Allah, Seine Engel, Seine Bücher und Seine Gesandten - wir machen keinen Unterschied zwischen Seinen Gesandten. Und sie sagen: Wir hören und gehorchen. Gewähre uns Deine Vergebung, unser Herr, und zu Dir ist die Heimkehr. Allah erlegt keiner Seele mehr auf, als sie zu leisten vermag. Ihr kommt zugute, was sie erworben hat, und angelastet wird ihr, was sie sich zuschulden kommen ließ. Unser Herr, belange uns nicht, wenn wir vergessen oder einen Fehler begehen. Unser Herr, lege uns keine Bürde auf, wie Du sie jenen auferlegt hast, die vor uns waren. Unser Herr, bürde uns nichts auf, wozu wir keine Kraft haben. Verzeihe uns, vergib uns und erbarme Dich unser! Du bist unser Beschützer, so hilf uns gegen das ungläubige Volk.",
-    count: 1,
-    hadith: "Wer die letzten beiden Verse von Surat Al-Baqarah in der Nacht rezitiert, dem genügen sie (als Schutz).",
-    source: "Sahih Bukhari 5009, Sahih Muslim 807",
-    reward: "Ausreichender Schutz für die Nacht",
-    title: "Letzte 2 Verse Al-Baqarah",
-  },
-  
-  // After Prayer
-  {
-    id: "after_prayer_subhanallah_33",
+    id: "after_prayer_subhanallah",
     category: "after_prayer",
     arabic: "سُبْحَانَ اللَّهِ",
     transliteration: "Subhan Allah",
-    translation: "Gepriesen sei Allah",
+    translation: {
+      de: "Gepriesen sei Allah",
+      en: "Glory be to Allah",
+      tr: "Allah'ı tüm eksikliklerden tenzih ederim",
+      ar: "سبحان الله"
+    },
     count: 33,
-    hadith: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
-    source: "Sahih Muslim 597",
-    reward: "Vergebung der Sünden",
+    hadith: {
+      de: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
+      en: "Whoever says SubhanAllah 33 times, Alhamdulillah 33 times, and Allahu Akbar 33 times after every prayer, and concludes with 'La ilaha illallahu wahdahu la sharika lah...', his sins will be forgiven even if they are like the foam of the sea.",
+      tr: "Her namazdan sonra 33 kez Sübhanallah, 33 kez Elhamdülillah, 33 kez Allahu Ekber diyen ve sonunda 'La ilahe illallahu vahdehü la şerike leh...' diyen kimsenin günahları deniz köpüğü kadar olsa bile bağışlanır.",
+      ar: "من سبح الله في دبر كل صلاة ثلاثاً وثلاثين، وحمد الله ثلاثاً وثلاثين، وكبر الله ثلاثاً وثلاثين، وقال تمام المائة: لا إله إلا الله وحده لا شريك له... غفرت خطاياه وإن كانت مثل زبد البحر."
+    },
+    source: {
+      de: "Sahih Muslim 597",
+      en: "Sahih Muslim 597",
+      tr: "Sahih Muslim 597",
+      ar: "صحيح مسلم 597"
+    },
+    reward: {
+      de: "Vergebung der Sünden",
+      en: "Forgiveness of sins",
+      tr: "Günahların bağışlanması",
+      ar: "مغفرة الذنوب"
+    },
     title: "Tasbih 33x",
   },
   {
-    id: "after_prayer_alhamdulillah_33",
+    id: "after_prayer_alhamdulillah",
     category: "after_prayer",
     arabic: "الْحَمْدُ لِلَّهِ",
     transliteration: "Alhamdulillah",
-    translation: "Alles Lob gebührt Allah",
+    translation: {
+      de: "Alles Lob gebührt Allah",
+      en: "All praise is due to Allah",
+      tr: "Hamd Allah'a mahsustur",
+      ar: "الحمد لله"
+    },
     count: 33,
-    hadith: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
-    source: "Sahih Muslim 597",
-    reward: "Vergebung der Sünden",
+    hadith: {
+      de: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
+      en: "Whoever says SubhanAllah 33 times, Alhamdulillah 33 times, and Allahu Akbar 33 times after every prayer, and concludes with 'La ilaha illallahu wahdahu la sharika lah...', his sins will be forgiven even if they are like the foam of the sea.",
+      tr: "Her namazdan sonra 33 kez Sübhanallah, 33 kez Elhamdülillah, 33 kez Allahu Ekber diyen ve sonunda 'La ilahe illallahu vahdehü la şerike leh...' diyen kimsenin günahları deniz köpüğü kadar olsa bile bağışlanır.",
+      ar: "من سبح الله في دبر كل صلاة ثلاثاً وثلاثين، وحمد الله ثلاثاً وثلاثين، وكبر الله ثلاثاً وثلاثين، وقال تمام المائة: لا إله إلا الله وحده لا شريك له... غفرت خطاياه وإن كانت مثل زبد البحر."
+    },
+    source: {
+      de: "Sahih Muslim 597",
+      en: "Sahih Muslim 597",
+      tr: "Sahih Muslim 597",
+      ar: "صحيح مسلم 597"
+    },
+    reward: {
+      de: "Vergebung der Sünden",
+      en: "Forgiveness of sins",
+      tr: "Günahların bağışlanması",
+      ar: "مغفرة الذنوب"
+    },
     title: "Tahmid 33x",
   },
   {
-    id: "after_prayer_allahu_akbar_33",
+    id: "after_prayer_allahu_akbar",
     category: "after_prayer",
     arabic: "اللَّهُ أَكْبَرُ",
     transliteration: "Allahu Akbar",
-    translation: "Allah ist der Größte",
+    translation: {
+      de: "Allah ist der Größte",
+      en: "Allah is the Greatest",
+      tr: "Allah en büyüktür",
+      ar: "الله أكبر"
+    },
     count: 33,
-    hadith: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
-    source: "Sahih Muslim 597",
-    reward: "Vergebung der Sünden",
+    hadith: {
+      de: "Wer nach jedem Gebet 33 Mal SubhanAllah, 33 Mal Alhamdulillah und 33 Mal Allahu Akbar sagt, und zum Abschluss sagt: 'La ilaha illallahu wahdahu la sharika lah...', dem werden seine Sünden vergeben, selbst wenn sie wie der Schaum des Meeres wären.",
+      en: "Whoever says SubhanAllah 33 times, Alhamdulillah 33 times, and Allahu Akbar 33 times after every prayer, and concludes with 'La ilaha illallahu wahdahu la sharika lah...', his sins will be forgiven even if they are like the foam of the sea.",
+      tr: "Her namazdan sonra 33 kez Sübhanallah, 33 kez Elhamdülillah, 33 kez Allahu Ekber diyen ve sonunda 'La ilahe illallahu vahdehü la şerike leh...' diyen kimsenin günahları deniz köpüğü kadar olsa bile bağışlanır.",
+      ar: "من سبح الله في دبر كل صلاة ثلاثاً وثلاثين، وحمد الله ثلاثاً وثلاثين، وكبر الله ثلاثاً وثلاثين، وقال تمام المائة: لا إله إلا الله وحده لا شريك له... غفرت خطاياه وإن كانت مثل زبد البحر."
+    },
+    source: {
+      de: "Sahih Muslim 597",
+      en: "Sahih Muslim 597",
+      tr: "Sahih Muslim 597",
+      ar: "صحيح مسلم 597"
+    },
+    reward: {
+      de: "Vergebung der Sünden",
+      en: "Forgiveness of sins",
+      tr: "Günahların bağışlanması",
+      ar: "مغفرة الذنوب"
+    },
     title: "Takbir 33x",
   },
   
-  // Before Sleep
+  // General Adhkar
   {
-    id: "before_sleep_ayat_kursi",
-    category: "before_sleep",
-    arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
-    transliteration: "Allahu la ilaha illa Huwa, Al-Hayyul-Qayyum. La ta'khudhuhu sinatun wa la nawm. Lahu ma fis-samawati wa ma fil-ard. Man dhal-ladhi yashfa'u 'indahu illa bi-idhnih. Ya'lamu ma bayna aydihim wa ma khalfahum, wa la yuhituna bishay'im-min 'ilmihi illa bima sha'a. Wasi'a Kursiyyuhus-samawati wal-ard, wa la ya'uduhu hifdhuhuma. Wa Huwal-'Aliyyul-'Adhim.",
-    translation: "Allah - es gibt keinen Gott außer Ihm, dem Lebendigen, dem Beständigen. Ihn überkommt weder Schlummer noch Schlaf. Ihm gehört, was in den Himmeln und was auf der Erde ist. Wer ist es denn, der bei Ihm Fürsprache einlegen könnte - außer mit Seiner Erlaubnis? Er weiß, was vor ihnen und was hinter ihnen liegt, doch sie umfassen nichts von Seinem Wissen - außer, was Er will. Sein Thronschemel umfasst die Himmel und die Erde, und ihre Behütung beschwert Ihn nicht. Er ist der Erhabene und Allgewaltige.",
-    count: 1,
-    hadith: "Wer Ayat al-Kursi vor dem Schlafengehen rezitiert, wird von Allah beschützt und der Satan wird sich ihm nicht nähern bis zum Morgen.",
-    source: "Sahih Bukhari 2311",
-    reward: "Schutz vor Satan die ganze Nacht",
-    title: "Ayat al-Kursi",
-  },
-  {
-    id: "before_sleep_surah_ikhlas",
-    category: "before_sleep",
-    arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
-    transliteration: "Bismillahir-Rahmanir-Rahim. Qul Huwa Allahu Ahad. Allahus-Samad. Lam yalid wa lam yulad. Wa lam yakul-lahu kufuwan ahad.",
-    translation: "Im Namen Allahs, des Allerbarmers, des Barmherzigen. Sag: Er ist Allah, ein Einziger. Allah, der Absolute. Er hat nicht gezeugt und ist nicht gezeugt worden. Und niemand ist Ihm jemals gleich.",
-    count: 3,
-    hadith: "Der Prophet (ﷺ) pflegte vor dem Schlafengehen seine Hände zusammenzulegen, in sie zu blasen und Surat Al-Ikhlas, Al-Falaq und An-Nas zu rezitieren, dann strich er damit über seinen Körper, beginnend mit seinem Kopf und Gesicht und dem vorderen Teil seines Körpers. Er tat dies drei Mal.",
-    source: "Sahih Bukhari 5017",
-    reward: "Vollständiger Schutz vor allem Übel",
-    title: "Sura Al-Ikhlas 3x",
-  },
-  {
-    id: "before_sleep_surah_falaq",
-    category: "before_sleep",
-    arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ ۝ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
-    transliteration: "Bismillahir-Rahmanir-Rahim. Qul a'udhu bi-Rabbil-falaq. Min sharri ma khalaq. Wa min sharri ghasiqin idha waqab. Wa min sharrin-naffathati fil-'uqad. Wa min sharri hasidin idha hasad.",
-    translation: "Im Namen Allahs, des Allerbarmers, des Barmherzigen. Sag: Ich nehme Zuflucht beim Herrn der Morgendämmerung. Vor dem Übel dessen, was Er erschaffen hat. Und vor dem Übel der Dunkelheit, wenn sie hereinbricht. Und vor dem Übel derer, die auf Knoten blasen. Und vor dem Übel des Neidischen, wenn er neidet.",
-    count: 3,
-    hadith: "Der Prophet (ﷺ) pflegte vor dem Schlafengehen seine Hände zusammenzulegen, in sie zu blasen und Surat Al-Ikhlas, Al-Falaq und An-Nas zu rezitieren, dann strich er damit über seinen Körper, beginnend mit seinem Kopf und Gesicht und dem vorderen Teil seines Körpers. Er tat dies drei Mal.",
-    source: "Sahih Bukhari 5017",
-    reward: "Vollständiger Schutz vor allem Übel",
-    title: "Sura Al-Falaq 3x",
-  },
-  {
-    id: "before_sleep_surah_nas",
-    category: "before_sleep",
-    arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ",
-    transliteration: "Bismillahir-Rahmanir-Rahim. Qul a'udhu bi-Rabbin-nas. Malikin-nas. Ilahin-nas. Min sharril-waswasil-khannas. Alladhi yuwaswisu fi sudurin-nas. Minal-jinnati wan-nas.",
-    translation: "Im Namen Allahs, des Allerbarmers, des Barmherzigen. Sag: Ich nehme Zuflucht beim Herrn der Menschen. Dem König der Menschen. Dem Gott der Menschen. Vor dem Übel des Einflüsterers, der entweicht und wiederkehrt. Der in die Brüste der Menschen einflüstert. Von den Dschinn und den Menschen.",
-    count: 3,
-    hadith: "Der Prophet (ﷺ) pflegte vor dem Schlafengehen seine Hände zusammenzulegen, in sie zu blasen und Surat Al-Ikhlas, Al-Falaq und An-Nas zu rezitieren, dann strich er damit über seinen Körper, beginnend mit seinem Kopf und Gesicht und dem vorderen Teil seines Körpers. Er tat dies drei Mal.",
-    source: "Sahih Bukhari 5017",
-    reward: "Vollständiger Schutz vor allem Übel",
-    title: "Sura An-Nas 3x",
-  },
-  {
-    id: "before_sleep_bismika_allahumma",
-    category: "before_sleep",
-    arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
-    transliteration: "Bismika Allahumma amutu wa ahya",
-    translation: "In Deinem Namen, O Allah, sterbe ich und lebe ich",
-    count: 1,
-    hadith: "Wenn du dich zu Bett legst, sag: 'Bismika Allahumma amutu wa ahya'. Und wenn du aufwachst, sag: 'Alhamdulillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur'.",
-    source: "Sahih Bukhari 6324",
-    reward: "Erinnerung an Allah beim Schlafen und Aufwachen",
-    title: "Dua vor dem Schlaf",
-  },
-  
-  // After Wudu
-  {
-    id: "after_wudu_shahada",
-    category: "after_wudu",
-    arabic: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ",
-    transliteration: "Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluh",
-    translation: "Ich bezeuge, dass es keinen Gott gibt außer Allah allein, Er hat keinen Partner, und ich bezeuge, dass Muhammad Sein Diener und Gesandter ist",
-    count: 1,
-    hadith: "Wer Wudu vollzieht und es gut macht, dann sagt: 'Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan 'abduhu wa rasuluh', dem werden die acht Tore des Paradieses geöffnet, und er kann durch welches er will eintreten.",
-    source: "Sahih Muslim 234",
-    reward: "Die acht Tore des Paradieses werden geöffnet",
-    title: "Shahada nach Wudu",
-  },
-  
-  // General Dhikr
-  {
-    id: "general_istighfar",
+    id: "general_astaghfirullah",
     category: "general",
     arabic: "أَسْتَغْفِرُ اللَّهَ",
     transliteration: "Astaghfirullah",
-    translation: "Ich bitte Allah um Vergebung",
+    translation: {
+      de: "Ich bitte Allah um Vergebung",
+      en: "I seek forgiveness from Allah",
+      tr: "Allah'tan bağışlanma dilerim",
+      ar: "أستغفر الله"
+    },
     count: 100,
-    hadith: "Der Prophet (ﷺ) sagte: 'Bei Allah, ich bitte Allah mehr als 70 Mal am Tag um Vergebung und wende mich Ihm in Reue zu.'",
-    source: "Sahih Bukhari 6307",
-    reward: "Vergebung der Sünden, Reinigung des Herzens",
+    hadith: {
+      de: "Der Prophet (ﷺ) sagte: 'Bei Allah, ich bitte Allah mehr als 70 Mal am Tag um Vergebung und wende mich Ihm in Reue zu.'",
+      en: "The Prophet (ﷺ) said: 'By Allah, I seek Allah's forgiveness and turn to Him in repentance more than 70 times a day.'",
+      tr: "Peygamber (s.a.v.) şöyle buyurdu: 'Allah'a yemin ederim ki, ben günde 70 defadan fazla Allah'tan bağışlanma diler ve O'na dönerim.'",
+      ar: "قال النبي صلى الله عليه وسلم: والله إني لأستغفر الله وأتوب إليه في اليوم أكثر من سبعين مرة."
+    },
+    source: {
+      de: "Sahih Bukhari 6307",
+      en: "Sahih Bukhari 6307",
+      tr: "Sahih Buhari 6307",
+      ar: "صحيح البخاري 6307"
+    },
+    reward: {
+      de: "Vergebung der Sünden, Reinigung des Herzens",
+      en: "Forgiveness of sins, purification of the heart",
+      tr: "Günahların bağışlanması, kalbin temizlenmesi",
+      ar: "مغفرة الذنوب، تطهير القلب"
+    },
     title: "Istighfar 100x",
-  },
-  {
-    id: "general_salawat",
-    category: "general",
-    arabic: "اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ",
-    transliteration: "Allahumma salli 'ala Muhammadin wa 'ala ali Muhammad, kama sallayta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid. Allahumma barik 'ala Muhammadin wa 'ala ali Muhammad, kama barakta 'ala Ibrahima wa 'ala ali Ibrahim, innaka Hamidun Majid.",
-    translation: "O Allah, segne Muhammad und die Familie Muhammads, wie Du Ibrahim und die Familie Ibrahims gesegnet hast. Wahrlich, Du bist Lobenswürdig und Ruhmreich. O Allah, gewähre Baraka für Muhammad und die Familie Muhammads, wie Du Baraka für Ibrahim und die Familie Ibrahims gewährt hast. Wahrlich, Du bist Lobenswürdig und Ruhmreich.",
-    count: 10,
-    hadith: "Wer einmal Salawat auf mich spricht, dem wird Allah zehn Mal Segen gewähren, zehn Sünden werden von ihm gelöscht und er wird um zehn Stufen erhöht.",
-    source: "Sahih Muslim 384",
-    reward: "10-facher Segen von Allah, Vergebung, Erhöhung der Stufen",
-    title: "Salawat auf den Propheten",
-  },
-  {
-    id: "general_la_hawla",
-    category: "general",
-    arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
-    transliteration: "La hawla wa la quwwata illa billah",
-    translation: "Es gibt keine Macht und keine Kraft außer durch Allah",
-    count: 1,
-    hadith: "La hawla wa la quwwata illa billah ist ein Schatz aus den Schätzen des Paradieses.",
-    source: "Sahih Bukhari 4205, Sahih Muslim 2704",
-    reward: "Ein Schatz aus den Schätzen des Paradieses",
-    title: "La Hawla wa La Quwwata",
-  },
-  {
-    id: "general_hasbunallah",
-    category: "general",
-    arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
-    transliteration: "Hasbunallahu wa ni'mal-wakil",
-    translation: "Allah genügt uns, und Er ist der beste Sachwalter",
-    count: 7,
-    hadith: "Dies waren die Worte, die Ibrahim (عليه السلام) sagte, als er ins Feuer geworfen wurde, und Muhammad (ﷺ) sagte sie, als ihm gesagt wurde: 'Die Menschen haben sich gegen euch versammelt, also fürchtet sie.' Aber es verstärkte nur ihren Glauben und sie sagten: 'Hasbunallahu wa ni'mal-wakil'.",
-    source: "Sahih Bukhari 4563",
-    reward: "Schutz vor Feinden, Stärkung des Glaubens",
-    title: "Hasbunallah",
   },
 ];
 
-export function getDhikrByCategory(category: DhikrCategory): Dhikr[] {
-  return ADHKAR.filter(dhikr => dhikr.category === category);
-}
-
-export function getAllCategories(): DhikrCategory[] {
-  return ["morning", "evening", "after_prayer", "before_sleep", "after_wudu", "general"];
-}
-
-export function getCategoryName(category: DhikrCategory): string {
-  const names: Record<DhikrCategory, string> = {
-    morning: "Morgen-Adhkar",
-    evening: "Abend-Adhkar",
-    after_prayer: "Nach dem Gebet",
-    before_sleep: "Vor dem Schlafen",
-    after_wudu: "Nach Wudu",
-    general: "Allgemeine Dhikr",
+// Helper function to get category name key for translations
+export function getCategoryNameKey(category: DhikrCategory): string {
+  const categoryMap: Record<DhikrCategory, string> = {
+    morning: "morningDhikr",
+    evening: "eveningDhikr",
+    after_prayer: "afterPrayer",
+    before_sleep: "beforeSleep",
+    after_wudu: "afterWudu",
+    general: "generalDhikr",
   };
-  return names[category];
+  return categoryMap[category];
 }
 
+// Helper function to get category description key for translations
+export function getCategoryDescKey(category: DhikrCategory): string {
+  const categoryMap: Record<DhikrCategory, string> = {
+    morning: "morningDhikrDesc",
+    evening: "eveningDhikrDesc",
+    after_prayer: "afterPrayerDesc",
+    before_sleep: "beforeSleepDesc",
+    after_wudu: "afterWuduDesc",
+    general: "generalDhikrDesc",
+  };
+  return categoryMap[category];
+}
+
+// Helper function to get Dhikr by ID
 export function getDhikrById(id: string): Dhikr | undefined {
   return ADHKAR.find(dhikr => dhikr.id === id);
 }
-
-export const DHIKR_CATEGORIES: Record<DhikrCategory, { nameKey: string; descKey: string; name: string; description: string }> = {
-  morning: {
-    nameKey: "morningAdhkar",
-    descKey: "morningAdhkarDesc",
-    name: "Morgen-Adhkar",
-    description: "Erinnerungen für den Morgen nach dem Fajr-Gebet",
-  },
-  evening: {
-    nameKey: "eveningAdhkar",
-    descKey: "eveningAdhkarDesc",
-    name: "Abend-Adhkar",
-    description: "Erinnerungen für den Abend vor dem Maghrib-Gebet",
-  },
-  after_prayer: {
-    nameKey: "afterPrayer",
-    descKey: "afterPrayerDesc",
-    name: "Nach dem Gebet",
-    description: "Dhikr nach den fünf täglichen Gebeten",
-  },
-  before_sleep: {
-    nameKey: "beforeSleep",
-    descKey: "beforeSleepDesc",
-    name: "Vor dem Schlafen",
-    description: "Schutz-Duas und Erinnerungen vor dem Schlafengehen",
-  },
-  after_wudu: {
-    nameKey: "afterWudu",
-    descKey: "afterWuduDesc",
-    name: "Nach Wudu",
-    description: "Dhikr nach der rituellen Waschung",
-  },
-  general: {
-    nameKey: "generalDhikr",
-    descKey: "generalDhikrDesc",
-    name: "Allgemeine Dhikr",
-    description: "Erinnerungen für jede Zeit und Gelegenheit",
-  },
-};
