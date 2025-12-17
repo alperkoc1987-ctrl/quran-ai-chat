@@ -2,10 +2,12 @@ import { Card } from "@/components/ui/card";
 import { getDuasByCategory, getCategoryById } from "@shared/duasData.ts";
 import { Link, useParams } from "wouter";
 import { ArrowLeft, BookOpen } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function DuaDetail() {
   const params = useParams();
   const categoryId = params.categoryId as string;
+  const { t, language } = useLanguage();
   
   const category = getCategoryById(categoryId);
   const duas = getDuasByCategory(categoryId);
@@ -13,7 +15,7 @@ export default function DuaDetail() {
   if (!category) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-slate-600 dark:text-slate-400">Kategorie nicht gefunden</p>
+        <p className="text-slate-600 dark:text-slate-400">{t("categoryNotFound")}</p>
       </div>
     );
   }
@@ -30,8 +32,8 @@ export default function DuaDetail() {
               </button>
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white">{category.name}</h1>
-              <p className="text-xs text-slate-600 dark:text-slate-400">{category.description}</p>
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white">{category.name[language]}</h1>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{category.description[language]}</p>
             </div>
           </div>
         </div>
@@ -41,7 +43,7 @@ export default function DuaDetail() {
       <main className="container mx-auto px-4 py-6 space-y-4">
         {duas.length === 0 ? (
           <Card className="p-8 text-center">
-            <p className="text-slate-600 dark:text-slate-400">Keine Duas in dieser Kategorie gefunden.</p>
+            <p className="text-slate-600 dark:text-slate-400">{t("noDuasFound")}</p>
           </Card>
         ) : (
           duas.map((dua) => (
@@ -53,8 +55,8 @@ export default function DuaDetail() {
                     <BookOpen className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{dua.title}</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{dua.source}</p>
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{dua.title[language]}</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{dua.source[language]}</p>
                   </div>
                 </div>
 
@@ -67,7 +69,7 @@ export default function DuaDetail() {
 
                 {/* Transliteration */}
                 <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
-                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Transliteration:</p>
+                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{t("transliteration")}:</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400 italic">
                     {dua.transliteration}
                   </p>
@@ -75,9 +77,9 @@ export default function DuaDetail() {
 
                 {/* Translation */}
                 <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">Übersetzung:</p>
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">{t("translation")}:</p>
                   <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {dua.translation}
+                    {dua.translation[language]}
                   </p>
                 </div>
               </div>

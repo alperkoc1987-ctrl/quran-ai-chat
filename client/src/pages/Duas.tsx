@@ -3,6 +3,7 @@ import { duaCategories } from "@shared/duasData.ts";
 import { Link } from "wouter";
 import { ArrowLeft, Baby, Heart, Compass as CompassIcon, HeartPulse, Infinity, HeartHandshake, HandHeart, Users, Hourglass, Shield, Hand, UsersRound, Moon, Zap } from "lucide-react";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   "baby": Baby,
@@ -23,6 +24,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export default function Duas() {
   const { themeConfig } = useReadingTheme();
+  const { t, language } = useLanguage();
   
   return (
     <div className={`min-h-screen ${themeConfig.colors.background} pb-20`}>
@@ -36,8 +38,8 @@ export default function Duas() {
               </button>
             </Link>
             <div>
-              <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Duas</h1>
-              <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Bittgebete für jede Lebenslage</p>
+              <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>{t("duas")}</h1>
+              <p className={`text-xs ${themeConfig.colors.textSecondary}`}>{t("duasDescription")}</p>
             </div>
           </div>
         </div>
@@ -58,10 +60,10 @@ export default function Duas() {
                       </div>
                       <div className="flex-1">
                         <h3 className={`text-lg font-semibold ${themeConfig.colors.text} mb-1`}>
-                          {category.name}
+                          {category.name[language]}
                         </h3>
                         <p className={`text-xs ${themeConfig.colors.textSecondary}`}>
-                          {category.description}
+                          {category.description[language]}
                         </p>
                       </div>
                     </div>

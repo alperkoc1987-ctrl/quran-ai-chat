@@ -107,6 +107,11 @@ const translations = {
     networkError: "Netzwerkfehler",
     networkErrorDesc: "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung.",
     
+    // Duas Page
+    duasDescription: "Bittgebete für jede Lebenslage",
+    categoryNotFound: "Kategorie nicht gefunden",
+    noDuasFound: "Keine Duas in dieser Kategorie gefunden",
+    
     // Dhikr Page
     dhikrAndAdhkar: "Dhikr & Adhkar",
     authenticReminders: "Authentische Erinnerungen nach Ahlul Sunnah",
@@ -238,6 +243,11 @@ const translations = {
     loadErrorDesc: "The audio file could not be loaded. Please check your internet connection and try again.",
     networkError: "Network Error",
     networkErrorDesc: "No internet connection. Please check your connection.",
+    
+    // Duas Page
+    duasDescription: "Supplications for every situation",
+    categoryNotFound: "Category not found",
+    noDuasFound: "No duas found in this category",
     
     // Dhikr Page
     dhikrAndAdhkar: "Dhikr & Adhkar",
@@ -371,6 +381,11 @@ const translations = {
     networkError: "Ağ Hatası",
     networkErrorDesc: "Internet bağlantısı yok. Lütfen bağlantınızı kontrol edin.",
     
+    // Duas Page
+    duasDescription: "Her durum için dualar",
+    categoryNotFound: "Kategori bulunamadı",
+    noDuasFound: "Bu kategoride dua bulunamadı",
+    
     // Dhikr Page
     dhikrAndAdhkar: "Zikirler & Dualar",
     authenticReminders: "Ehl-i Sünnet'e göre otantik zikirler",
@@ -502,6 +517,11 @@ const translations = {
     loadErrorDesc: "تعذر تحميل ملف الصوت. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.",
     networkError: "خطأ في الشبكة",
     networkErrorDesc: "لا يوجد اتصال بالإنترنت. يرجى التحقق من الاتصال.",
+    
+    // Duas Page
+    duasDescription: "أدعية لكل حالة",
+    categoryNotFound: "الفئة غير موجودة",
+    noDuasFound: "لا توجد أدعية في هذه الفئة",
     
     // Dhikr Page
     dhikrAndAdhkar: "الأذكار",

@@ -3,7 +3,12 @@
  * Dhikr statistics tracking and retrieval
  */
 
-import { getDhikrById } from "@/data/adhkar";
+import { ADHKAR, type Dhikr } from "@/data/adhkar";
+
+// Helper function to get Dhikr by ID
+function getDhikrById(id: string): Dhikr | undefined {
+  return ADHKAR.find(dhikr => dhikr.id === id);
+}
 
 export interface DhikrStats {
   totalDhikrCount: number; // Total Dhikr repetitions across all time
