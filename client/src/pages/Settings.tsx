@@ -57,7 +57,7 @@ export default function Settings() {
     if (enabled && !notificationsAvailable) {
       const granted = await requestNotificationPermission();
       if (!granted) {
-        alert("Benachrichtigungen wurden abgelehnt. Bitte aktivieren Sie sie in den Browser-Einstellungen.");
+        alert(t("notificationPermissionDenied"));
         return;
       }
       setNotificationsAvailable(true);
@@ -115,7 +115,7 @@ export default function Settings() {
                   {t("darkMode")}
                 </h2>
                 <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
-                  Aktiviere den dunklen Modus für bessere Lesbarkeit bei Nacht
+                  {t("darkModeDesc")}
                 </p>
               </div>
             </div>
@@ -144,7 +144,7 @@ export default function Settings() {
                   {t("transliteration")}
                 </h2>
                 <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
-                  Zeige lateinische Umschrift unter arabischem Text
+                  {t("transliterationDesc")}
                 </p>
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function Settings() {
                 {t("translationLanguage")}
               </h2>
               <p className="text-sm text-slate-300">
-                Wähle die Sprache für Koran-Übersetzungen
+                {t("translationLanguageDesc")}
               </p>
             </div>
           </div>
@@ -224,7 +224,7 @@ export default function Settings() {
             >
               <div className="text-2xl mb-2">🇸🇦</div>
               <div className="font-semibold text-gray-900 dark:text-gray-100">عربي</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Nur Arabisch</div>
+              <div className="text-xs text-gray-600 dark:text-gray-400">{t("arabicOnlyDesc")}</div>
             </button>
           </div>
         </div>
@@ -238,10 +238,10 @@ export default function Settings() {
             <Palette className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                Lese-Ansicht
+                {t("readingTheme")}
               </h2>
               <p className="text-sm text-slate-300">
-                Wähle ein Theme für eine angenehme Leseerfahrung
+                {t("readingThemeDesc")}
               </p>
             </div>
           </div>
@@ -254,10 +254,10 @@ export default function Settings() {
             <Music className="w-6 h-6 text-teal-600 dark:text-teal-400" />
             <div>
               <h2 className="text-lg font-semibold text-white">
-                Rezitator auswählen
+                {t("reciterSelection")}
               </h2>
               <p className="text-sm text-slate-300">
-                Wähle deinen bevorzugten Koran-Rezitator
+                {t("reciterSelectionDesc")}
               </p>
             </div>
           </div>

@@ -44,7 +44,7 @@ export default function SurahReader() {
   const [highlightedVerse, setHighlightedVerse] = useState<number | null>(null);
 
   const { showTransliteration } = useTransliteration();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const audioPlayer = useAudioPlayer();
   
   // Map UI language to Quran translation edition
@@ -76,7 +76,7 @@ export default function SurahReader() {
   // Load Surah data
   useEffect(() => {
     if (!surahNumber) {
-      setError("Ungültige Surah-Nummer");
+      setError(t("invalidSurahNumber"));
       setIsLoading(false);
       return;
     }
@@ -89,7 +89,7 @@ export default function SurahReader() {
         const allSurahs = await fetchAllSurahs();
         const surah = allSurahs.find((s) => s.number === surahNumber);
         if (!surah) {
-          throw new Error("Surah nicht gefunden");
+          throw new Error(t("surahNotFound"));
         }
         setSurahInfo(surah);
 
@@ -106,7 +106,7 @@ export default function SurahReader() {
         setTransliterationData(data.transliteration || null);
         setError(null);
       } catch (err) {
-        setError("Fehler beim Laden der Sure");
+        setError(t("errorLoadingSurah"));
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -259,13 +259,13 @@ export default function SurahReader() {
         duration: 5000
       });
     } else if (error.message?.includes('timeout') || error.message?.includes('load')) {
-      toast.error("Ladefehler", {
-        description: "Die Audio-Datei konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+      toast.error(t("loadError"), {
+        description: t("loadErrorDesc"),
         duration: 5000
       });
     } else if (error.message?.includes('network')) {
-      toast.error("Netzwerkfehler", {
-        description: "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung.",
+      toast.error(t("networkError"), {
+        description: t("networkErrorDesc"),
         duration: 5000
       });
     } else {

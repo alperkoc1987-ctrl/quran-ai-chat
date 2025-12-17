@@ -12,6 +12,7 @@ import { CircularProgress } from "@/components/CircularProgress";
 import { getSurahProgress } from "@/lib/readingProgress";
 import { useLocation } from "wouter";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 // Removed tRPC import - using localStorage instead
 
 interface SurahListProps {
@@ -20,6 +21,7 @@ interface SurahListProps {
 }
 
 export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps) {
+  const { t } = useLanguage();
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +39,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
         setSurahs(data);
         setError(null);
       } catch (err) {
-        setError("Fehler beim Laden der Suren");
+        setError(t("errorLoadingSurahs"));
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -84,9 +86,9 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
       localStorage.setItem('surah_bookmarks', JSON.stringify(bookmarksArray));
       
       if (isCurrentlyFavorite) {
-        toast.success("Lesezeichen entfernt");
+        toast.success(t("bookmarkRemoved"));
       } else {
-        toast.success("Lesezeichen hinzugefügt");
+        toast.success(t("bookmarkAdded"));
       }
     } catch (error) {
       // Revert optimistic update on error
@@ -198,7 +200,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
               : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
           }`}
         >
-          Alle
+          {t("allSurahs")}
         </button>
         <button
           onClick={() => setActiveTab('favorites')}
@@ -208,7 +210,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
               : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
           }`}
         >
-          Favoriten
+          {t("favoriteSurahs")}
         </button>
       </div>
 
@@ -217,7 +219,7 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
         <div className="relative">
           <input
             type="text"
-            placeholder="Surah oder Wort suchen (Enter drücken)..."
+            placeholder={t("searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
