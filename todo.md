@@ -477,5 +477,5 @@
 - [x] Add missing translation keys to LanguageContext (de/en/tr/ar)
 - [x] Replace all hardcoded strings with t() function
 - [x] Verify TypeScript check passes
-- [ ] Test all 4 languages in Dhikr overview and detail view
-- [ ] Save checkpoint and push to GitHub
+- [x] Test all 4 languages in Dhikr overview and detail view
+- [x] Save checkpoint and push to GitHub
