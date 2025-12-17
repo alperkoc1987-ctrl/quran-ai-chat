@@ -293,28 +293,40 @@ export function getDhikrById(id: string): Dhikr | undefined {
   return ADHKAR.find(dhikr => dhikr.id === id);
 }
 
-export const DHIKR_CATEGORIES: Record<DhikrCategory, { name: string; description: string }> = {
+export const DHIKR_CATEGORIES: Record<DhikrCategory, { nameKey: string; descKey: string; name: string; description: string }> = {
   morning: {
+    nameKey: "morningAdhkar",
+    descKey: "morningAdhkarDesc",
     name: "Morgen-Adhkar",
     description: "Erinnerungen für den Morgen nach dem Fajr-Gebet",
   },
   evening: {
+    nameKey: "eveningAdhkar",
+    descKey: "eveningAdhkarDesc",
     name: "Abend-Adhkar",
     description: "Erinnerungen für den Abend vor dem Maghrib-Gebet",
   },
   after_prayer: {
+    nameKey: "afterPrayer",
+    descKey: "afterPrayerDesc",
     name: "Nach dem Gebet",
     description: "Dhikr nach den fünf täglichen Gebeten",
   },
   before_sleep: {
+    nameKey: "beforeSleep",
+    descKey: "beforeSleepDesc",
     name: "Vor dem Schlafen",
     description: "Schutz-Duas und Erinnerungen vor dem Schlafengehen",
   },
   after_wudu: {
+    nameKey: "afterWudu",
+    descKey: "afterWuduDesc",
     name: "Nach Wudu",
     description: "Dhikr nach der rituellen Waschung",
   },
   general: {
+    nameKey: "generalDhikr",
+    descKey: "generalDhikrDesc",
     name: "Allgemeine Dhikr",
     description: "Erinnerungen für jede Zeit und Gelegenheit",
   },

@@ -461,7 +461,7 @@
 - [x] Add missing translations to LanguageContext dictionaries (Settings page)
 - [x] Update Settings page with full translations
 - [x] Update Quran page with full translations
-- [ ] Update Dhikr page with full translations
+- [x] Update Dhikr page with full translations
 - [ ] Update Duas page with full translations
 - [ ] Update Prayer Times page with full translations
 - [ ] Update Qibla page with full translations

@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card";
 import { DhikrCounter } from "@/components/DhikrCounter";
 import { ADHKAR, DHIKR_CATEGORIES, getDhikrByCategory, type DhikrCategory, type Dhikr } from "@/data/adhkar";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CATEGORY_ICONS = {
   morning: Sunrise,
@@ -24,6 +25,7 @@ const CATEGORY_ICONS = {
 export default function Dhikr() {
   const [, setLocation] = useLocation();
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<DhikrCategory | null>(null);
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr | null>(null);
   const [showTapHint, setShowTapHint] = useState(true);
@@ -57,7 +59,7 @@ export default function Dhikr() {
             <div>
               <h1 className="text-xl font-bold">{selectedDhikr.title}</h1>
               <p className="text-teal-100 text-sm">
-                {DHIKR_CATEGORIES[selectedDhikr.category].name}
+                {t(DHIKR_CATEGORIES[selectedDhikr.category].nameKey)}
               </p>
             </div>
           </div>
@@ -93,8 +95,8 @@ export default function Dhikr() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold">{category.name}</h1>
-              <p className="text-teal-100 text-sm">{category.description}</p>
+              <h1 className="text-2xl font-bold">{t(category.nameKey)}</h1>
+              <p className="text-teal-100 text-sm">{t(category.descKey)}</p>
             </div>
           </div>
         </div>
@@ -112,8 +114,8 @@ export default function Dhikr() {
                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-lg z-10 animate-pulse">
                   <div className="text-center p-4">
                     <Hand className="w-8 h-8 text-cyan-400 mx-auto mb-2" />
-                    <p className="text-white font-semibold text-sm">Tippe auf die Karte,</p>
-                    <p className="text-cyan-300 text-xs">um den Dhikr-Zähler zu starten</p>
+                    <p className="text-white font-semibold text-sm">{t("tapCard")}</p>
+                    <p className="text-cyan-300 text-xs">{t("toStartCounter")}</p>
                   </div>
                 </div>
               )}
@@ -131,7 +133,7 @@ export default function Dhikr() {
                     {dhikr.count}×
                   </div>
                   <div className="text-xs text-slate-500 dark:text-slate-400">
-                    mal
+                    {t("times")}
                   </div>
                 </div>
               </div>
@@ -139,7 +141,7 @@ export default function Dhikr() {
               {/* Reward Preview */}
               <div className="mt-3 pt-3 border-t border-slate-700">
                 <div className="text-xs font-semibold text-cyan-400 mb-1">
-                  Belohnung:
+                  {t("reward")}
                 </div>
                 <div className="text-xs text-slate-300 line-clamp-2">
                   {dhikr.reward}
@@ -164,10 +166,10 @@ export default function Dhikr() {
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <div>
-            <h1 className="text-2xl font-bold">Dhikr & Adhkar</h1>
-            <p className="text-teal-100 text-sm">Authentische Erinnerungen nach Ahlul Sunnah</p>
-          </div>
+            <div>
+              <h1 className="text-2xl font-bold">{t("dhikrAndAdhkar")}</h1>
+              <p className="text-teal-100 text-sm">{t("authenticReminders")}</p>
+            </div>
         </div>
       </div>
 
@@ -190,15 +192,15 @@ export default function Dhikr() {
                   </div>
                   <div className="flex-1">
                     <h3 className={`font-semibold text-lg ${themeConfig.colors.text}`}>
-                      {category.name}
+                      {t(category.nameKey)}
                     </h3>
                     <p className={`text-sm ${themeConfig.colors.textSecondary}`}>
-                      {count} Adhkar
+                      {count} {t("adhkarCount")}
                     </p>
                   </div>
                 </div>
                 <p className={`text-sm ${themeConfig.colors.textMuted}`}>
-                  {category.description}
+                  {t(category.descKey)}
                 </p>
               </Card>
             );
