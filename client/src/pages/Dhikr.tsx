@@ -233,15 +233,13 @@ export default function Dhikr() {
             </div>
             <div>
               <h3 className={`font-semibold text-lg mb-2 ${themeConfig.colors.text}`}>
-                Über diese Adhkar
+                {t("aboutAdhkarTitle")}
               </h3>
               <p className={`text-sm ${themeConfig.colors.textSecondary} mb-3`}>
-                Alle Adhkar auf dieser Seite stammen aus authentischen Hadiths (Sahih oder Hasan) 
-                gemäß der Methodik von Ahlul Sunnah wal Jama'ah.
+                {t("aboutAdhkarBody")}
               </p>
               <p className={`text-xs ${themeConfig.colors.textMuted}`}>
-                Quellen: Sahih Bukhari, Sahih Muslim, Sunan Abu Dawud, Jami' at-Tirmidhi, 
-                Sunan Ibn Majah - authentifiziert von Gelehrten wie Shaykh Al-Albani (rahimahullah).
+                {t("aboutAdhkarSources")}
               </p>
             </div>
           </div>

@@ -141,6 +141,11 @@ const translations = {
     rewardFadl: "Belohnung (Fadl)",
     hadithLabel: "Hadith",
     source: "Quelle:",
+    
+    // Dhikr Info Card
+    aboutAdhkarTitle: "Über diese Adhkar",
+    aboutAdhkarBody: "Alle Adhkar auf dieser Seite stammen aus authentischen Hadiths (Sahih oder Hasan) gemäß der Methodik von Ahlul Sunnah wal Jama'ah.",
+    aboutAdhkarSources: "Quellen: Sahih Bukhari, Sahih Muslim, Sunan Abu Dawud, Jami' at-Tirmidhi, Sunan Ibn Majah - authentifiziert von Gelehrten wie Shaykh Al-Albani (rahimahullah).",
   },
   en: {
     // Navigation
@@ -278,6 +283,11 @@ const translations = {
     rewardFadl: "Reward (Fadl)",
     hadithLabel: "Hadith",
     source: "Source:",
+    
+    // Dhikr Info Card
+    aboutAdhkarTitle: "About These Adhkar",
+    aboutAdhkarBody: "All Adhkar on this page are from authentic Hadiths (Sahih or Hasan) according to the methodology of Ahlul Sunnah wal Jama'ah.",
+    aboutAdhkarSources: "Sources: Sahih Bukhari, Sahih Muslim, Sunan Abu Dawud, Jami' at-Tirmidhi, Sunan Ibn Majah - authenticated by scholars such as Shaykh Al-Albani (rahimahullah).",
   },
   tr: {
     // Navigation
@@ -415,6 +425,11 @@ const translations = {
     rewardFadl: "Ödül (Fadl)",
     hadithLabel: "Hadis",
     source: "Kaynak:",
+    
+    // Dhikr Info Card
+    aboutAdhkarTitle: "Bu Zikirler Hakkında",
+    aboutAdhkarBody: "Bu sayfadaki tüm zikirler, Ehl-i Sünnet vel Cemaat metodolojisine göre otantik hadislerden (Sahih veya Hasen) alınmıştır.",
+    aboutAdhkarSources: "Kaynaklar: Sahih Buhari, Sahih Müslim, Sünen Ebu Davud, Cami' et-Tirmizi, Sünen İbn Mace - Şeyh El-Albani (rahimehullah) gibi alimler tarafından doğrulanmıştır.",
   },
   ar: {
     // Navigation
@@ -552,6 +567,11 @@ const translations = {
     rewardFadl: "الأجر (الفضل)",
     hadithLabel: "الحديث",
     source: "المصدر:",
+    
+    // Dhikr Info Card
+    aboutAdhkarTitle: "حول هذه الأذكار",
+    aboutAdhkarBody: "جميع الأذكار في هذه الصفحة مأخوذة من أحاديث صحيحة (صحيح أو حسن) وفقًا لمنهج أهل السنة والجماعة.",
+    aboutAdhkarSources: "المصادر: صحيح البخاري، صحيح مسلم، سنن أبي داود، جامع الترمذي، سنن ابن ماجه - صححها علماء مثل الشيخ الألباني (رحمه الله).",
   },
 };
 
