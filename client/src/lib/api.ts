@@ -127,14 +127,35 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
 
 export async function fetchAllSurahs(): Promise<Surah[]> {
   try {
+    console.log("[fetchAllSurahs] Starting fetch from:", `${QURAN_API_URL}/surah`);
     const response = await fetch(`${QURAN_API_URL}/surah`);
+    console.log("[fetchAllSurahs] Response status:", response.status, response.statusText);
+    
     if (!response.ok) {
-      throw new Error(`Failed to fetch Surahs: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error("[fetchAllSurahs] HTTP Error:", response.status, errorText);
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
+    
     const data = await response.json();
+    console.log("[fetchAllSurahs] Response data:", { 
+      hasData: !!data, 
+      hasDataArray: !!data?.data, 
+      dataLength: data?.data?.length 
+    });
+    
+    if (!data || !data.data || !Array.isArray(data.data)) {
+      console.error("[fetchAllSurahs] Invalid response structure:", data);
+      throw new Error("Invalid API response structure");
+    }
+    
+    console.log("[fetchAllSurahs] Successfully loaded", data.data.length, "surahs");
     return data.data;
   } catch (error) {
-    console.error("Failed to fetch Surahs:", error);
+    console.error("[fetchAllSurahs] Error:", error);
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      console.error("[fetchAllSurahs] Network error - possible CORS or connectivity issue");
+    }
     throw error;
   }
 }

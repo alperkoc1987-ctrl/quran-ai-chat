@@ -39,8 +39,9 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
         setSurahs(data);
         setError(null);
       } catch (err) {
-        setError(t("errorLoadingSurahs"));
-        console.error(err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        console.error("[SurahList] Load error:", errorMessage, err);
+        setError(`${t("errorLoadingSurahs")}: ${errorMessage}`);
       } finally {
         setIsLoading(false);
       }
