@@ -186,7 +186,20 @@ export function SurahList({ onSelectSurah, selectedSurahNumber }: SurahListProps
   }
 
   if (error) {
-    return <div className="text-center py-4 text-red-600 text-sm">{error}</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-8 px-4 gap-4">
+        <div className="text-center text-red-600 dark:text-red-400 text-sm max-w-md">
+          <p className="font-semibold mb-2">{t("errorLoadingSurahs")}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">{error}</p>
+        </div>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium transition-colors"
+        >
+          {t("retry") || "Erneut versuchen"}
+        </button>
+      </div>
+    );
   }
 
   return (

@@ -8,6 +8,7 @@ import { ChatRequest, ChatResponse, Surah, SurahWithAyahs, SourceType } from "./
 // Determine API URL based on environment
 // On Vercel, we use /api/chat directly
 const API_BASE_URL = "/api";
+// Force HTTPS for production (Vercel requires HTTPS for external APIs)
 const QURAN_API_URL = "https://api.alquran.cloud/v1";
 
 const SYSTEM_PROMPT = `You are a helpful, knowledgeable, and empathetic Islamic assistant. 
@@ -126,37 +127,99 @@ export async function sendChatRequest(request: ChatRequest): Promise<ChatRespons
 }
 
 export async function fetchAllSurahs(): Promise<Surah[]> {
+  const url = `${QURAN_API_URL}/surah`;
+  
   try {
-    console.log("[fetchAllSurahs] Starting fetch from:", `${QURAN_API_URL}/surah`);
-    const response = await fetch(`${QURAN_API_URL}/surah`);
-    console.log("[fetchAllSurahs] Response status:", response.status, response.statusText);
+    console.log("[fetchAllSurahs] Fetching from:", url);
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+      // Add timeout and error handling
+      signal: AbortSignal.timeout(10000), // 10 second timeout
+    });
+    
+    console.log("[fetchAllSurahs] Response:", {
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok,
+      headers: Object.fromEntries(response.headers.entries())
+    });
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("[fetchAllSurahs] HTTP Error:", response.status, errorText);
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      let errorBody = '';
+      try {
+        errorBody = await response.text();
+      } catch (e) {
+        errorBody = 'Could not read error response';
+      }
+      console.error("[fetchAllSurahs] HTTP Error:", {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorBody
+      });
+      throw new Error(`API returned ${response.status}: ${response.statusText}`);
+    }
+    
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error("[fetchAllSurahs] Invalid content-type:", contentType);
+      throw new Error(`Invalid response type: ${contentType}`);
     }
     
     const data = await response.json();
-    console.log("[fetchAllSurahs] Response data:", { 
-      hasData: !!data, 
-      hasDataArray: !!data?.data, 
-      dataLength: data?.data?.length 
+    console.log("[fetchAllSurahs] Parsed data:", {
+      hasData: !!data,
+      hasDataField: 'data' in data,
+      isDataArray: Array.isArray(data?.data),
+      dataLength: data?.data?.length,
+      dataKeys: data ? Object.keys(data) : []
     });
     
-    if (!data || !data.data || !Array.isArray(data.data)) {
-      console.error("[fetchAllSurahs] Invalid response structure:", data);
-      throw new Error("Invalid API response structure");
+    if (!data) {
+      throw new Error("API returned empty response");
+    }
+    
+    if (!('data' in data)) {
+      console.error("[fetchAllSurahs] Response missing 'data' field:", data);
+      throw new Error("API response missing 'data' field");
+    }
+    
+    if (!Array.isArray(data.data)) {
+      console.error("[fetchAllSurahs] 'data' field is not an array:", typeof data.data, data.data);
+      throw new Error("API response 'data' is not an array");
+    }
+    
+    if (data.data.length === 0) {
+      console.warn("[fetchAllSurahs] API returned empty surahs array");
+      throw new Error("API returned no surahs");
     }
     
     console.log("[fetchAllSurahs] Successfully loaded", data.data.length, "surahs");
     return data.data;
+    
   } catch (error) {
-    console.error("[fetchAllSurahs] Error:", error);
-    if (error instanceof TypeError && error.message.includes("fetch")) {
-      console.error("[fetchAllSurahs] Network error - possible CORS or connectivity issue");
+    // Enhanced error logging
+    if (error instanceof TypeError) {
+      if (error.message.includes('fetch')) {
+        console.error("[fetchAllSurahs] Network error - check internet connection or CORS:", error);
+        throw new Error("Network error - please check your internet connection");
+      }
+      if (error.message.includes('Timeout')) {
+        console.error("[fetchAllSurahs] Request timeout:", error);
+        throw new Error("Request timeout - API is not responding");
+      }
     }
-    throw error;
+    
+    if (error instanceof Error) {
+      console.error("[fetchAllSurahs] Error:", error.message, error.stack);
+      throw error;
+    }
+    
+    console.error("[fetchAllSurahs] Unknown error:", error);
+    throw new Error("Unknown error occurred while loading surahs");
   }
 }
 
