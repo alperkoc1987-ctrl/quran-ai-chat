@@ -503,4 +503,4 @@
 - [x] Add legal page links to Settings page
 - [x] Ensure language switching works correctly
 - [x] TypeScript check and test all pages
-- [ ] Commit and push to GitHub
+- [x] Commit and push to GitHub
