@@ -491,6 +491,67 @@ export default function Settings() {
           </div>
         </div>
 
+        {/* Legal Pages Section */}
+        <div className={`${themeConfig.colors.card} rounded-xl shadow-lg p-6 border ${themeConfig.colors.border}`}>
+          <div className="flex items-center gap-4 mb-4">
+            <Shield className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                {language === 'de' ? 'Rechtliches' : 'Legal'}
+              </h2>
+              <p className="text-sm text-slate-300">
+                {language === 'de' ? 'Impressum, Datenschutz & Hinweise' : 'Legal Notice, Privacy & Disclaimers'}
+              </p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <button
+              onClick={() => setLocation("/impressum")}
+              className="w-full p-3 rounded-lg border border-gray-200 dark:border-slate-600 hover:bg-teal-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between group"
+            >
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {language === 'de' ? 'Impressum' : 'Legal Notice'}
+              </span>
+              <svg className="w-4 h-4 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setLocation("/privacy")}
+              className="w-full p-3 rounded-lg border border-gray-200 dark:border-slate-600 hover:bg-teal-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between group"
+            >
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {language === 'de' ? 'Datenschutzerklärung' : 'Privacy Policy'}
+              </span>
+              <svg className="w-4 h-4 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setLocation("/ai-notice")}
+              className="w-full p-3 rounded-lg border border-gray-200 dark:border-slate-600 hover:bg-teal-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between group"
+            >
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {language === 'de' ? 'Hinweis zu KI-Inhalten' : 'AI Content Notice'}
+              </span>
+              <svg className="w-4 h-4 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setLocation("/disclaimer")}
+              className="w-full p-3 rounded-lg border border-gray-200 dark:border-slate-600 hover:bg-teal-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-between group"
+            >
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {language === 'de' ? 'Haftungsausschluss' : 'Disclaimer'}
+              </span>
+              <svg className="w-4 h-4 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
         {/* Info Section */}
         <div className="bg-teal-50 dark:bg-slate-800 rounded-xl p-6 border border-teal-200 dark:border-slate-700">
           <p className="text-sm text-teal-800 dark:text-teal-300 leading-relaxed">

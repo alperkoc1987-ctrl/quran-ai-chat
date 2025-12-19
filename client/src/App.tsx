@@ -32,6 +32,12 @@ import { Statistics } from "./pages/Statistics";
 import Quiz from "./pages/Quiz"; // Quiz feature added
 import Dhikr from "./pages/Dhikr"; // Dhikr feature added
 
+// Legal pages
+import Impressum from "./pages/Impressum";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AINotice from "./pages/AINotice";
+import Disclaimer from "./pages/Disclaimer";
+
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -56,6 +62,13 @@ function Router() {
       <Route path="/statistics" component={Statistics} />
       <Route path="/quiz" component={Quiz} />
       <Route path="/dhikr" component={Dhikr} />
+
+      {/* Legal pages */}
+      <Route path="/impressum" component={Impressum} />
+      <Route path="/privacy" component={PrivacyPolicy} />
+      <Route path="/ai-notice" component={AINotice} />
+      <Route path="/disclaimer" component={Disclaimer} />
+
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
