@@ -8,21 +8,60 @@ import { ChatMessage } from "@/lib/types";
 import { sendChatRequest } from "@/lib/api";
 import { nanoid } from "nanoid";
 import { chatFunctionDefinitions, executeChatFunction } from "@/lib/chatFunctions";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-// Simple local responses for greetings to ensure the bot always answers "Hi"
-const GREETING_KEYWORDS = ["hallo", "hi", "hey", "salam", "selam", "guten morgen", "guten tag", "guten abend"];
-const GREETING_RESPONSES = [
-  "Wa alaikum assalam! Wie kann ich dir heute helfen?",
-  "Hallo! Ich bin hier, um deine Fragen zum Islam, Koran und den Hadithen zu beantworten.",
-  "Salam! Schön, dass du da bist. Was möchtest du wissen?",
-  "Herzlich willkommen! Stell mir gerne eine Frage."
-];
+// Multilingual greeting keywords
+const GREETING_KEYWORDS_BY_LANG = {
+  de: ["hallo", "hi", "hey", "salam", "selam", "guten morgen", "guten tag", "guten abend"],
+  en: ["hello", "hi", "hey", "salam", "greetings", "good morning", "good afternoon", "good evening"],
+  tr: ["merhaba", "selam", "hey", "günaydın", "iyi akşamlar"],
+  ar: ["السلام", "مرحبا", "صباح", "مساء"]
+};
+
+// Multilingual greeting responses
+const GREETING_RESPONSES = {
+  de: [
+    "Wa alaikum assalam! Wie kann ich dir heute helfen?",
+    "Hallo! Ich bin hier, um deine Fragen zum Islam, Koran und den Hadithen zu beantworten.",
+    "Salam! Schön, dass du da bist. Was möchtest du wissen?",
+    "Herzlich willkommen! Stell mir gerne eine Frage."
+  ],
+  en: [
+    "Wa alaikum assalam! How can I help you today?",
+    "Hello! I'm here to answer your questions about Islam, the Quran, and the Hadith.",
+    "Salam! Nice to have you here. What would you like to know?",
+    "Welcome! Feel free to ask me a question."
+  ],
+  tr: [
+    "Selamün aleyküm! Bugün sana nasıl yardımcı olabilirim?",
+    "Merhaba! İslam, Kuran ve Hadis hakkındaki sorularınızı cevaplamak için buradayım.",
+    "Selam! Burada olduğun için sevindim. Ne öğrenmek istersin?",
+    "Hoş geldiniz! Bana bir soru sormaktan çekinmeyin."
+  ],
+  ar: [
+    "وعليكم السلام! كيف يمكنني مساعدتك اليوم؟",
+    "مرحبا! أنا هنا للإجابة على أسئلتك حول الإسلام والقرآن والحديث.",
+    "السلام! يسعدني وجودك هنا. ماذا تود أن تعرف؟",
+    "أهلا وسهلا! لا تتردد في طرح سؤال علي."
+  ]
+};
+
+// Multilingual welcome messages
+const WELCOME_MESSAGES = {
+  de: "As-salamu alaikum! 🌙 Ich bin dein KI-Assistent für den Koran und die Hadithe. Wie kann ich dir heute helfen?",
+  en: "As-salamu alaikum! 🌙 I'm your AI assistant for the Quran and Hadith. How can I help you today?",
+  tr: "Selamün aleyküm! 🌙 Kuran ve Hadis için senin yapay zeka asistanıyım. Bugün sana nasıl yardımcı olabilirim?",
+  ar: "السلام عليكم! 🌙 أنا مساعدك الذكي للقرآن والحديث. كيف يمكنني مساعدتك اليوم؟"
+};
 
 export function useChat() {
+  const { language } = useLanguage();
+  const lang = language === 'de' || language === 'en' || language === 'tr' || language === 'ar' ? language : 'en';
+  
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: nanoid(),
-      text: "As-salamu alaikum! 🌙 Ich bin dein KI-Assistent für den Koran und die Hadithe. Wie kann ich dir heute helfen?",
+      text: WELCOME_MESSAGES[lang as keyof typeof WELCOME_MESSAGES],
       isUser: false,
       timestamp: new Date(),
     },
@@ -61,7 +100,9 @@ export function useChat() {
             !msg.isError && // Skip error messages (marked with isError flag)
             msg.text && // Filter out null/undefined/empty text
             msg.text.trim() && // Filter out whitespace-only messages
-            !msg.text.startsWith("As-salamu alaikum!") // Skip initial greeting
+            !msg.text.startsWith("As-salamu alaikum!") && // Skip initial greeting
+            !msg.text.startsWith("Selamün aleyküm!") && // Skip Turkish greeting
+            !msg.text.startsWith("السلام عليكم") // Skip Arabic greeting
           )
           .map(msg => ({
             role: msg.isUser ? "user" : "assistant",
@@ -74,12 +115,18 @@ export function useChat() {
           content: userInput
         });
 
+        // Determine translation edition based on language
+        let translationEdition = "de.bubenheim";
+        if (lang === 'en') translationEdition = "en.sahih";
+        else if (lang === 'tr') translationEdition = "tr.diyanet";
+        else if (lang === 'ar') translationEdition = "ar.quran-simple";
+
         // Send to backend with full conversation history and function definitions
         const response = await sendChatRequest({
           apiKey: apiKey || undefined,
           messages: conversationHistory,
-          language: "de",
-          translationEdition: "de.bubenheim",
+          language: lang,
+          translationEdition: translationEdition,
           functions: chatFunctionDefinitions,
           function_call: "auto",
         });
@@ -102,8 +149,8 @@ export function useChat() {
           // Get final response from AI with function result
           const finalResponse = await sendChatRequest({
             messages: conversationHistory,
-            language: "de",
-            translationEdition: "de.bubenheim",
+            language: lang,
+            translationEdition: translationEdition,
             functions: chatFunctionDefinitions,
           });
           
@@ -147,8 +194,23 @@ export function useChat() {
           setMinuteRemaining(response.minuteRemaining);
         }
       } catch (err: any) {
-        let errorMessage = "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.";
-        let displayMessage = "Entschuldigung, es gab ein technisches Problem.";
+        // Multilingual error messages
+        const errorMessages = {
+          de: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+          en: "An error occurred. Please try again later.",
+          tr: "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+          ar: "حدث خطأ. يرجى المحاولة لاحقًا."
+        };
+
+        const displayMessages = {
+          de: "Entschuldigung, es gab ein technisches Problem.",
+          en: "Sorry, there was a technical problem.",
+          tr: "Üzgünüm, teknik bir sorun oluştu.",
+          ar: "عذراً، حدثت مشكلة تقنية."
+        };
+
+        let errorMessage = errorMessages[lang as keyof typeof errorMessages] || errorMessages.en;
+        let displayMessage = displayMessages[lang as keyof typeof displayMessages] || displayMessages.en;
 
         if (err instanceof Error) {
           errorMessage = err.message;
@@ -165,8 +227,14 @@ export function useChat() {
               setMinuteRemaining((err as any).minuteRemaining);
             }
           } else {
-            // Show friendly error message
-            displayMessage = `Entschuldigung, der KI-Chat ist momentan nicht verfügbar. Bitte versuche es später erneut.`;
+            // Show friendly error message based on language
+            const fallbackMessages = {
+              de: "Entschuldigung, der KI-Chat ist momentan nicht verfügbar. Bitte versuche es später erneut.",
+              en: "Sorry, the AI chat is currently unavailable. Please try again later.",
+              tr: "Üzgünüm, yapay zeka sohbeti şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
+              ar: "عذراً، دردشة الذكاء الاصطناعي غير متاحة حالياً. يرجى المحاولة لاحقًا."
+            };
+            displayMessage = fallbackMessages[lang as keyof typeof fallbackMessages] || fallbackMessages.en;
             console.error('[Chat Error]', errorMessage); // Log for debugging
           }
         }
@@ -187,20 +255,20 @@ export function useChat() {
         setIsLoading(false);
       }
     },
-    [isLoading]
+    [isLoading, lang]
   );
 
   const clearMessages = useCallback(() => {
     setMessages([
       {
         id: nanoid(),
-        text: "As-salamu alaikum! 🌙 Ich bin dein KI-Assistent für den Koran und die Hadithe. Wie kann ich dir heute helfen?",
+        text: WELCOME_MESSAGES[lang as keyof typeof WELCOME_MESSAGES],
         isUser: false,
         timestamp: new Date(),
       },
     ]);
     setError(null);
-  }, []);
+  }, [lang]);
 
   return {
     messages,
