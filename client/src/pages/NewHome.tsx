@@ -288,7 +288,7 @@ export default function NewHome() {
               </div>
               <div className="text-left">
                 <h3 className="font-semibold text-sm">KI-Assistent</h3>
-                <p className="text-xs opacity-90">Stellen Sie Fragen zum Koran und Hadith</p>
+                <p className="text-xs opacity-90">{t('aiAssistantDesc')}</p>
               </div>
             </div>
             {chatExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
