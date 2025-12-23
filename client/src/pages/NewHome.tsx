@@ -287,7 +287,7 @@ export default function NewHome() {
                 <MessageSquare className="w-5 h-5 text-purple-600" />
               </div>
               <div className="text-left">
-                <h3 className="font-semibold text-sm">KI-Assistent</h3>
+                <h3 className="font-semibold text-sm">{t('aiAssistant')}</h3>
                 <p className="text-xs opacity-90">{t('aiAssistantDesc')}</p>
               </div>
             </div>
