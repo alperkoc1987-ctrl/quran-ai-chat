@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getPrayerSettings, savePrayerSettings, type PrayerSettings } from "@/lib/notificationService";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PrayerTimesData {
   Fajr: string;
@@ -29,6 +30,7 @@ interface CitySearchResult {
 
 export default function PrayerTimes() {
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimesData | null>(null);
@@ -481,8 +483,8 @@ export default function PrayerTimes() {
                 </Button>
               </Link>
               <div>
-                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Gebetszeiten</h1>
-                <p className={`text-sm ${themeConfig.colors.textSecondary}`}>Ihre lokalen Gebetszeiten</p>
+                <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>{t('prayerTimesPageTitle')}</h1>
+                <p className={`text-sm ${themeConfig.colors.textSecondary}`}>{t('prayerTimesPageSubtitle')}</p>
               </div>
             </div>
           </div>
@@ -496,7 +498,7 @@ export default function PrayerTimes() {
                   {prayerTimes.city}{prayerTimes.country ? `, ${prayerTimes.country}` : ''}
                 </span>
                 <span className={`text-xs px-2 py-1 rounded-full ${locationMode === 'auto' ? 'bg-teal-100 text-teal-700' : 'bg-blue-100 text-blue-700'}`}>
-                  {locationMode === 'auto' ? 'Automatisch' : 'Manuell'}
+                  {locationMode === 'auto' ? t('automatic') : t('manual')}
                 </span>
               </div>
               <Button
@@ -506,7 +508,7 @@ export default function PrayerTimes() {
                 className="text-teal-600 hover:text-teal-700"
               >
                 <Edit className="w-4 h-4 mr-1" />
-                Ändern
+                {t('changeLocation')}
               </Button>
             </div>
           )}
@@ -526,7 +528,7 @@ export default function PrayerTimes() {
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-12 h-12 animate-spin text-teal-600 mb-4" />
-            <p className={`${themeConfig.colors.textSecondary}`}>Gebetszeiten werden geladen...</p>
+            <p className={`${themeConfig.colors.textSecondary}`}>{t('prayerTimesLoading')}</p>
           </div>
         )}
 
@@ -535,7 +537,7 @@ export default function PrayerTimes() {
             <p className="text-red-600 mb-4">{error}</p>
             <Button onClick={requestLocation} className="bg-teal-600 hover:bg-teal-700">
               <Navigation className="w-4 h-4 mr-2" />
-              Standort erneut anfordern
+              {t('requestLocationAgain')}
             </Button>
           </Card>
         )}
@@ -641,13 +643,13 @@ export default function PrayerTimes() {
         {!prayerTimes && !loading && !error && (
           <Card className="p-8 text-center">
             <Clock className="w-16 h-16 mx-auto mb-4 text-teal-600" />
-            <h2 className={`text-xl font-bold mb-2 ${themeConfig.colors.text}`}>Gebetszeiten laden</h2>
+            <h2 className={`text-xl font-bold mb-2 ${themeConfig.colors.text}`}>{t('prayerTimesPageTitle')}</h2>
             <p className="text-slate-700 dark:text-slate-300 mb-6">
-              Erlauben Sie den Standortzugriff, um Ihre lokalen Gebetszeiten zu sehen
+              {t('allowLocationAccess')}
             </p>
             <Button onClick={requestLocation} className="bg-teal-600 hover:bg-teal-700">
               <Navigation className="w-4 h-4 mr-2" />
-              Standort aktivieren
+              {t('enableLocation')}
             </Button>
           </Card>
         )}
@@ -657,9 +659,9 @@ export default function PrayerTimes() {
       <Dialog open={showCitySearch} onOpenChange={setShowCitySearch}>
         <DialogContent className={themeConfig.colors.card}>
           <DialogHeader>
-            <DialogTitle className={themeConfig.colors.text}>Stadt auswählen</DialogTitle>
+            <DialogTitle className={themeConfig.colors.text}>{t('selectCity')}</DialogTitle>
             <DialogDescription className={themeConfig.colors.textSecondary}>
-              Suchen Sie nach Ihrer Stadt oder verwenden Sie automatische Standorterkennung
+              {t('searchCityDescription')}
             </DialogDescription>
           </DialogHeader>
 
@@ -673,7 +675,7 @@ export default function PrayerTimes() {
               className="w-full bg-teal-600 hover:bg-teal-700"
             >
               <Navigation className="w-4 h-4 mr-2" />
-              Automatische Standorterkennung
+              {t('autoLocationDetection')}
             </Button>
 
             {/* Manual Search */}

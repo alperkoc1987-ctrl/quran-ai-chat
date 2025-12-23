@@ -6,6 +6,7 @@
 import { useState, useEffect } from "react";
 import { Moon } from "lucide-react";
 import { Link } from "wouter";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PrayerTime {
   name: string;
@@ -13,6 +14,7 @@ interface PrayerTime {
 }
 
 export function PrayerTimesWidget() {
+  const { t } = useLanguage();
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string } | null>(null);
   const [countdown, setCountdown] = useState<string>("");
@@ -132,10 +134,10 @@ export function PrayerTimesWidget() {
             <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center">
               <Moon className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-lg font-bold text-white">Gebetszeiten</h3>
+            <h3 className="text-lg font-bold text-white">{t('prayerTimesPageTitle')}</h3>
           </div>
           <p className="text-sm text-slate-300">
-            Tippen Sie hier, um Gebetszeiten einzurichten
+            {t('prayerTimesWidgetText')}
           </p>
         </div>
       </Link>
@@ -150,7 +152,7 @@ export function PrayerTimesWidget() {
           <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center">
             <Moon className="w-6 h-6 text-white" />
           </div>
-          <h3 className="text-sm font-medium text-slate-300">Nächstes Gebet</h3>
+          <h3 className="text-sm font-medium text-slate-300">{t('nextPrayer')}</h3>
         </div>
 
         {/* Prayer Name */}

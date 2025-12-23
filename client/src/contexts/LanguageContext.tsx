@@ -112,6 +112,22 @@ const translations = {
     categoryNotFound: "Kategorie nicht gefunden",
     noDuasFound: "Keine Duas in dieser Kategorie gefunden",
     
+    // Prayer Times Page
+    prayerTimesPageTitle: "Gebetszeiten",
+    prayerTimesPageSubtitle: "Ihre lokalen Gebetszeiten",
+    prayerTimesLoading: "Gebetszeiten werden geladen...",
+    allowLocationAccess: "Erlauben Sie den Standortzugriff, um Ihre lokalen Gebetszeiten zu sehen",
+    enableLocation: "Standort aktivieren",
+    requestLocationAgain: "Standort erneut anfordern",
+    selectCity: "Stadt auswaehlen",
+    searchCityDescription: "Suchen Sie nach Ihrer Stadt oder verwenden Sie automatische Standorterkennung",
+    autoLocationDetection: "Automatische Standorterkennung",
+    changeLocation: "Aendern",
+    automatic: "Automatisch",
+    manual: "Manuell",
+    prayerTimesWidgetText: "Tippen Sie hier, um Gebetszeiten einzurichten",
+    nextPrayer: "Naechstes Gebet",
+    
     // Dhikr Page
     dhikrAndAdhkar: "Dhikr & Adhkar",
     authenticReminders: "Authentische Erinnerungen nach Ahlul Sunnah",
@@ -248,6 +264,22 @@ const translations = {
     duasDescription: "Supplications for every situation",
     categoryNotFound: "Category not found",
     noDuasFound: "No duas found in this category",
+    
+    // Prayer Times Page
+    prayerTimesPageTitle: "Prayer Times",
+    prayerTimesPageSubtitle: "Your local prayer times",
+    prayerTimesLoading: "Loading prayer times...",
+    allowLocationAccess: "Allow location access to see your local prayer times",
+    enableLocation: "Enable Location",
+    requestLocationAgain: "Request Location Again",
+    selectCity: "Select City",
+    searchCityDescription: "Search for your city or use automatic location detection",
+    autoLocationDetection: "Automatic Location Detection",
+    changeLocation: "Change",
+    automatic: "Automatic",
+    manual: "Manual",
+    prayerTimesWidgetText: "Tap here to set up prayer times",
+    nextPrayer: "Next Prayer",
     
     // Dhikr Page
     dhikrAndAdhkar: "Dhikr & Adhkar",
@@ -386,6 +418,22 @@ const translations = {
     categoryNotFound: "Kategori bulunamadı",
     noDuasFound: "Bu kategoride dua bulunamadı",
     
+    // Prayer Times Page
+    prayerTimesPageTitle: "Namaz Vakitleri",
+    prayerTimesPageSubtitle: "Yerel namaz vakitleriniz",
+    prayerTimesLoading: "Namaz vakitleri yukleniyor...",
+    allowLocationAccess: "Yerel namaz vakitlerinizi gormek icin konum erisimini izin verin",
+    enableLocation: "Konumu Etkinlestir",
+    requestLocationAgain: "Konumu Tekrar Isteyin",
+    selectCity: "Sehir Secin",
+    searchCityDescription: "Sehrinizi arayın veya otomatik konum tespitini kullanin",
+    autoLocationDetection: "Otomatik Konum Tespiti",
+    changeLocation: "Degistir",
+    automatic: "Otomatik",
+    manual: "Manuel",
+    prayerTimesWidgetText: "Namaz vakitlerini ayarlamak icin buraya dokunun",
+    nextPrayer: "Sonraki Namaz",
+    
     // Dhikr Page
     dhikrAndAdhkar: "Zikirler & Dualar",
     authenticReminders: "Ehl-i Sünnet'e göre otantik zikirler",
@@ -522,6 +570,22 @@ const translations = {
     duasDescription: "أدعية لكل حالة",
     categoryNotFound: "الفئة غير موجودة",
     noDuasFound: "لا توجد أدعية في هذه الفئة",
+    
+    // Prayer Times Page
+    prayerTimesPageTitle: "أوقات الصلاة",
+    prayerTimesPageSubtitle: "أوقات الصلاة المحلية",
+    prayerTimesLoading: "جاري تحميل أوقات الصلاة...",
+    allowLocationAccess: "السماح بالوصول إلى الموقع لرؤية أوقات الصلاة المحلية",
+    enableLocation: "تفعيل الموقع",
+    requestLocationAgain: "طلب الموقع مرة أخرى",
+    selectCity: "اختر المدينة",
+    searchCityDescription: "ابحث عن مدينتك أو استخدم الكشف التلقائي عن الموقع",
+    autoLocationDetection: "الكشف التلقائي عن الموقع",
+    changeLocation: "تغيير",
+    automatic: "تلقائي",
+    manual: "يدوي",
+    prayerTimesWidgetText: "انقر هنا لإعداد أوقات الصلاة",
+    nextPrayer: "الصلاة القادمة",
     
     // Dhikr Page
     dhikrAndAdhkar: "الأذكار",
