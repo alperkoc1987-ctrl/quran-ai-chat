@@ -6,6 +6,7 @@ import { useLocation } from "wouter";
 import { getRandomQuestions, QuizQuestion, markQuestionAsAnswered, getAnsweredCount } from "@/data/quizQuestions";
 import confetti from "canvas-confetti";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Ensure confetti is properly initialized
 if (typeof window !== 'undefined' && !window.confetti) {
@@ -14,6 +15,7 @@ if (typeof window !== 'undefined' && !window.confetti) {
 
 export default function Quiz() {
   const { themeConfig } = useReadingTheme();
+  const { t } = useLanguage();
   const [, navigate] = useLocation();
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -121,7 +123,7 @@ export default function Quiz() {
       <div className={`min-h-screen ${themeConfig.colors.background} flex items-center justify-center`}>
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className={themeConfig.colors.textSecondary}>Quiz wird geladen...</p>
+          <p className={themeConfig.colors.textSecondary}>{t('quizPageLoading')}</p>
         </div>
       </div>
     );
@@ -151,8 +153,8 @@ export default function Quiz() {
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Quiz Abgeschlossen!</h1>
-                  <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Dein Ergebnis</p>
+                  <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>{t('quizPageCompleted')}</h1>
+                  <p className={`text-xs ${themeConfig.colors.textSecondary}`}>{t('quizPageYourResult')}</p>
                 </div>
               </div>
             </div>
@@ -171,12 +173,12 @@ export default function Quiz() {
             </div>
 
             <h2 className={`text-3xl font-bold ${themeConfig.colors.text} mb-2`}>
-              {passed ? "Ausgezeichnet!" : "Gut gemacht!"}
+              {passed ? t('quizPageExcellent') : t('quizPageWellDone')}
             </h2>
             <p className={`${themeConfig.colors.textSecondary} mb-6`}>
               {passed 
-                ? "Du hast das Quiz erfolgreich bestanden!" 
-                : "Übe weiter, um dein Wissen zu vertiefen!"}
+                ? t('quizPagePassed') 
+                : t('quizPageContinuePractice')}
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-8">
@@ -184,13 +186,13 @@ export default function Quiz() {
                 <div className="text-3xl font-bold text-teal-500 mb-1">
                   {score}/{questions.length}
                 </div>
-                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>Richtige Antworten</div>
+                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>{t('quizPageCorrectAnswers')}</div>
               </div>
               <div className={`${themeConfig.colors.backgroundSecondary} rounded-lg p-4`}>
                 <div className="text-3xl font-bold text-teal-500 mb-1">
                   {percentage}%
                 </div>
-                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>Erfolgsquote</div>
+                <div className={`text-sm ${themeConfig.colors.textSecondary}`}>{t('quizPageSuccessRate')}</div>
               </div>
             </div>
 
@@ -199,14 +201,14 @@ export default function Quiz() {
                 onClick={handleRestartQuiz}
                 className={`flex-1 ${themeConfig.colors.buttonPrimary} ${themeConfig.colors.buttonPrimaryHover} ${themeConfig.colors.buttonPrimaryText}`}
               >
-                Neues Quiz starten
+                {t('quizPageRestartQuiz')}
               </Button>
               <Button
                 onClick={() => navigate("/")}
                 variant="outline"
                 className="flex-1"
               >
-                Zur Startseite
+                {t('quizPageBackHome')}
               </Button>
             </div>
           </Card>
@@ -235,18 +237,18 @@ export default function Quiz() {
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>Islamisches Quiz</h1>
-                  <p className={`text-xs ${themeConfig.colors.textSecondary}`}>Teste dein Wissen</p>
+                  <h1 className={`text-xl font-bold ${themeConfig.colors.text}`}>{t('quizPageTitle')}</h1>
+                  <p className={`text-xs ${themeConfig.colors.textSecondary}`}>{t('quizPageSubtitle')}</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <div className={`text-sm font-medium ${themeConfig.colors.text}`}>
-                  Frage {currentQuestionIndex + 1}/{questions.length}
+                  {t('quizPageQuestion')} {currentQuestionIndex + 1}/{questions.length}
                 </div>
                 <div className={`text-xs ${themeConfig.colors.textSecondary}`}>
-                  Punkte: {score}
+                  {t('quizPagePoints')}: {score}
                 </div>
               </div>
             </div>
@@ -311,7 +313,7 @@ export default function Quiz() {
           {/* Explanation */}
           {showResult && currentQuestion.explanation && (
             <div className={`${themeConfig.colors.backgroundSecondary} rounded-lg p-4 mb-6`}>
-              <h3 className={`font-semibold ${themeConfig.colors.text} mb-2`}>Erklärung:</h3>
+              <h3 className={`font-semibold ${themeConfig.colors.text} mb-2`}>{t('quizPageExplanation')}</h3>
               <p className={themeConfig.colors.textSecondary}>{currentQuestion.explanation}</p>
             </div>
           )}
@@ -324,7 +326,7 @@ export default function Quiz() {
                 disabled={selectedAnswer === null}
                 className={`w-full ${themeConfig.colors.buttonPrimary} ${themeConfig.colors.buttonPrimaryHover} ${themeConfig.colors.buttonPrimaryText}`}
               >
-                Antwort bestätigen
+                {t('quizPageSubmitAnswer')}
               </Button>
             ) : (
               <Button
@@ -332,7 +334,7 @@ export default function Quiz() {
                 onClick={handleNextQuestion}
                 className={`w-full ${themeConfig.colors.buttonPrimary} ${themeConfig.colors.buttonPrimaryHover} ${themeConfig.colors.buttonPrimaryText}`}
               >
-                {currentQuestionIndex < questions.length - 1 ? "Nächste Frage" : "Quiz beenden"}
+                {currentQuestionIndex < questions.length - 1 ? t('quizPageNextQuestion') : t('quizPageFinish')}
               </Button>
             )}
           </div>
