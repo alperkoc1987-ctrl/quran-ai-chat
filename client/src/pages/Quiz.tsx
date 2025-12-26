@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Trophy, ArrowLeft, CheckCircle2, XCircle, Sparkles } from "lucide-react";
 import { useLocation } from "wouter";
-import { getRandomQuestions, QuizQuestion, markQuestionAsAnswered, getAnsweredCount } from "@/data/quizQuestions";
+import { getRandomQuestions, QuizQuestion, markQuestionAsAnswered, getAnsweredCount, Language } from "@/data/quizQuestions";
 import confetti from "canvas-confetti";
 import { useReadingTheme } from "@/contexts/ReadingThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,21 +15,21 @@ if (typeof window !== 'undefined' && !window.confetti) {
 
 export default function Quiz() {
   const { themeConfig } = useReadingTheme();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [, navigate] = useLocation();
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState(0);
+  const [quizFinished, setQuizFinished] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   // Initialize quiz
   useEffect(() => {
-    const quizQuestions = getRandomQuestions(10);
-    setQuestions(quizQuestions);
-  }, []);
+    const randomQuestions = getRandomQuestions(10, language as Language);
+    setQuestions(randomQuestions);
+  }, [language]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -60,7 +60,6 @@ export default function Quiz() {
     }
 
     setShowResult(true);
-    setAnsweredQuestions(answeredQuestions + 1);
 
     // Mark question as answered to prevent repetition
     markQuestionAsAnswered(currentQuestion.id);
