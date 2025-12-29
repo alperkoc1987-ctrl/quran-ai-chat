@@ -450,8 +450,8 @@ export function getCategoryNameKey(category: DhikrCategory): string {
 // Helper function to get category description key for translations
 export function getCategoryDescKey(category: DhikrCategory): string {
   const categoryMap: Record<DhikrCategory, string> = {
-    morning: "morningDhikrDesc",
-    evening: "eveningDhikrDesc",
+    morning: "morningAdhkarDesc",
+    evening: "eveningAdhkarDesc",
     after_prayer: "afterPrayerDesc",
     before_sleep: "beforeSleepDesc",
     after_wudu: "afterWuduDesc",
