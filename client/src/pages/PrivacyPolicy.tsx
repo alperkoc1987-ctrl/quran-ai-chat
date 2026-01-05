@@ -33,7 +33,7 @@ export default function PrivacyPolicy() {
         },
         {
           heading: "6. KI-Funktionen",
-          text: "Wenn die App eine Chat- oder KI-Funktion enthält, werden die vom Nutzer eingegebenen Texte verarbeitet, um Antworten zu generieren. Es erfolgt keine dauerhafte Speicherung personenbezogener Inhalte."
+          text: "Die Chat- und KI-Funktionen dieser App nutzen die Google Gemini API. Wenn Sie die Chat-Funktion verwenden, werden Ihre Eingaben an Google übertragen, um Antworten zu generieren. Google verarbeitet diese Daten gemäß seiner Datenschutzrichtlinie. Es erfolgt keine dauerhafte Speicherung Ihrer personenbezogenen Inhalte auf unseren Servern."
         },
         {
           heading: "7. Weitergabe von Daten",
@@ -74,7 +74,7 @@ export default function PrivacyPolicy() {
         },
         {
           heading: "6. AI Functions",
-          text: "If the app includes chat or AI-based features, user inputs are processed to generate responses. No permanent storage of personal content is intended."
+          text: "The chat and AI features of this app use the Google Gemini API. When you use the chat function, your inputs are transmitted to Google to generate responses. Google processes this data according to its privacy policy. We do not permanently store your personal content on our servers."
         },
         {
           heading: "7. Data Sharing",
@@ -87,6 +87,88 @@ export default function PrivacyPolicy() {
         {
           heading: "9. Contact",
           text: "For questions regarding data protection, please contact:\nAlper.koc1987@gmail.com"
+        }
+      ]
+    },
+    tr: {
+      title: "Gizlilik Politikası",
+      sections: [
+        {
+          heading: "1. Sorumlu Kurum",
+          text: "Veri işlemeden sorumlu kurum:\nAlper Koc\nFriedrich Ebert Straße 135c\n67574 Osthofen\nAlmanya\nE-posta: Alper.koc1987@gmail.com"
+        },
+        {
+          heading: "2. Genel Bilgiler",
+          text: "Kişisel verilerinizin korunması bizim için önemlidir. Bu uygulama, mümkün olduğunca az veri işlemek için tasarlanmıştır."
+        },
+        {
+          heading: "3. Teknik Olarak Gerekli Veriler",
+          text: "Uygulamayı kullanırken, uygun işlev ve güvenliği sağlamak için teknik olarak gerekli veriler işlenebilir. Buna IP adresi, erişim tarihi ve saati ve kullanılan cihaz veya tarayıcı hakkında teknik bilgiler dahil olabilir."
+        },
+        {
+          heading: "4. Barındırma",
+          text: "Uygulama, örneğin Vercel gibi harici bir hizmet sağlayıcı tarafından barındırılmaktadır. İşlevsellik ve güvenliği sağlamak için teknik veriler işlenebilir."
+        },
+        {
+          heading: "5. Cihazda Yerel Depolama",
+          text: "Uygulama, seçilen dil gibi belirli ayarları cihazınızda yerel olarak depolar. Bu veriler cihazda kalır ve otomatik olarak bize iletilmez."
+        },
+        {
+          heading: "6. Yapay Zeka Özellikleri",
+          text: "Bu uygulamannın sohbet ve yapay zeka özellikleri Google Gemini API'sini kullanır. Sohbet işlevini kullandığınızda, girdileriniz yanıtlar oluşturmak için Google'a iletilir. Google verilerinizi kendi gizlilik politikasına göre işler. Kişisel içeriğinizi sunucularımızda kalıcı olarak depolamayız."
+        },
+        {
+          heading: "7. Veri Paylaşımı",
+          text: "Kişisel veriler reklam amaçları için üçüncü taraflara paylaşılmaz."
+        },
+        {
+          heading: "8. Kullanıcı Hakları",
+          text: "Kullanıcılar, uygulanabilir yasaların kapsamı içinde kişisel verilerine ilişkin bilgi, düzeltme veya silme talebinde bulunma hakkına sahiptir."
+        },
+        {
+          heading: "9. İletişim",
+          text: "Veri koruma hakkında sorularınız için lütfen İletişim kurun:\nAlper.koc1987@gmail.com"
+        }
+      ]
+    },
+    ar: {
+      title: "سياسة الخصوصية",
+      sections: [
+        {
+          heading: "1. المسؤول عن معالجة البيانات",
+          text: "المسؤول عن معالجة البيانات:\nAlper Koc\nFriedrich Ebert Straße 135c\n67574 Osthofen\nألمانيا\nالبريد الإلكتروني: Alper.koc1987@gmail.com"
+        },
+        {
+          heading: "2. معلومات عامة",
+          text: "نحن نعتبر حماية بياناتك الشخصية مهمة جداً. تم تصميم هذا التطبيق لمعالجة أقل بيانات ممكنة."
+        },
+        {
+          heading: "3. البيانات الضرورية تقنياً",
+          text: "عند استخدام التطبيق، قد يتم معالجة البيانات الضرورية تقنياً لضمان التشغيل السليم والأمان. قد يتضمن هذا عنوان IP والتاريخ والوقت والمعلومات التقنية حول الجهاز أو متصفح الويب المستخدم."
+        },
+        {
+          heading: "4. الاستضافة",
+          text: "يتم استضافة التطبيق بواسطة مزود خدمة خارجي، على سبيل المثال Vercel. قد يتم معالجة البيانات الضرورية تقنياً لضمان الوظائف والأمان."
+        },
+        {
+          heading: "5. التخزين المحلي على الجهاز",
+          text: "يقوم التطبيق بتخزين إعدادات معينة محلياً على جهازك، مثل اللغة المختارة. بقيت هذه البيانات على الجهاز ولا يتم نقلها إلينا تلقائياً."
+        },
+        {
+          heading: "6. وظائف الذكاء الاصطناعي",
+          text: "تستخدم ميزات الدردشة والذكاء الاصطناعي في هذا التطبيق Google Gemini API. عند استخدام وظيفة الدردشة، يتم نقل مدخلاتك إلى Google لإنشاء الردود. تعالج Google بياناتك وفقاً لسياسة الخصوصية الخاصة بها. لا نقوم بتخزين محتواك الشخصي بشكل دائم على خوادمنا."
+        },
+        {
+          heading: "7. مشاركة البيانات",
+          text: "لا يتم مشاركة البيانات الشخصية مع أطراف ثالثة لأغراض إعلانية."
+        },
+        {
+          heading: "8. حقوق المستخدمين",
+          text: "يحق للمستخدمين الطلب بمعلومات وتصحيح وحذف بياناتهم الشخصية في حدود القانون الساري."
+        },
+        {
+          heading: "9. الاتصال",
+          text: "للأسئلة بشأن حماية البيانات، يرجى الاتصال بنا:\nAlper.koc1987@gmail.com"
         }
       ]
     }
